@@ -150,13 +150,16 @@ describe("Test Suite: useSearch", () => {
     expect(filtered).toEqual(usrs);
   });
   test("returns filtered on single query", () => {
-    const { result } = renderHook(() => useSearch(users(), ["email"]));
+    const usrs = users();
+    const { result } = renderHook(() => useSearch(usrs, ["email"]));
 
     act(() => result.current.onQueryChange("@example.com"));
 
     const { filtered } = result.current;
 
     expect(filtered.length).toEqual(2);
+    expect(filtered[0]).toEqual(usrs[0]);
+    expect(filtered[1]).toEqual(usrs[1]);
   });
   test("does not consider values in unspecified fields", () => {
     const { result } = renderHook(() => useSearch(users(), ["name"]));
