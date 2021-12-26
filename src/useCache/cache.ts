@@ -51,6 +51,10 @@ export default class Cache<T extends EmptyObj> {
     this.data[key] = this.createEntry(value);
   };
 
+  public remove = (key: keyof T) => {
+    delete this.data[key];
+  };
+
   public clear = () => {
     this.each((key) => {
       if (this.has(key)) {
@@ -78,10 +82,6 @@ export default class Cache<T extends EmptyObj> {
         this.remove(key);
       }
     });
-  };
-
-  private remove = (key: keyof T) => {
-    delete this.data[key];
   };
 
   private createEntry = <T>(value: T): CacheEntry<T> => {
