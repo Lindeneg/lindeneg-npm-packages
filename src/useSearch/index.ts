@@ -43,8 +43,12 @@ function getNestedValue(obj: EntryConstraint, keys: string[]): string {
   const cur = !Array.isArray(obj) ? obj[key] : obj[0];
   if (!cur) {
     return "";
-  } else if (Array.isArray(cur) && newKeys.length === 2 && newKeys[0] === "n") {
-    const result = reduceToString(cur, newKeys[newKeys.length - 1]);
+  } else if (Array.isArray(cur) && newKeys[0] === "n") {
+    const nKeys = newKeys.slice(1);
+    const result =
+      nKeys.length > 0
+        ? cur.reduce((a, b) => a + " " + getNestedValue(b, nKeys), "")
+        : reduceToString(cur, null);
     return result;
   } else {
     return getNestedValue(cur as EntryConstraint, newKeys);
