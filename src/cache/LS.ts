@@ -1,7 +1,7 @@
-import { CacheData, CacheEntry } from ".";
+import { CacheData, CacheEntry } from "./cache";
 import { EmptyObj } from "../shared";
 
-export default class LS {
+export class LS {
   public static get = <T extends EmptyObj>() => {
     return LS.maybe(() => {
       const result: CacheData<Partial<T>> = {};

@@ -1,4 +1,4 @@
-import Cache, { CacheData } from "../cache";
+import { Cache, CacheData } from "../cache";
 
 export type TestObj = {
   id: number;

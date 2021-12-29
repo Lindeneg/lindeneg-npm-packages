@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import Cache, { CacheConfig } from "../cache";
+import { Cache, CacheConfig } from "../cache";
 import { EmptyObj } from "../shared";
 
 export default function useMemoryCache<T extends EmptyObj>(

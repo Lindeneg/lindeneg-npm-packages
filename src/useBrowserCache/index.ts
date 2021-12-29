@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import useMemoryCache from "../useMemoryCache";
-import Cache, { CacheConfig } from "../cache";
-import LS from "../cache/LS";
+import { Cache, CacheConfig, LS } from "../cache";
 import { EmptyObj } from "../shared";
 
 type Config<T extends EmptyObj> = Omit<CacheConfig<T>, "initial">;
