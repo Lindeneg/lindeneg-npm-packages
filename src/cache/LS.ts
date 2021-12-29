@@ -4,7 +4,7 @@ import { EmptyObj } from "../shared";
 export class LS {
   public static get = <T extends EmptyObj>() => {
     return LS.maybe(() => {
-      const result: CacheData<Partial<T>> = {};
+      const result: CacheData<T> = {};
       LS.each<T>((key) => {
         const value = LS.item<T, typeof key>(key);
         if (value !== null) {
