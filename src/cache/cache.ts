@@ -91,8 +91,8 @@ export class Cache<T extends EmptyObj> {
     delete this.data[key];
   };
 
-  public clear = (isDestruct = false) => {
-    this.runListener("clear", isDestruct);
+  public clear = () => {
+    this.runListener("clear");
     this.each((key) => {
       if (this.has(key)) {
         this.remove(key);
@@ -102,7 +102,6 @@ export class Cache<T extends EmptyObj> {
 
   public destruct = () => {
     this.runListener("destruct");
-    this.clear(true);
     clearInterval(this.interval);
   };
 

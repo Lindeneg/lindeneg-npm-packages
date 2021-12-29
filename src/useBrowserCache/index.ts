@@ -25,10 +25,8 @@ export default function useBrowserCache<T extends EmptyObj>(
     LS.remove(key);
   });
 
-  cache().on("clear", (isDestruct) => {
-    if (!isDestruct) {
-      LS.destroy();
-    }
+  cache().on("clear", () => {
+    LS.destroy();
   });
 
   cache().on("trim", (keys) => {
