@@ -36,19 +36,19 @@ A `function` that returns a `Cache` instance with these methods exposed:
 
 ```tsx
 function SomeComponent() {
-  const { cache } = useMemoryCache();
+  const cache = useMemoryCache().cache();
 
   // set item
-  cache().set(KEY, VALUE);
+  cache.set(KEY, VALUE);
 
   // get item
-  cache().get(KEY);
+  cache.get(KEY);
 
   // get size
-  cache().size();
+  cache.size();
 
   // listen to event
-  cache().on("trim", (removed) => {
+  cache.on("trim", (removed) => {
     console.log("trim removed these keys from cache: ", removed);
   });
 
