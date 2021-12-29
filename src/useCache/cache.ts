@@ -3,7 +3,7 @@ import { EmptyObj } from "../shared";
 export type CacheConfig<T extends EmptyObj> = {
   trim: number;
   ttl: number;
-  initial: Partial<T>;
+  data: CacheData<T>;
 };
 
 export type CacheEntry<T> = {
@@ -15,24 +15,41 @@ export type CacheData<T extends EmptyObj> = Partial<{
   [K in keyof T]: CacheEntry<T[K]>;
 }>;
 
+export type _ListenerConstraint = "set" | "remove" | "clear" | "destruct";
+
+export type ListenerConstraint = _ListenerConstraint | "trim";
+
+export type ListenerCallback<
+  T extends EmptyObj,
+  K extends ListenerConstraint
+> = K extends _ListenerConstraint
+  ? Cache<T>[K]
+  : (removed: Array<keyof T>) => void;
+
+export type Listeners<T extends EmptyObj> = Partial<{
+  [K in ListenerConstraint]: ListenerCallback<T, K>;
+}>;
+
 export function getTime() {
   return new Date().getTime() / 1000;
 }
 
+export const DEFAULT_TRIM = 600;
+export const DEFAULT_TTL = 3600;
+
 export default class Cache<T extends EmptyObj> {
   private interval: NodeJS.Timer;
-  private config: CacheConfig<T>;
+  private config: Omit<CacheConfig<T>, "data">;
   private data: CacheData<T>;
-  private listeners: Partial<{ [K in keyof Cache<T>]: Cache<T>[K] }>;
+  private listeners: Listeners<T>;
 
   constructor(config?: Partial<CacheConfig<T>>) {
     this.config = {
-      trim: config?.trim || 600,
-      ttl: config?.ttl || 3600,
-      initial: config?.initial || {},
+      trim: config?.trim || DEFAULT_TRIM,
+      ttl: config?.ttl || DEFAULT_TTL,
     };
+    this.data = config?.data || {};
     this.listeners = {};
-    this.data = this.handleInitialData(this.config.initial);
 
     this.interval = setInterval(this.trim, this.config.trim * 1000);
   }
@@ -74,8 +91,8 @@ export default class Cache<T extends EmptyObj> {
     delete this.data[key];
   };
 
-  public clear = () => {
-    this.listeners.clear && this.listeners.clear();
+  public clear = (isDestruct = false) => {
+    this.listeners.clear && this.listeners.clear(isDestruct);
     this.each((key) => {
       if (this.has(key)) {
         this.remove(key);
@@ -85,27 +102,20 @@ export default class Cache<T extends EmptyObj> {
 
   public destruct = () => {
     this.listeners.destruct && this.listeners.destruct();
-    this.clear();
+    this.clear(true);
     clearInterval(this.interval);
   };
 
-  // TODO allow to listen for trim event
-  public on = <K extends "set" | "remove" | "clear" | "destruct">(
-    event: K,
-    callback: Cache<T>[K]
-  ): void => {
-    this.listeners[event] = callback;
+  public createEntry = <T>(value: T): CacheEntry<T> => {
+    return Cache.createEntry(value, this.config.ttl);
   };
 
-  private handleInitialData(obj?: Partial<T>): CacheData<T> {
-    if (obj) {
-      return Object.keys(obj).reduce(
-        (a, b) => ({ ...a, [b]: this.createEntry(obj[b]) }),
-        {}
-      );
-    }
-    return {};
-  }
+  public on = <K extends ListenerConstraint>(
+    event: K,
+    callback: ListenerCallback<T, K>
+  ): void => {
+    this.listeners[event] = callback as () => void;
+  };
 
   private each = (cb: (key: keyof T) => void) => {
     for (const key in this.data) {
@@ -115,18 +125,24 @@ export default class Cache<T extends EmptyObj> {
 
   private trim = () => {
     const now = getTime();
+    const removed: Array<keyof T> = [];
     this.each((key) => {
       const entry = this.data[key];
       if (entry && entry.expires < now) {
         this.remove(key);
+        removed.push(key);
       }
     });
+    this.listeners.trim && this.listeners.trim(removed);
   };
 
-  private createEntry = <T>(value: T): CacheEntry<T> => {
+  public static createEntry = <T>(
+    value: T,
+    ttl = DEFAULT_TTL
+  ): CacheEntry<T> => {
     return {
       value,
-      expires: getTime() + this.config.ttl,
+      expires: getTime() + ttl,
     };
   };
 }
