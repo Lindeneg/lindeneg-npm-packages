@@ -66,10 +66,9 @@ describe("Test Suite: useOnKey", () => {
     expect(fn).toHaveBeenCalledTimes(0);
   });
   test("callback receives event arg", () => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let arg: any = null;
     const fn = jest.fn((e) => {
-      arg = e;
+      expect(e instanceof KeyboardEvent).toBe(true);
+      expect(e.type).toBe("keyup");
     });
     renderHook(() => useOnKey("k", fn, "keyup"));
 
@@ -79,7 +78,5 @@ describe("Test Suite: useOnKey", () => {
     });
 
     expect(fn).toHaveBeenCalledTimes(1);
-    expect(arg instanceof KeyboardEvent).toBe(true);
-    expect(arg.type).toBe("keyup");
   });
 });
