@@ -8,12 +8,12 @@ Hook to send HTTP requests using [fetch](https://developer.mozilla.org/en-US/doc
 
 An **object** with type:
 
-| Name      | Type                            | Description                             |
-| --------- | ------------------------------- | --------------------------------------- | -------------------- |
-| isLoading | `boolean`                       | `true` if ongoing request else `false`  |
-| error     | `(E extends {message?: string}) | null`                                   | request error object |
-| request   | `Function`                      | send request, receive `Response` object |
-| withJson  | `Function`                      | send request, receive `JSON` object     |
+| Name      | Type                                     | Description                             |
+| --------- | ---------------------------------------- | --------------------------------------- |
+| isLoading | `boolean`                                | `true` if ongoing request else `false`  |
+| error     | `(E extends {message?: string}) \| null` | request error object                    |
+| request   | `Function`                               | send request, receive `Response` object |
+| withJson  | `Function`                               | send request, receive `JSON` object     |
 
 `request` and `withJson` have the following types:
 

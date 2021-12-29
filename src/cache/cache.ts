@@ -27,7 +27,7 @@ export type ListenerCallback<
   : (removed: Array<keyof T>) => void;
 
 export type Listeners<T extends EmptyObj> = Partial<{
-  [K in ListenerConstraint]: ListenerCallback<T, K>;
+  [K in ListenerConstraint]: Array<ListenerCallback<T, K>>;
 }>;
 
 export function getTime() {
@@ -82,17 +82,17 @@ export class Cache<T extends EmptyObj> {
   };
 
   public set = <K extends keyof T>(key: K, value: T[K]) => {
-    this.listeners.set && this.listeners.set(key, value);
+    this.runListener("set", key, value);
     this.data[key] = this.createEntry(value);
   };
 
   public remove = (key: keyof T) => {
-    this.listeners.remove && this.listeners.remove(key);
+    this.runListener("remove", key);
     delete this.data[key];
   };
 
   public clear = (isDestruct = false) => {
-    this.listeners.clear && this.listeners.clear(isDestruct);
+    this.runListener("clear", isDestruct);
     this.each((key) => {
       if (this.has(key)) {
         this.remove(key);
@@ -101,7 +101,7 @@ export class Cache<T extends EmptyObj> {
   };
 
   public destruct = () => {
-    this.listeners.destruct && this.listeners.destruct();
+    this.runListener("destruct");
     this.clear(true);
     clearInterval(this.interval);
   };
@@ -114,7 +114,22 @@ export class Cache<T extends EmptyObj> {
     event: K,
     callback: ListenerCallback<T, K>
   ): void => {
-    this.listeners[event] = callback as () => void;
+    if (Array.isArray(this.listeners[event])) {
+      (this.listeners[event] as Array<() => void>).push(callback as () => void);
+    } else {
+      this.listeners[event] = [callback as () => void];
+    }
+  };
+
+  private runListener = (event: ListenerConstraint, ...args: unknown[]) => {
+    const callbacks = this.listeners[event] as
+      | Array<(...args: unknown[]) => void>
+      | undefined;
+    if (callbacks) {
+      callbacks.forEach((callback) => {
+        callback(...args);
+      });
+    }
   };
 
   private each = (cb: (key: keyof T) => void) => {
@@ -133,7 +148,7 @@ export class Cache<T extends EmptyObj> {
         removed.push(key);
       }
     });
-    this.listeners.trim && this.listeners.trim(removed);
+    this.runListener("trim", removed);
   };
 
   public static createEntry = <T>(
