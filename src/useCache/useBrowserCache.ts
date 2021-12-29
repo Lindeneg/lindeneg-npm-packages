@@ -1,70 +1,39 @@
+import { useRef } from "react";
 import useMemoryCache from "./useMemoryCache";
+import Cache, { CacheConfig } from "./cache";
+import LS from "./LS";
 import { EmptyObj } from "../shared";
 
-function tryLS<T>(cb: () => T) {
-  try {
-    return cb();
-  } catch (err) {
-    if (process.env.NODE_ENV === "development") {
-      console.error("cl-react-hooks could not use localStorage for cache.");
-      console.error(err);
-    }
-  }
-  return null;
-}
+type Config<T extends EmptyObj> = Omit<CacheConfig<T>, "initial">;
 
-function getStored<T extends EmptyObj>() {
-  return tryLS<T>(() => {
-    const stored = window.localStorage.getItem("something");
-    if (stored) {
-      return JSON.parse(stored);
-    }
-  });
-}
-
-function setStored(obj: EmptyObj) {
-  tryLS(() => {
-    window.localStorage.setItem("something", JSON.stringify(obj));
-  });
-}
-
-function destructStored() {
-  tryLS(() => {
-    window.localStorage.removeItem("something");
-  });
-}
-
-export default function useBrowserCache<T extends EmptyObj>() {
+export default function useBrowserCache<T extends EmptyObj>(
+  config?: Partial<Config<T>> | (() => Partial<Config<T>>)
+) {
+  const _config = useRef(typeof config === "function" ? config() : config);
   const { cache } = useMemoryCache<T>(() => {
-    const stored = getStored<T>();
-    if (stored) {
-      return stored;
+    const stored = LS.get<T>();
+    if (stored !== null) {
+      return { ..._config.current, initial: stored };
     }
-    return {};
+    return { ..._config.current };
   });
 
   cache().on("set", (key, value) => {
-    const stored = getStored<T>();
-    if (stored) {
-      stored[key] = value;
-      setStored(stored);
-    }
+    LS.set(key, Cache.createEntry(value, _config.current?.ttl));
   });
 
   cache().on("remove", (key) => {
-    const stored = getStored<T>();
-    if (stored) {
-      delete stored[key];
-      setStored(stored);
+    LS.remove(key);
+  });
+
+  cache().on("clear", (isDestruct) => {
+    if (!isDestruct) {
+      LS.destroy();
     }
   });
 
-  cache().on("clear", () => {
-    setStored({});
-  });
-
-  cache().on("destruct", () => {
-    destructStored();
+  cache().on("trim", (keys) => {
+    LS.trim(keys);
   });
 
   return { cache };
