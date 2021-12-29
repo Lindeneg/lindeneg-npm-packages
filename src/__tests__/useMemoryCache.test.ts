@@ -1,31 +1,6 @@
 import { act, renderHook } from "@testing-library/react-hooks";
-import { useMemoryCache } from "../useCache";
-import Cache, { CacheData } from "../useCache/cache";
-
-type TestObj = {
-  id: number;
-  options: string[];
-  favorites: {
-    albums: string[];
-  };
-};
-
-function getMock(tll?: number): CacheData<TestObj> {
-  return {
-    id: Cache.createEntry(42, tll),
-    options: Cache.createEntry(["miles", "davis"], tll),
-    favorites: Cache.createEntry(
-      {
-        albums: ["kind of blue", "sketches of spain"],
-      },
-      tll
-    ),
-  };
-}
-
-function mockSize() {
-  return Object.keys(getMock()).length;
-}
+import useMemoryCache from "../useMemoryCache";
+import { TestObj, getMock, mockSize } from "./cache-mock";
 
 describe("Test Suite: useMemoryCache", () => {
   test("can initialize cache without initial data", () => {
