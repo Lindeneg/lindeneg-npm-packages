@@ -1,4 +1,4 @@
-import { CacheData, CacheEntry } from "./cache";
+import { CacheData, CacheEntry } from ".";
 import { EmptyObj } from "../shared";
 
 export default class LS {
