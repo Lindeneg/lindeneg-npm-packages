@@ -6,7 +6,7 @@ export default class LS {
     return LS.maybe(() => {
       const result: CacheData<Partial<T>> = {};
       LS.each<T>((key) => {
-        const value = LS.getItem<T, typeof key>(key);
+        const value = LS.item<T, typeof key>(key);
         if (value !== null) {
           result[key] = value;
         }
@@ -46,7 +46,7 @@ export default class LS {
     });
   };
 
-  private static getItem = <T extends EmptyObj, K extends keyof T>(
+  private static item = <T extends EmptyObj, K extends keyof T>(
     key: K
   ): CacheEntry<T[K]> | null => {
     return LS.maybe(() => {
@@ -75,14 +75,12 @@ export default class LS {
     return null;
   };
 
-  private static each = <T extends EmptyObj>(
-    callback: (match: keyof T) => void
-  ) => {
+  private static each = <T extends EmptyObj>(cb: (match: keyof T) => void) => {
     for (const key in window.localStorage) {
       if (typeof window.localStorage[key] !== "undefined") {
         const match = /^__clch__([a-zA-Z]+)$/.exec(key);
         if (match && match.length > 1) {
-          callback(match[1]);
+          cb(match[1]);
         }
       }
     }
