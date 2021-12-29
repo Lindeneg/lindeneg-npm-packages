@@ -3,7 +3,7 @@ import useMemoryCache from "../useMemoryCache";
 import { Cache, CacheConfig, LS } from "../cache";
 import { EmptyObj } from "../shared";
 
-type Config<T extends EmptyObj> = Omit<CacheConfig<T>, "initial">;
+type Config<T extends EmptyObj> = Omit<CacheConfig<T>, "data">;
 
 export default function useBrowserCache<T extends EmptyObj>(
   config?: Partial<Config<T>> | (() => Partial<Config<T>>)
@@ -12,7 +12,7 @@ export default function useBrowserCache<T extends EmptyObj>(
   const { cache } = useMemoryCache<T>(() => {
     const stored = LS.get<T>();
     if (stored !== null) {
-      return { ..._config.current, initial: stored };
+      return { ..._config.current, data: stored };
     }
     return { ..._config.current };
   });
