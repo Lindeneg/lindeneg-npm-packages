@@ -188,4 +188,21 @@ describe("Test Suite: useMemoryCache", () => {
     expect(fn).toHaveBeenCalledTimes(1);
     expect(cache().size()).toBe(0);
   });
+  test("can set multiple listeners on same event", () => {
+    const { result } = renderHook(() => useMemoryCache<TestObj>());
+
+    const { cache } = result.current;
+
+    const setFn1 = jest.fn();
+    const setFn2 = jest.fn();
+
+    act(() => {
+      cache().on("set", setFn1);
+      cache().on("set", setFn2);
+      cache().set("id", 42);
+    });
+
+    expect(setFn1).toHaveBeenCalledTimes(1);
+    expect(setFn2).toHaveBeenCalledTimes(1);
+  });
 });
