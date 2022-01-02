@@ -4,29 +4,26 @@ import { TestObj, getMock, mockSize } from "./cache-mock";
 
 describe("Test Suite: useMemoryCache", () => {
   test("can initialize cache without initial data", () => {
-    const cache = renderHook(() =>
-      useMemoryCache<TestObj>()
-    ).result.current.cache();
+    const { cache } = renderHook(() => useMemoryCache<TestObj>()).result
+      .current;
 
     expect(cache.size()).toBe(0);
   });
   test("can initialize cache with initial data", () => {
     const data = getMock();
-    const { result } = renderHook(() => useMemoryCache<TestObj>({ data }));
+    const { cache } = renderHook(() => useMemoryCache<TestObj>({ data })).result
+      .current;
 
-    const { cache } = result.current;
-
-    expect(cache().size()).toBe(mockSize());
-    expect(cache().value("id")).toBe(data.id?.value);
-    expect(cache().get("id")?.value).toBe(data.id?.value);
-    expect(Math.round(Number(cache().get("id")?.expires))).toEqual(
+    expect(cache.size()).toBe(mockSize());
+    expect(cache.value("id")).toBe(data.id?.value);
+    expect(cache.get("id")?.value).toBe(data.id?.value);
+    expect(Math.round(Number(cache.get("id")?.expires))).toEqual(
       Math.round(Number(data.id?.expires))
     );
   });
   test("can set cache item", () => {
-    const cache = renderHook(() =>
-      useMemoryCache<TestObj>()
-    ).result.current.cache();
+    const { cache } = renderHook(() => useMemoryCache<TestObj>()).result
+      .current;
 
     expect(cache.size()).toBe(0);
 
@@ -40,9 +37,8 @@ describe("Test Suite: useMemoryCache", () => {
   });
   test("can remove cache item", () => {
     const data = getMock();
-    const cache = renderHook(() =>
-      useMemoryCache<TestObj>({ data })
-    ).result.current.cache();
+    const { cache } = renderHook(() => useMemoryCache<TestObj>({ data })).result
+      .current;
 
     expect(cache.size()).toBe(mockSize());
 
@@ -55,9 +51,8 @@ describe("Test Suite: useMemoryCache", () => {
   });
   test("can check cache item", () => {
     const data = getMock();
-    const cache = renderHook(() =>
-      useMemoryCache<TestObj>({ data })
-    ).result.current.cache();
+    const { cache } = renderHook(() => useMemoryCache<TestObj>({ data })).result
+      .current;
 
     expect(cache.has("id")).toBe(true);
     //@ts-expect-error unknown key test
@@ -65,9 +60,8 @@ describe("Test Suite: useMemoryCache", () => {
   });
   test("can clear cache items", () => {
     const data = getMock();
-    const cache = renderHook(() =>
-      useMemoryCache<TestObj>({ data })
-    ).result.current.cache();
+    const { cache } = renderHook(() => useMemoryCache<TestObj>({ data })).result
+      .current;
 
     expect(cache.size()).toBe(mockSize());
 
@@ -79,9 +73,9 @@ describe("Test Suite: useMemoryCache", () => {
   });
   test("can trim cache items", (done) => {
     const data = getMock(0.1);
-    const cache = renderHook(() =>
+    const { cache } = renderHook(() =>
       useMemoryCache<TestObj>({ data, trim: 0.2 })
-    ).result.current.cache();
+    ).result.current;
 
     expect(cache.size()).toBe(mockSize());
 
@@ -92,9 +86,8 @@ describe("Test Suite: useMemoryCache", () => {
   });
 
   test("can listen to set events", () => {
-    const cache = renderHook(() =>
-      useMemoryCache<TestObj>()
-    ).result.current.cache();
+    const { cache } = renderHook(() => useMemoryCache<TestObj>()).result
+      .current;
 
     const fn = jest.fn((key, value) => {
       expect(key).toBe("id");
@@ -111,9 +104,8 @@ describe("Test Suite: useMemoryCache", () => {
   });
   test("can listen to remove events", () => {
     const data = getMock();
-    const cache = renderHook(() =>
-      useMemoryCache<TestObj>({ data })
-    ).result.current.cache();
+    const { cache } = renderHook(() => useMemoryCache<TestObj>({ data })).result
+      .current;
 
     const fn = jest.fn((key) => {
       expect(key).toBe("id");
@@ -130,9 +122,8 @@ describe("Test Suite: useMemoryCache", () => {
 
   test("can listen to clear events", () => {
     const data = getMock();
-    const cache = renderHook(() =>
-      useMemoryCache<TestObj>({ data })
-    ).result.current.cache();
+    const { cache } = renderHook(() => useMemoryCache<TestObj>({ data })).result
+      .current;
 
     const fn = jest.fn();
 
@@ -146,9 +137,9 @@ describe("Test Suite: useMemoryCache", () => {
   });
   test("can listen to trim events", (done) => {
     const data = getMock(0.1);
-    const cache = renderHook(() =>
+    const { cache } = renderHook(() =>
       useMemoryCache<TestObj>({ data, trim: 0.2 })
-    ).result.current.cache();
+    ).result.current;
 
     const fn = jest.fn((removed: Array<unknown>) => {
       expect(removed.length).toBe(mockSize());
@@ -165,9 +156,8 @@ describe("Test Suite: useMemoryCache", () => {
     });
   });
   test("can listen to destruct event", () => {
-    const cache = renderHook(() =>
-      useMemoryCache<TestObj>()
-    ).result.current.cache();
+    const { cache } = renderHook(() => useMemoryCache<TestObj>()).result
+      .current;
 
     const fn = jest.fn();
 
@@ -179,9 +169,8 @@ describe("Test Suite: useMemoryCache", () => {
     expect(fn).toHaveBeenCalledTimes(1);
   });
   test("can set multiple listeners on same event", () => {
-    const cache = renderHook(() =>
-      useMemoryCache<TestObj>()
-    ).result.current.cache();
+    const { cache } = renderHook(() => useMemoryCache<TestObj>()).result
+      .current;
 
     const setFn1 = jest.fn();
     const setFn2 = jest.fn();

@@ -17,19 +17,19 @@ export default function useBrowserCache<T extends EmptyObj>(
     return { ..._config.current };
   });
 
-  cache().on("set", (key, value) => {
+  cache.on("set", (key, value) => {
     LS.set(key, Cache.createEntry(value, _config.current?.ttl));
   });
 
-  cache().on("remove", (key) => {
+  cache.on("remove", (key) => {
     LS.remove(key);
   });
 
-  cache().on("clear", () => {
+  cache.on("clear", () => {
     LS.destroy();
   });
 
-  cache().on("trim", (keys) => {
+  cache.on("trim", (keys) => {
     LS.trim(keys);
   });
 

@@ -28,9 +28,8 @@ describe("Test Suite: useBrowserCache", () => {
     clearLS();
   });
   test("can initialize cache without initial LS data", () => {
-    const cache = renderHook(() =>
-      useBrowserCache<TestObj>()
-    ).result.current.cache();
+    const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
+      .current;
 
     expect(cache.size()).toBe(0);
   });
@@ -38,9 +37,8 @@ describe("Test Suite: useBrowserCache", () => {
     const data = getMock();
     setLS(data);
 
-    const cache = renderHook(() =>
-      useBrowserCache<TestObj>()
-    ).result.current.cache();
+    const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
+      .current;
 
     expect(cache.size()).toBe(mockSize());
     expect(cache.value("id")).toBe(data.id?.value);
@@ -50,9 +48,8 @@ describe("Test Suite: useBrowserCache", () => {
     });
   });
   test("can set cache item", () => {
-    const cache = renderHook(() =>
-      useBrowserCache<TestObj>()
-    ).result.current.cache();
+    const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
+      .current;
 
     expect(cache.size()).toBe(0);
     expect(cache.get("id")).toBe(null);
@@ -71,9 +68,8 @@ describe("Test Suite: useBrowserCache", () => {
     const data = getMock();
     setLS(data);
 
-    const cache = renderHook(() =>
-      useBrowserCache<TestObj>()
-    ).result.current.cache();
+    const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
+      .current;
 
     expect(cache.size()).toBe(mockSize());
     Object.keys(data).forEach((key) => {
@@ -92,9 +88,8 @@ describe("Test Suite: useBrowserCache", () => {
     const data = getMock();
     setLS(data);
 
-    const cache = renderHook(() =>
-      useBrowserCache<TestObj>()
-    ).result.current.cache();
+    const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
+      .current;
 
     expect(cache.size()).toBe(mockSize());
     Object.keys(data).forEach((key) => {
@@ -115,9 +110,8 @@ describe("Test Suite: useBrowserCache", () => {
     const data = getMock(0.1);
     setLS(data);
 
-    const cache = renderHook(() =>
-      useBrowserCache<TestObj>({ trim: 0.2 })
-    ).result.current.cache();
+    const { cache } = renderHook(() => useBrowserCache<TestObj>({ trim: 0.2 }))
+      .result.current;
 
     expect(cache.size()).toBe(mockSize());
     Object.keys(data).forEach((key) => {
