@@ -78,7 +78,7 @@ export class LS {
   private static each = <T extends EmptyObj>(cb: (match: keyof T) => void) => {
     for (const key in window.localStorage) {
       if (typeof window.localStorage[key] !== "undefined") {
-        const match = /^__clch__([a-zA-Z]+)$/.exec(key);
+        const match = /^__clch__(.+)/.exec(key);
         if (match && match.length > 1) {
           cb(match[1]);
         }
