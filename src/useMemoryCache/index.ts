@@ -16,9 +16,5 @@ export default function useMemoryCache<T extends EmptyObj>(
     };
   }, []);
 
-  const cache = () => {
-    return ref.current;
-  };
-
-  return { cache };
+  return { cache: ref.current };
 }
