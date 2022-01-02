@@ -12,5 +12,4 @@ Still in progress.
 - [useQueryParams](https://github.com/lindeneg/cl-react-hooks/tree/master/src/useQueryParams)
 - [useMemoryCache](https://github.com/lindeneg/cl-react-hooks/tree/master/src/useMemoryCache)
 - [useBrowserCache](https://github.com/lindeneg/cl-react-hooks/tree/master/src/useBrowserCache)
-- [useHttp](https://github.com/lindeneg/cl-react-hooks/tree/master/src/useHttp)
 - [useOnKey](https://github.com/lindeneg/cl-react-hooks/tree/master/src/useOnKey)
