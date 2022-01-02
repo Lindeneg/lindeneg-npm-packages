@@ -9,8 +9,10 @@ export default function useQueryParams<T extends Record<string, string>>(
     );
     Object.keys(params).forEach((key) => {
       const entry = params[key];
-      if (entry) {
-        initial.set(key, entry);
+      const current = initial.get(key);
+      const val = current || entry;
+      if (val) {
+        initial.set(key, val);
       }
     });
     return initial;
