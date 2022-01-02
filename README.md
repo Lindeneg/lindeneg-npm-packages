@@ -4,7 +4,7 @@ Collection of React hooks in TypeScript.
 
 #### Install
 
-`yarn add cl-react-hooks`
+Still in progress.
 
 ### Finished
 
