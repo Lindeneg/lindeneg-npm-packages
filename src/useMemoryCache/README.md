@@ -16,7 +16,7 @@ Hook for caching data in-memory. If you'd like to make the cache persistent, tak
 
 #### Return
 
-A `function` that returns a `Cache` instance with these methods exposed:
+`Cache` instance with these methods exposed:
 
 | Name        | Type                                                                                                              | Description                     |
 | ----------- | ----------------------------------------------------------------------------------------------------------------- | ------------------------------- |
@@ -36,7 +36,7 @@ A `function` that returns a `Cache` instance with these methods exposed:
 
 ```tsx
 function SomeComponent() {
-  const cache = useMemoryCache().cache();
+  const { cache } = useMemoryCache();
 
   // set item
   cache.set(KEY, VALUE);
