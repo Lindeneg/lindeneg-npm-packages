@@ -12,6 +12,7 @@
     "custom:run": "lerna exec -- yarn custom",
     "clean": "lerna exec -- rm -rf dist",
     "dev": "lerna exec ts-node",
+    "pub": "lerna publish",
     "test": "jest --verbose",
     "lint": "yarn prettier ./packages --check",
     "lint:fix": "yarn prettier ./packages --write"
