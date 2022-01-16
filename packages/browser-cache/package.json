@@ -1,0 +1,26 @@
+{
+  "name": "@lindeneg/browser-cache",
+  "version": "0.0.1",
+  "main": "dist/bundle.cjs.js",
+  "module": "dist/bundle.esm.js",
+  "typings": "dist/index.d.ts",
+  "description": "Hook for caching data in localStorage.",
+  "keywords": [
+    "react",
+    "hook",
+    "react-hooks",
+    "cache",
+    "typescript",
+    "use-cache",
+    "local-storage",
+    "use-local-storage"
+  ],
+  "dependencies": {
+    "@lindeneg/cache": "^0.0.1",
+    "@lindeneg/memory-cache": "^0.0.1",
+    "@lindeneg/types": "^0.0.1"
+  },
+  "scripts": {
+    "custom": "echo no custom script"
+  }
+}

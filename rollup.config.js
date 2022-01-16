@@ -1,33 +1,39 @@
+/* eslint-disable no-undef */
 import typescript from "rollup-plugin-typescript2";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import cleaner from "rollup-plugin-cleaner";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
-import packageJson from "./package.json";
+import { terser } from "rollup-plugin-terser";
+
+const PACKAGE_ROOT_PATH = process.cwd();
+const { LERNA_ROOT_PATH } = process.env;
 
 export default {
-  input: "src/index.ts",
+  input: PACKAGE_ROOT_PATH + "/index.ts",
   output: [
     {
-      file: packageJson.main,
+      file: "dist/bundle.cjs.js",
       format: "cjs",
-      sourcemap: true,
       exports: "named",
     },
     {
-      file: packageJson.module,
+      file: "dist/bundle.esm.js",
       format: "esm",
-      sourcemap: true,
       exports: "named",
     },
   ],
+  external: ["react"],
   plugins: [
     cleaner({
-      targets: ["./lib"],
+      targets: ["./dist"],
     }),
     peerDepsExternal(),
     resolve(),
     commonjs(),
-    typescript({ tsconfig: "./tsconfig-prod.json" }),
+    typescript({
+      tsconfig: LERNA_ROOT_PATH + "/tsconfig-prod.json",
+    }),
+    terser(),
   ],
 };

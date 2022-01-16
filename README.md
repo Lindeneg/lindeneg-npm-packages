@@ -2,17 +2,13 @@
 
 Collection of React hooks in TypeScript.
 
-#### Install
-
-Still in progress.
-
 ### Finished
 
-- [useSearch](https://github.com/lindeneg/cl-react-hooks/tree/master/src/useSearch)
-- [useQueryParams](https://github.com/lindeneg/cl-react-hooks/tree/master/src/useQueryParams)
-- [useMemoryCache](https://github.com/lindeneg/cl-react-hooks/tree/master/src/useMemoryCache)
-- [useBrowserCache](https://github.com/lindeneg/cl-react-hooks/tree/master/src/useBrowserCache)
-- [useOnKey](https://github.com/lindeneg/cl-react-hooks/tree/master/src/useOnKey)
+- [useSearch](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/search)
+- [useQueryParams](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/query-params)
+- [useMemoryCache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/memory-cache)
+- [useBrowserCache](https://github.com/lindeneg/cl-react-hooks/tree/master/package/browser-cache)
+- [useOnKey](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/on-key)
 
 ### Planned
 

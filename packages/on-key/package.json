@@ -1,0 +1,20 @@
+{
+  "name": "@lindeneg/on-key",
+  "version": "0.0.1",
+  "main": "dist/bundle.cjs.js",
+  "module": "dist/bundle.esm.js",
+  "typings": "dist/index.d.ts",
+  "description": "Hook to listen for key-strokes and then do something.",
+  "keywords": [
+    "react",
+    "hook",
+    "react-hooks",
+    "keys",
+    "events",
+    "typescript",
+    "key-event"
+  ],
+  "scripts": {
+    "custom": "echo no custom script"
+  }
+}

@@ -2,3 +2,4 @@ node_modules
 lib
 .eslintcache
 notes.txt
+dist
