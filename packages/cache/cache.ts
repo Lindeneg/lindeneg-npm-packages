@@ -113,20 +113,20 @@ export class Cache<T extends EmptyObj> {
     event: K,
     callback: ListenerCallback<T, K>
   ): void => {
-    if (Array.isArray(this.listeners[event])) {
-      (this.listeners[event] as Array<() => void>).push(callback as () => void);
+    const cb = <() => void>callback;
+    const entry = this.listeners[event];
+    if (Array.isArray(entry)) {
+      entry.push(cb);
     } else {
-      this.listeners[event] = [callback as () => void];
+      this.listeners[event] = [cb];
     }
   };
 
   private runListener = (event: ListenerConstraint, ...args: unknown[]) => {
-    const callbacks = this.listeners[event] as
-      | Array<(...args: unknown[]) => void>
-      | undefined;
+    const callbacks = this.listeners[event];
     if (callbacks) {
       callbacks.forEach((callback) => {
-        callback(...args);
+        (<(...args: unknown[]) => void>callback)(...args);
       });
     }
   };
