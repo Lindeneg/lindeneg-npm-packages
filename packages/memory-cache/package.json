@@ -1,0 +1,16 @@
+{
+  "name": "@lindeneg/memory-cache",
+  "version": "0.0.1",
+  "main": "dist/bundle.cjs.js",
+  "module": "dist/bundle.esm.js",
+  "typings": "dist/index.d.ts",
+  "description": "Hook for caching data in memory.",
+  "keywords": [
+    "react",
+    "hook",
+    "react-hooks",
+    "cache",
+    "typescript",
+    "use-cache"
+  ]
+}

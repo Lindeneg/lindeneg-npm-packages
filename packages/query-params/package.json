@@ -1,0 +1,17 @@
+{
+  "name": "@lindeneg/query-params",
+  "version": "0.0.1",
+  "main": "dist/bundle.cjs.js",
+  "module": "dist/bundle.esm.js",
+  "typings": "dist/index.d.ts",
+  "description": "Hook for query-strings using URLSearchParams.",
+  "keywords": [
+    "react",
+    "hook",
+    "react-hooks",
+    "url",
+    "typescript",
+    "query-parameters",
+    "query-string"
+  ]
+}

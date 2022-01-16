@@ -1,0 +1,17 @@
+{
+  "name": "@lindeneg/search",
+  "version": "0.0.1",
+  "main": "dist/bundle.cjs.js",
+  "module": "dist/bundle.esm.js",
+  "typings": "dist/index.d.ts",
+  "description": "Hook for filtering and optionally sorting objects against a query.",
+  "keywords": [
+    "react",
+    "hook",
+    "react-hooks",
+    "search",
+    "filter",
+    "typescript",
+    "nested"
+  ]
+}
