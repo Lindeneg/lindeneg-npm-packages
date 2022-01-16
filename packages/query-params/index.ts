@@ -47,13 +47,13 @@ export default function useQueryParams<T extends Record<string, string>>(
     }
   }, [query]);
 
-  const values = useMemo(() => {
+  const values = <T>useMemo(() => {
     return Object.keys(params).reduce((a, b) => {
       return {
         ...a,
         [b]: query.get(b) || params[b],
       };
-    }, {}) as T;
+    }, {});
   }, [params, query]);
 
   return {
