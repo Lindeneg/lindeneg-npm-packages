@@ -14,6 +14,7 @@
     "use-cache"
   ],
   "dependencies": {
-    "@lindeneg/cache": "^0.0.1"
+    "@lindeneg/cache": "^0.0.1",
+    "@lindeneg/types": "^0.0.1"
   }
 }

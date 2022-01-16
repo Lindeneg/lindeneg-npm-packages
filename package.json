@@ -12,9 +12,7 @@
     "clean": "lerna exec -- rm -rf dist",
     "dev": "lerna exec ts-node",
     "test": "jest --verbose",
-    "lint": "yarn run lint:es && yarn run lint:pr",
-    "lint:es": "yarn eslint ./packages --cache --config ./.eslintrc.json",
-    "lint:pr": "yarn prettier ./packages --check",
+    "lint": "yarn prettier ./packages --check",
     "lint:fix": "yarn prettier ./packages --write"
   },
   "workspaces": [

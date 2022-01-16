@@ -19,7 +19,7 @@ export default function useQueryParams<T extends Record<string, string>>(
   });
 
   const onParamChange = useCallback(
-    (type: keyof T, value: string) => {
+    (type: keyof T, value) => {
       setQuery((prev) => {
         const newSearch = new URLSearchParams(prev);
         const fallback = params[type];

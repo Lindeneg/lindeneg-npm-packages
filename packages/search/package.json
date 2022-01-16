@@ -13,5 +13,8 @@
     "filter",
     "typescript",
     "nested"
-  ]
+  ],
+  "dependencies": {
+    "@lindeneg/types": "^0.0.1"
+  }
 }

@@ -1,0 +1,9 @@
+{
+  "name": "@lindeneg/types",
+  "version": "0.0.1",
+  "typings": "dist/index.d.ts",
+  "description": "Utility types.",
+  "keywords": [
+    "typescript"
+  ]
+}

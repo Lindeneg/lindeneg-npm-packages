@@ -8,5 +8,8 @@
   "keywords": [
     "cache",
     "typescript"
-  ]
+  ],
+  "dependencies": {
+    "@lindeneg/types": "^0.0.1"
+  }
 }
