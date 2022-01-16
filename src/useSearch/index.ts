@@ -31,27 +31,30 @@ function reduceToString(obj: EmptyObj[], key: string | null) {
   }, "");
 }
 
+function handleArray(keys: string[], current: EmptyObj[]) {
+  const nKeys = keys.slice(1);
+  const result =
+    nKeys.length > 0
+      ? current.reduce((a, b) => a + " " + getNestedValue(b, nKeys), "")
+      : reduceToString(current, null);
+  return result;
+}
+
 function getNestedValue(obj: EntryConstraint, keys: string[]): string {
+  const isArray = Array.isArray(obj);
   if (keys.length === 1) {
-    const result = Array.isArray(obj)
-      ? reduceToString(obj, null)
-      : obj[keys[0]];
+    const result = isArray ? reduceToString(obj, null) : obj[keys[0]];
     return result ? String(result) : "";
   }
   const newKeys = [...keys];
   const [key] = newKeys.splice(0, 1);
-  const cur = !Array.isArray(obj) ? obj[key] : obj[0];
+  const cur = <EntryConstraint>(!isArray ? obj[key] : obj[0]);
   if (!cur) {
     return "";
   } else if (Array.isArray(cur) && newKeys[0] === "n") {
-    const nKeys = newKeys.slice(1);
-    const result =
-      nKeys.length > 0
-        ? cur.reduce((a, b) => a + " " + getNestedValue(b, nKeys), "")
-        : reduceToString(cur, null);
-    return result;
+    return handleArray(newKeys, cur);
   } else {
-    return getNestedValue(cur as EntryConstraint, newKeys);
+    return getNestedValue(cur, newKeys);
   }
 }
 
@@ -64,16 +67,16 @@ function filter<T extends unknown[]>(
   if (!trimmed) {
     return obj;
   }
-  const uniqueKeys = (Array.from(new Set(keys)) as string[])
+  const uniqueKeys = Array.from(new Set(keys))
     .map((e) => e.split("."))
     .sort();
-  return obj.filter((entry) => {
+  return <T>obj.filter((entry) => {
     const targets = uniqueKeys.reduce(
-      (a, b) => a + " " + getNestedValue(entry as EntryConstraint, b),
+      (a, b) => a + " " + getNestedValue(<EntryConstraint>entry, b),
       ""
     );
     return new RegExp(trimmed, "i").test(targets);
-  }) as T;
+  });
 }
 
 export default function useSearch<T extends unknown[]>(
@@ -94,14 +97,12 @@ export default function useSearch<T extends unknown[]>(
     []
   );
 
-  const filtered = useMemo(() => {
+  const filtered = <T>useMemo(() => {
     const data = Array.isArray(predicate)
       ? filter<T>(obj, predicate, query)
-      : obj.filter((entry, index) =>
-          predicate(query, entry as T[number], index)
-        );
+      : obj.filter((entry, index) => predicate(query, <T[number]>entry, index));
     return sort ? [...data].sort(sort) : data;
-  }, [obj, query, predicate, sort]) as T;
+  }, [obj, query, predicate, sort]);
 
   return {
     filtered,
