@@ -1,6 +1,6 @@
 {
   "name": "@lindeneg/search",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "typings": "dist/index.d.ts",
@@ -18,7 +18,7 @@
     "custom": "echo no custom script"
   },
   "dependencies": {
-    "@lindeneg/types": "^1.0.0"
+    "@lindeneg/types": "^1.0.1"
   },
   "publishConfig": {
     "access": "public"

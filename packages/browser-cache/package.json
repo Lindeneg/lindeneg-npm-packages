@@ -1,6 +1,6 @@
 {
   "name": "@lindeneg/browser-cache",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "typings": "dist/index.d.ts",
@@ -16,9 +16,9 @@
     "use-local-storage"
   ],
   "dependencies": {
-    "@lindeneg/cache": "^1.0.0",
-    "@lindeneg/memory-cache": "^1.0.0",
-    "@lindeneg/types": "^1.0.0"
+    "@lindeneg/cache": "^1.0.1",
+    "@lindeneg/memory-cache": "^1.0.1",
+    "@lindeneg/types": "^1.0.1"
   },
   "scripts": {
     "custom": "echo no custom script"

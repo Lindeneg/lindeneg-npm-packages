@@ -1,6 +1,6 @@
 {
   "name": "@lindeneg/types",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "typings": "dist/index.d.ts",
   "description": "Utility types.",
   "scripts": {
