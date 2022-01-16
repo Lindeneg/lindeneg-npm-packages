@@ -1,7 +1,23 @@
 {
-  "name": "root",
-  "private": true,
+  "name": "cl-react-hooks",
+  "private": "true",
+  "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
+  "author": "lindeneg <christian@lindeneg.org>",
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
-    "lerna": "^4.0.0"
+    "@types/node": "^17.0.8",
+    "@types/react": "^17.0.38",
+    "@typescript-eslint/eslint-plugin": "^5.9.1",
+    "@typescript-eslint/parser": "^5.9.1",
+    "eslint": "^8.7.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "lerna": "^4.0.0",
+    "react": "^17.0.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2"
   }
 }
