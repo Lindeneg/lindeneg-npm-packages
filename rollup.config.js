@@ -15,12 +15,15 @@ export default {
     {
       file: "dist/bundle.cjs.js",
       format: "cjs",
+      exports: "named",
     },
     {
       file: "dist/bundle.esm.js",
       format: "esm",
+      exports: "named",
     },
   ],
+  external: ["react"],
   plugins: [
     cleaner({
       targets: ["./dist"],
@@ -28,7 +31,9 @@ export default {
     peerDepsExternal(),
     resolve(),
     commonjs(),
-    typescript({ tsconfig: LERNA_ROOT_PATH + "/tsconfig-prod.json" }),
+    typescript({
+      tsconfig: LERNA_ROOT_PATH + "/tsconfig-prod.json",
+    }),
     terser(),
   ],
 };

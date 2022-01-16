@@ -5,7 +5,11 @@
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
   "scripts": {
-    "build": "lerna exec rollup -c ../../rollup.config.js",
+    "build": "yarn run build:js && yarn run build:ts",
+    "build:js": "lerna exec -- rollup -c ../../rollup.config.js",
+    "build:ts": "lerna exec -- tsc --project ../../tsconfig-prod.json --declaration --emitDeclarationOnly && mv *.d.ts dist",
+    "move": "lerna exec -- mv *.d.ts dist",
+    "clean": "lerna exec -- rm -rf dist",
     "dev": "lerna exec ts-node",
     "test": "jest --verbose",
     "lint": "yarn run lint:es && yarn run lint:pr",
