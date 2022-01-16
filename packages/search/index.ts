@@ -71,11 +71,14 @@ function filter<T extends unknown[]>(
     .map((e) => e.split("."))
     .sort();
   return <T>obj.filter((entry) => {
-    const targets = uniqueKeys.reduce(
-      (a, b) => a + " " + getNestedValue(<EntryConstraint>entry, b),
-      ""
-    );
-    return new RegExp(trimmed, "i").test(targets);
+    if (entry) {
+      const targets = uniqueKeys.reduce(
+        (a, b) => a + " " + getNestedValue(<EntryConstraint>entry, b),
+        ""
+      );
+      return new RegExp(trimmed, "i").test(targets);
+    }
+    return false;
   });
 }
 
