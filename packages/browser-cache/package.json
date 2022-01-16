@@ -14,5 +14,9 @@
     "use-cache",
     "local-storage",
     "use-local-storage"
-  ]
+  ],
+  "dependencies": {
+    "@lindeneg/cache": "^0.0.1",
+    "@lindeneg/memory-cache": "^0.0.1"
+  }
 }

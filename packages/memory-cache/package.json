@@ -12,5 +12,8 @@
     "cache",
     "typescript",
     "use-cache"
-  ]
+  ],
+  "dependencies": {
+    "@lindeneg/cache": "^0.0.1"
+  }
 }
