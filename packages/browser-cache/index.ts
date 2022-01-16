@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import useMemoryCache from "@lindeneg/memory-cache";
 import { Cache, CacheConfig, LS } from "@lindeneg/cache";
-import { EmptyObj } from "../../types";
+import { EmptyObj } from "@lindeneg/types";
 
 type Config<T extends EmptyObj> = Omit<CacheConfig<T>, "data">;
 

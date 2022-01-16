@@ -1,4 +1,4 @@
-import { EmptyObj } from "../../types";
+import { EmptyObj } from "@lindeneg/types";
 
 export type CacheConfig<T extends EmptyObj> = {
   trim: number;

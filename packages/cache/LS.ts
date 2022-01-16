@@ -1,5 +1,5 @@
+import { EmptyObj } from "@lindeneg/types";
 import { CacheData, CacheEntry } from "./cache";
-import { EmptyObj } from "../../types";
 
 export class LS {
   public static get = <T extends EmptyObj>() => {

@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from "react";
-import { EmptyObj } from "../../types";
+import { EmptyObj } from "@lindeneg/types";
 
 type Concat<K, P> = K extends string | number
   ? P extends string | number

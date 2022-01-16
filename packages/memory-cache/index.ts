@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { Cache, CacheConfig } from "@lindeneg/cache";
-import { EmptyObj } from "../../types";
+import { EmptyObj } from "@lindeneg/types";
 
 export default function useMemoryCache<T extends EmptyObj>(
   config?: Partial<CacheConfig<T>> | (() => Partial<CacheConfig<T>>)
