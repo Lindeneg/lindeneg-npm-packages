@@ -1,6 +1,6 @@
 {
   "name": "@lindeneg/query-params",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "typings": "dist/index.d.ts",

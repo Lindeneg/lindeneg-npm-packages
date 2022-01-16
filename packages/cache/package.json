@@ -1,6 +1,6 @@
 {
   "name": "@lindeneg/cache",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "typings": "dist/index.d.ts",
@@ -10,7 +10,7 @@
     "typescript"
   ],
   "dependencies": {
-    "@lindeneg/types": "^0.0.1"
+    "@lindeneg/types": "^1.0.0"
   },
   "scripts": {
     "custom": "echo no custom script"
