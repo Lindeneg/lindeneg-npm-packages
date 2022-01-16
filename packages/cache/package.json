@@ -3,7 +3,7 @@
   "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "typings": "dist/index.d.ts",
@@ -13,7 +13,7 @@
     "typescript"
   ],
   "dependencies": {
-    "@lindeneg/types": "^1.0.2"
+    "@lindeneg/types": "^1.0.4"
   },
   "scripts": {
     "custom": "echo no custom script"
