@@ -4,7 +4,7 @@
   "typings": "dist/index.d.ts",
   "description": "Utility types.",
   "scripts": {
-    "custom": "rm -f bundle.*"
+    "custom": "rm -f dist/bundle.*"
   },
   "keywords": [
     "typescript"
