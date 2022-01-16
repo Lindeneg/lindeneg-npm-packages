@@ -76,4 +76,4 @@ Decent type-safety is also achieved, as can be seen in this example:
 
 _the search depth is 5 layers, so `x.y.z.i.j` will be inferred while `x.y.z.i.j.k` will not_
 
-![use-search-type-safety](../../assets/useSearch.png "useSearch")
+![use-search-type-safety](https://raw.githubusercontent.com/Lindeneg/cl-react-hooks/master/assets/useSearch.png)
