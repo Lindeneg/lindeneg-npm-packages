@@ -1,5 +1,8 @@
 {
   "name": "@lindeneg/search",
+  "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
+  "author": "lindeneg <christian@lindeneg.org>",
+  "license": "MIT",
   "version": "1.0.1",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
