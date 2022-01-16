@@ -11,5 +11,8 @@
   ],
   "dependencies": {
     "@lindeneg/types": "^0.0.1"
+  },
+  "scripts": {
+    "custom": "echo no custom script"
   }
 }

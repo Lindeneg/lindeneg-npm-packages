@@ -13,5 +13,8 @@
     "events",
     "typescript",
     "key-event"
-  ]
+  ],
+  "scripts": {
+    "custom": "echo no custom script"
+  }
 }

@@ -14,6 +14,9 @@
     "typescript",
     "nested"
   ],
+  "scripts": {
+    "custom": "echo no custom script"
+  },
   "dependencies": {
     "@lindeneg/types": "^0.0.1"
   }

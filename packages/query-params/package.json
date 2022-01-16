@@ -13,5 +13,8 @@
     "typescript",
     "query-parameters",
     "query-string"
-  ]
+  ],
+  "scripts": {
+    "custom": "echo no custom script"
+  }
 }
