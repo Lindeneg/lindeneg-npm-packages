@@ -3,7 +3,7 @@
   "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "typings": "dist/index.d.ts",
   "description": "Utility types.",
   "scripts": {
