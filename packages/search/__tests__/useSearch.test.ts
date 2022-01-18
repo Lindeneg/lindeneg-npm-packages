@@ -161,6 +161,18 @@ describe("Test Suite: useSearch", () => {
     expect(filtered[0]).toEqual(usrs[0]);
     expect(filtered[1]).toEqual(usrs[1]);
   });
+  test("respect strict mode on non-alphabetic character", () => {
+    const usrs = users();
+    const { result } = renderHook(() =>
+      useSearch(usrs, ["email"], { mode: "strict" })
+    );
+
+    act(() => result.current.onQueryChange("@example.com"));
+
+    const { filtered } = result.current;
+
+    expect(filtered.length).toEqual(0);
+  });
   test("does not consider values in unspecified fields", () => {
     const { result } = renderHook(() => useSearch(users(), ["name"]));
 
@@ -267,7 +279,7 @@ describe("Test Suite: useSearch", () => {
     expect(filtered[0]).toEqual(usrs[3]);
     expect(filtered[1]).toEqual(usrs[2]);
   });
-  test("sanitizes input", () => {
+  test("escapes input in lenient sanitize mode", () => {
     const usrs = users();
     const { result } = renderHook(() =>
       useSearch(
@@ -279,11 +291,30 @@ describe("Test Suite: useSearch", () => {
       )
     );
 
-    act(() => result.current.onQueryChange("\\("));
+    act(() => result.current.onQueryChange("("));
 
     const { filtered } = result.current;
 
     expect(filtered.length).toEqual(0);
+  });
+  test("ignores input in strict sanitize mode", () => {
+    const usrs = users();
+    const { result } = renderHook(() =>
+      useSearch(
+        usrs,
+        ["activity.n.events.n.context", "interest.info.special"],
+        {
+          sort: (a, b) => b.id - a.id,
+          mode: "strict",
+        }
+      )
+    );
+
+    act(() => result.current.onQueryChange("("));
+
+    const { filtered } = result.current;
+
+    expect(filtered.length).toEqual(4);
   });
   test("returns filtered on specified predicate function", () => {
     const usrs = users();
