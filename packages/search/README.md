@@ -2,6 +2,8 @@
 
 Filter and optionally sort objects by nested values against a query.
 
+[Sandbox](https://codesandbox.io/s/lindeneg-search-5ccji)
+
 ### Installation
 
 `yarn add @lindeneg/search`
