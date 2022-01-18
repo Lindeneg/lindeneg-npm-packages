@@ -16,13 +16,12 @@ Filter and optionally sort objects by nested values against a query.
 | predicate | Y        | -   | `string[] \| (query: string, item: T[number], index: number) => boolean` | an array of property names to target or a predicate function |
 | opts      | N        | -   | `UseSearchOptions`                                                       | options, see below                                           |
 
-__UseSearchOptions__
+**UseSearchOptions**
 
-| Name 	| Required 	| Default     	| Type                                     	| Description                                                         	|
-|------	|----------	|-------------	|------------------------------------------	|---------------------------------------------------------------------	|
-| mode 	| N        	| `"lenient"` 	| `"strict" \| "lenient"`                  	| `lenient` escapes invalid symbols, `strict` ignores them completely 	|
-| sort 	| N        	| -           	| `(a: T[number], b: T[number]) => number` 	| optionally provide a sort function to be called post-filtering      	|
-
+| Name | Required | Default     | Type                                     | Description                                                         |
+| ---- | -------- | ----------- | ---------------------------------------- | ------------------------------------------------------------------- |
+| mode | N        | `"lenient"` | `"strict" \| "lenient"`                  | `lenient` escapes invalid symbols, `strict` ignores them completely |
+| sort | N        | -           | `(a: T[number], b: T[number]) => number` | optionally provide a sort function to be called post-filtering      |
 
 #### Return
 
