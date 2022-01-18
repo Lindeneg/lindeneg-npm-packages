@@ -3,7 +3,7 @@
   "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "typings": "dist/index.d.ts",
