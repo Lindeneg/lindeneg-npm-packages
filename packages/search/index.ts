@@ -24,6 +24,20 @@ type KeyConstraint<T extends unknown[]> = [
   ...TargetKeyConstraint<T[number]>[]
 ];
 
+type SanitizeMode = "strict" | "lenient";
+
+type UseSearchOptions<T extends unknown[]> = {
+  mode?: SanitizeMode;
+  sort?: (a: T[number], b: T[number]) => number;
+};
+
+const sanitize = function (str: string, mode: SanitizeMode = "lenient") {
+  const isStrict = mode === "strict";
+  return str.replace(/[^a-z0-9]/gi, (match) => {
+    return isStrict || match === "\\" ? " " : "\\" + match;
+  });
+};
+
 function reduceToString(obj: EmptyObj[], key: string | null) {
   return obj.reduce((a, b) => {
     const val = key ? b[key] : b;
@@ -61,7 +75,8 @@ function getNestedValue(obj: EntryConstraint, keys: string[]): string {
 function filter<T extends unknown[]>(
   obj: T,
   keys: KeyConstraint<T>,
-  query: string
+  query: string,
+  mode?: SanitizeMode
 ): T {
   const trimmed = query.trim();
   if (!trimmed) {
@@ -72,11 +87,15 @@ function filter<T extends unknown[]>(
     .sort();
   return <T>obj.filter((entry) => {
     if (entry) {
-      const targets = uniqueKeys.reduce(
-        (a, b) => a + " " + getNestedValue(<EntryConstraint>entry, b),
-        ""
-      );
-      return new RegExp(trimmed, "i").test(targets);
+      try {
+        const targets = uniqueKeys.reduce(
+          (a, b) => a + " " + getNestedValue(<EntryConstraint>entry, b),
+          ""
+        );
+        return new RegExp(sanitize(trimmed, mode), "i").test(targets);
+      } catch (err) {
+        process.env.NODE_ENV !== "production" && console.error("");
+      }
     }
     return false;
   });
@@ -87,7 +106,7 @@ export default function useSearch<T extends unknown[]>(
   predicate:
     | KeyConstraint<T>
     | ((value: string, item: T[number], index: number) => boolean),
-  sort?: (a: T[number], b: T[number]) => number
+  opts: UseSearchOptions<T> = {}
 ) {
   const [query, setQuery] = useState("");
 
@@ -102,10 +121,10 @@ export default function useSearch<T extends unknown[]>(
 
   const filtered = <T>useMemo(() => {
     const data = Array.isArray(predicate)
-      ? filter<T>(obj, predicate, query)
+      ? filter<T>(obj, predicate, query, opts.mode)
       : obj.filter((entry, index) => predicate(query, <T[number]>entry, index));
-    return sort ? [...data].sort(sort) : data;
-  }, [obj, query, predicate, sort]);
+    return opts.sort ? [...data].sort(opts.sort) : data;
+  }, [obj, query, predicate, opts.sort]);
 
   return {
     filtered,
