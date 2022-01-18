@@ -2,7 +2,7 @@
 
 Collection of React hooks in TypeScript.
 
-### Finished
+### Hooks
 
 - [useSearch](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/search)
 - [useQueryParams](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/query-params)
@@ -10,7 +10,7 @@ Collection of React hooks in TypeScript.
 - [useBrowserCache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/browser-cache)
 - [useOnKey](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/on-key)
 
-### Planned
+_Planned_
 
-- useHttp
-- useForm
+- _useHttp_
+- _useForm_
