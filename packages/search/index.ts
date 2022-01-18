@@ -31,7 +31,7 @@ type UseSearchOptions<T extends unknown[]> = {
   sort?: (a: T[number], b: T[number]) => number;
 };
 
-const sanitize = function (str: string, mode: SanitizeMode = "lenient") {
+const sanitize = function (str: string, mode: SanitizeMode) {
   const isStrict = mode === "strict";
   return str.replace(/[^a-z0-9]/gi, (match) => {
     return isStrict || match === "\\" ? " " : "\\" + match;
@@ -76,10 +76,10 @@ function filter<T extends unknown[]>(
   obj: T,
   keys: KeyConstraint<T>,
   query: string,
-  mode?: SanitizeMode
+  mode: SanitizeMode
 ): T {
-  const trimmed = query.trim();
-  if (!trimmed) {
+  const sanitized = sanitize(query, mode).trim();
+  if (!sanitized) {
     return obj;
   }
   const uniqueKeys = Array.from(new Set(keys))
@@ -92,9 +92,12 @@ function filter<T extends unknown[]>(
           (a, b) => a + " " + getNestedValue(<EntryConstraint>entry, b),
           ""
         );
-        return new RegExp(sanitize(trimmed, mode), "i").test(targets);
+        return new RegExp(sanitized, "gi").test(targets);
       } catch (err) {
-        process.env.NODE_ENV !== "production" && console.error("");
+        process.env.NODE_ENV !== "development" &&
+          console.error(
+            `@lindeneg/search Error: failed with query [ original : '${query}' , sanitized : '${sanitized}' ] `
+          );
       }
     }
     return false;
@@ -110,6 +113,8 @@ export default function useSearch<T extends unknown[]>(
 ) {
   const [query, setQuery] = useState("");
 
+  const { mode = "lenient", sort } = opts;
+
   const onQueryChange = useCallback(
     (target: string | React.FormEvent<HTMLInputElement>) => {
       setQuery(
@@ -121,10 +126,10 @@ export default function useSearch<T extends unknown[]>(
 
   const filtered = <T>useMemo(() => {
     const data = Array.isArray(predicate)
-      ? filter<T>(obj, predicate, query, opts.mode)
+      ? filter<T>(obj, predicate, query, mode)
       : obj.filter((entry, index) => predicate(query, <T[number]>entry, index));
-    return opts.sort ? [...data].sort(opts.sort) : data;
-  }, [obj, query, predicate, opts.sort]);
+    return sort ? [...data].sort(sort) : data;
+  }, [obj, query, predicate, sort]);
 
   return {
     filtered,
