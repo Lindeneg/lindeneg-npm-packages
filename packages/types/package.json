@@ -8,7 +8,7 @@
   "description": "Utility types.",
   "scripts": {
     "custom": "rm -f dist/bundle.*",
-    "test": "tsc __tests__/types.ts-test.ts && rm __tests__/types.ts-test.js && rm index.js"
+    "test": "bash ./test.sh"
   },
   "keywords": [
     "typescript"
