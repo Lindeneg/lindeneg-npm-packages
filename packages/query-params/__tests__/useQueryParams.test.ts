@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-hooks";
-import useQueryParams from "..";
+import useQueryParams from "../index";
 
 describe("Test Suite: useQueryParams", () => {
   afterEach(() => {

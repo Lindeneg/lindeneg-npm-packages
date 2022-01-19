@@ -2,6 +2,8 @@
 
 Hook using [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
+[Sandbox](https://codesandbox.io/s/compassionate-sanne-rnmi9?file=/src/App.tsx) | [1.1kB minified](https://bundlephobia.com/package/@lindeneg/query-params@latest)
+
 ### Installation
 
 `yarn add @lindeneg/query-params`
@@ -21,14 +23,13 @@ Object with properties:
 | Name          | Type                                      | Description                      |
 | ------------- | ----------------------------------------- | -------------------------------- |
 | values        | `T`                                       | object with current param values |
-| query         | `URLSearchParams`                         | current `URLSearchParams` object |
 | onParamChange | `(type: keyof T, value: string) => void;` | change param value               |
 
 #### Usage
 
 ```tsx
 function SomeComponent() {
-  const { values, query, onParamChange } = useQueryParams({
+  const { values, onParamChange } = useQueryParams({
     id: "",
     context: "",
     // optional default value
