@@ -13,7 +13,9 @@
     "clean": "lerna exec -- rm -rf dist",
     "dev": "lerna exec ts-node",
     "pub": "lerna publish",
-    "test": "jest --verbose",
+    "test": "yarn run test:js && yarn run test:ts",
+    "test:js": "jest --verbose",
+    "test:ts": "lerna exec --scope=@lindeneg/types yarn test",
     "lint": "yarn prettier ./packages --check",
     "lint:fix": "yarn prettier ./packages --write"
   },

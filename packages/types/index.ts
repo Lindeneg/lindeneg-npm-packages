@@ -6,9 +6,11 @@ export type AllowedPrimitivesValues<T> = T extends
   | number
   | Date
   ? T
-  : RecursivePartial<T>;
+  : T extends EmptyObj
+  ? RecursivePartialObj<T>
+  : never;
 
-export type RecursivePartial<T> = {
+export type RecursivePartialObj<T extends EmptyObj> = {
   [P in keyof T]?: T[P] extends Array<infer U>
     ? Array<AllowedPrimitivesValues<U>>
     : AllowedPrimitivesValues<T[P]>;
