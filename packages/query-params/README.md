@@ -2,7 +2,7 @@
 
 Hook using [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
-[Sandbox](https://codesandbox.io/s/compassionate-sanne-rnmi9?file=/src/App.tsx) | [1.1kB minified](https://bundlephobia.com/package/@lindeneg/query-params@latest)
+[Sandbox](https://codesandbox.io/s/lindeneg-query-params-rnmi9?file=/src/App.tsx) | [Size](https://bundlephobia.com/package/@lindeneg/query-params@latest)
 
 ### Installation
 
