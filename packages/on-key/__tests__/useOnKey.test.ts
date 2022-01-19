@@ -1,5 +1,5 @@
 import { act, renderHook } from "@testing-library/react-hooks";
-import useOnKey from "..";
+import useOnKey from "../index";
 
 describe("Test Suite: useOnKey", () => {
   test("uses `keydown` as default type", () => {
