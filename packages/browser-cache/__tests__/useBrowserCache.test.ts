@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react-hooks";
 import { Cache, CacheData } from "@lindeneg/cache";
-import useBrowserCache from "..";
+import useBrowserCache from "../index";
 
 type TestObj = {
   id: number;
