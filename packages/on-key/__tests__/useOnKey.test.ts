@@ -41,18 +41,31 @@ describe("Test Suite: useOnKey", () => {
 
     expect(fn).toHaveBeenCalledTimes(1);
   });
-  test("handles specified `keypress` type", () => {
+  test("handles specified `pressed` type", () => {
     const fn = jest.fn();
-    renderHook(() => useOnKey("k", fn, "keypress"));
+    renderHook(() => useOnKey("k", fn, "pressed"));
 
     expect(fn).toHaveBeenCalledTimes(0);
 
     act(() => {
-      const e = new KeyboardEvent("keypress", { key: "k" });
+      const e = new KeyboardEvent("keydown", { key: "k", repeat: true });
       dispatchEvent(e);
     });
 
     expect(fn).toHaveBeenCalledTimes(1);
+  });
+  test("respect option to not listen to repeat events", () => {
+    const fn = jest.fn();
+    renderHook(() => useOnKey("k", fn, "keydown"));
+
+    expect(fn).toHaveBeenCalledTimes(0);
+
+    act(() => {
+      const e = new KeyboardEvent("keydown", { key: "k", repeat: true });
+      dispatchEvent(e);
+    });
+
+    expect(fn).toHaveBeenCalledTimes(0);
   });
   test("does not confuse types", () => {
     const fn = jest.fn();
