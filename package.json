@@ -13,7 +13,9 @@
     "clean": "lerna exec -- rm -rf dist",
     "dev": "lerna exec ts-node",
     "pub": "lerna publish",
-    "test": "jest --verbose",
+    "test": "yarn run test:js && yarn run test:ts",
+    "test:js": "jest --verbose",
+    "test:ts": "lerna exec --scope=@lindeneg/types yarn test",
     "lint": "yarn prettier ./packages --check",
     "lint:fix": "yarn prettier ./packages --write"
   },
@@ -43,7 +45,5 @@
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   },
-  "peerDependencies": {
-    "react": "^17.0.2"
-  }
+  "peerDependencies": {}
 }

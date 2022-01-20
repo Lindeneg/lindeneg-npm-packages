@@ -95,9 +95,7 @@ function filter<T extends unknown[]>(
         return new RegExp(sanitized, "gi").test(targets);
       } catch (err) {
         process.env.NODE_ENV === "development" &&
-          console.error(
-            `@lindeneg/search Error: failed with query [ original : '${query}' , sanitized : '${sanitized}' ] `
-          );
+          console.error("@lindeneg/search Error: failed with query: ", query);
       }
     }
     return false;
