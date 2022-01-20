@@ -3,7 +3,7 @@
   "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "typings": "dist/index.d.ts",
@@ -19,9 +19,9 @@
     "use-local-storage"
   ],
   "dependencies": {
-    "@lindeneg/cache": "^1.0.3",
-    "@lindeneg/memory-cache": "^1.0.3",
-    "@lindeneg/types": "^1.0.4"
+    "@lindeneg/cache": "^1.0.4",
+    "@lindeneg/memory-cache": "^1.0.4",
+    "@lindeneg/types": "^1.0.5"
   },
   "scripts": {
     "custom": "echo no custom script"
