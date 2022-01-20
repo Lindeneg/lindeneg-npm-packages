@@ -13,6 +13,7 @@
     "clean": "lerna exec -- rm -rf dist",
     "dev": "lerna exec ts-node",
     "pub": "lerna publish",
+    "prepublish": "yarn clean && yarn run lint && yarn run test && yarn run build",
     "test": "yarn run test:js && yarn run test:ts",
     "test:js": "jest --verbose",
     "test:ts": "lerna exec --scope=@lindeneg/types yarn test",
