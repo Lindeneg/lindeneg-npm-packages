@@ -2,7 +2,7 @@
 
 Hook for caching data in-memory. If you'd like to make the cache persistent, take a look at [useBrowserCache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/browser-cache).
 
-[Sandbox](https://codesandbox.io/s/lindeneg-memory-cache-5ygvx?file=/src/App.tsx) | [Size](https://bundlephobia.com/package/@lindeneg/memory-cache@latest)
+[Sandbox](https://codesandbox.io/s/lindeneg-memory-cache-5ygvx?file=/src/App.tsx) | [Size](https://bundlephobia.com/package/@lindeneg/memory-cache)
 
 ### Installation
 

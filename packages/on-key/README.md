@@ -2,7 +2,7 @@
 
 Hook to listen for key-strokes and then do something
 
-[Sandbox](https://codesandbox.io/s/lindeneg-on-key-m99cq?file=/src/App.tsx) | [Size](https://bundlephobia.com/package/@lindeneg/on-key@latest)
+[Sandbox](https://codesandbox.io/s/lindeneg-on-key-m99cq?file=/src/App.tsx) | [Size](https://bundlephobia.com/package/@lindeneg/on-key)
 
 ### Installation
 
