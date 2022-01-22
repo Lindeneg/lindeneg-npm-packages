@@ -13,7 +13,7 @@
     "bs": "yarn install && lerna bootstrap",
     "dev": "lerna exec ts-node",
     "pub": "yarn run pub:prepare && yarn run pub:deploy",
-    "pub:prepare": "yarn run clean:soft && yarn install && lerna bootstrap && yarn run lint && yarn run build && yarn run test",
+    "pub:prepare": "yarn run clean && yarn run lint && yarn run build && yarn run test",
     "pub:deploy": "lerna publish",
     "test": "yarn run test:js && yarn run test:ts",
     "test:js": "jest --verbose",
