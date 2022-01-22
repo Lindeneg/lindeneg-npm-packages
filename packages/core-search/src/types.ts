@@ -1,4 +1,4 @@
-import { EmptyObj } from '@lindeneg/types';
+import type { EmptyObj } from '@lindeneg/types';
 
 type Concat<K, P> = K extends string | number
   ? P extends string | number

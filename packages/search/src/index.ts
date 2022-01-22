@@ -1,6 +1,6 @@
 import React, { useState, useRef, useMemo, useCallback } from 'react';
 import Search from '@lindeneg/core-search';
-import { SearchPredicate, SearchOptions } from '@lindeneg/core-search';
+import type { SearchPredicate, SearchOptions } from '@lindeneg/core-search';
 
 export default function useSearch<T extends unknown[]>(
   obj: T,
