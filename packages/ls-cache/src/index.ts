@@ -1,7 +1,10 @@
-import { EmptyObj } from "@lindeneg/types";
-import { CacheData, CacheEntry } from "./cache";
+import type { EmptyObj } from '@lindeneg/types';
+import type { CacheData, CacheEntry } from '@lindeneg/cache';
 
-export class LS {
+export default class LS {
+  private static PREFIX = '';
+  private static REGEX = /^(.+)$/;
+
   public static get = <T extends EmptyObj>() => {
     return LS.maybe(() => {
       const result: CacheData<T> = {};
@@ -15,18 +18,23 @@ export class LS {
     });
   };
 
+  public static setPrefix = (newPrefix: string) => {
+    LS.PREFIX = newPrefix;
+    LS.REGEX = new RegExp(`^${LS.PREFIX}(.+)$`);
+  };
+
   public static set = <T extends EmptyObj, K extends keyof T>(
     key: K,
     value: CacheEntry<T[K]>
   ) => {
     LS.maybe(() => {
-      window.localStorage.setItem(`__clch__${key}`, JSON.stringify(value));
+      window.localStorage.setItem(`${LS.PREFIX}${key}`, JSON.stringify(value));
     });
   };
 
   public static remove = <T extends EmptyObj>(key: keyof T) => {
     LS.maybe(() => {
-      window.localStorage.removeItem(`__clch__${key}`);
+      window.localStorage.removeItem(`${LS.PREFIX}${key}`);
     });
   };
 
@@ -50,12 +58,12 @@ export class LS {
     key: K
   ): CacheEntry<T[K]> | null => {
     return LS.maybe(() => {
-      const item = window.localStorage.getItem(`__clch__${key}`);
+      const item = window.localStorage.getItem(`${LS.PREFIX}${key}`);
       if (item) {
         try {
           return JSON.parse(item);
         } catch (err) {
-          console.error("cl-react-hooks could not parse key: " + key);
+          console.error('@lindeneg/ls-cache could not parse key: ' + key);
           console.error(err);
         }
       }
@@ -67,8 +75,10 @@ export class LS {
     try {
       return cb();
     } catch (err) {
-      if (process.env.NODE_ENV === "development") {
-        console.error("cl-react-hooks could not use localStorage for cache.");
+      if (process.env.NODE_ENV === 'development') {
+        console.error(
+          '@lindeneg/ls-cache could not use localStorage for cache.'
+        );
         console.error(err);
       }
     }
@@ -77,8 +87,8 @@ export class LS {
 
   private static each = <T extends EmptyObj>(cb: (match: keyof T) => void) => {
     for (const key in window.localStorage) {
-      if (typeof window.localStorage[key] !== "undefined") {
-        const match = /^__clch__(.+)/.exec(key);
+      if (typeof window.localStorage[key] !== 'undefined') {
+        const match = LS.REGEX.exec(key);
         if (match && match.length > 1) {
           cb(match[1]);
         }

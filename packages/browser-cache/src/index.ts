@@ -1,10 +1,13 @@
 import { useRef } from 'react';
 import useMemoryCache from '@lindeneg/memory-cache';
-import { Cache, LS } from '@lindeneg/cache';
+import LS from '@lindeneg/ls-cache';
+import Cache from '@lindeneg/cache';
 import type { CacheConfig } from '@lindeneg/cache';
 import type { EmptyObj } from '@lindeneg/types';
 
 type Config<T extends EmptyObj> = Omit<CacheConfig<T>, 'data'>;
+
+LS.setPrefix('__clch__');
 
 export default function useBrowserCache<T extends EmptyObj>(
   config?: Partial<Config<T>> | (() => Partial<Config<T>>)
