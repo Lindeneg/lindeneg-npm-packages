@@ -1,16 +1,18 @@
 #### cl-react-hooks
 
-Collection of React hooks in TypeScript.
+Mono-repository of [npm](https://npm.com) packages created by [lindeneg](https://github.com/lindeneg).
 
-### Hooks
+### Utilities
 
-- [useSearch](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/search)
-- [useQueryParams](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/query-params)
-- [useMemoryCache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/memory-cache)
-- [useBrowserCache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/browser-cache)
-- [useOnKey](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/on-key)
+- [core-search](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/memory-cache)
+- [cache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/search)
+- [ls-cache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/query-params)
+- [types](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/browser-cache)
 
-_Planned_
+### React Hooks
 
-- _useHttp_
-- _useForm_
+- [search](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/search)
+- [query-params](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/query-params)
+- [memory-cache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/memory-cache)
+- [browser-cache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/browser-cache)
+- [on-key](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/on-key)
