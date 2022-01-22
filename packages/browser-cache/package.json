@@ -6,7 +6,7 @@
   "version": "1.0.5",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "description": "Hook for caching data in localStorage.",
   "keywords": [
     "react",
@@ -19,7 +19,7 @@
     "use-local-storage"
   ],
   "dependencies": {
-    "@lindeneg/cache": "^1.0.5",
+    "@lindeneg/ls-cache": "^1.0.0",
     "@lindeneg/memory-cache": "^1.0.5",
     "@lindeneg/types": "^1.0.5"
   },

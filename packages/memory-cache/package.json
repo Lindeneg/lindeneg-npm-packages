@@ -6,7 +6,7 @@
   "version": "1.0.5",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "description": "Hook for caching data in memory.",
   "keywords": [
     "react",

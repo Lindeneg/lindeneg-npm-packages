@@ -6,7 +6,7 @@
   "version": "1.0.4",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "description": "Hook for query-strings using URLSearchParams.",
   "keywords": [
     "react",
