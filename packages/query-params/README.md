@@ -2,7 +2,7 @@
 
 Hook using [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
-[Sandbox](https://codesandbox.io/s/lindeneg-query-params-rnmi9?file=/src/App.tsx) | [Size](https://bundlephobia.com/package/@lindeneg/query-params)
+[sandbox](https://codesandbox.io/s/lindeneg-query-params-rnmi9?file=/src/App.tsx) | [size](https://bundlephobia.com/package/@lindeneg/query-params)
 
 ### Installation
 
