@@ -5,7 +5,7 @@ code=0
 run_cleanup() {
   echo 'cleaning ts-tests'
   rm __tests__/types.ts-test.js
-  rm index.js
+  rm ./src/index.js
 }
 
 
