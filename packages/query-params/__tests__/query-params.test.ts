@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import useQueryParams from '../src';
 
-describe('Test Suite: useQueryParams', () => {
+describe('Test Suite: @lindeneg/query-params', () => {
   afterEach(() => {
     const base =
       window.location.protocol +

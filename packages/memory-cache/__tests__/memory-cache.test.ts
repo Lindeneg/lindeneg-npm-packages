@@ -27,7 +27,7 @@ function mockSize() {
   return Object.keys(getMock()).length;
 }
 
-describe('Test Suite: useMemoryCache', () => {
+describe('Test Suite: @lindeneg/memory-cache', () => {
   test('can initialize cache without initial data', () => {
     const { cache } = renderHook(() => useMemoryCache<TestObj>()).result
       .current;

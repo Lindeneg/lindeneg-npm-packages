@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import useOnKey from '../src';
 
-describe('Test Suite: useOnKey', () => {
+describe('Test Suite: @lindeneg/on-key', () => {
   test('uses `keydown` as default type', () => {
     const fn = jest.fn();
     renderHook(() => useOnKey('k', fn));

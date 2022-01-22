@@ -1,4 +1,4 @@
-### useOnKey
+### @lindeneg/on-key
 
 Hook to listen for key-strokes and then do something
 
@@ -21,6 +21,8 @@ Hook to listen for key-strokes and then do something
 #### Usage
 
 ```tsx
+import useOnKey from "@lindeneg/on-key";
+
 function SomeComponent() {
 
   ...

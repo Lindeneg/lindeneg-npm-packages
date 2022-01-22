@@ -1,4 +1,4 @@
-### useSearch
+### @lindeneg/search
 
 Filter and optionally sort objects by nested values against a query.
 
@@ -38,6 +38,8 @@ Object with properties:
 #### Usage
 
 ```tsx
+import useSearch from '@lindeneg/search';
+
 function SomeComponent() {
   const { filtered, query, onQueryChange } = useSearch(
     data,
@@ -68,7 +70,7 @@ interface User {
 Say the interesting keys when filtering are `name` and `email`:
 
 ```ts
-useSearch(users, ["name", "email"]);
+useSearch(users, ['name', 'email']);
 ```
 
 Then the data will be filtered using the values of the `name` and `email` keys against a query.
@@ -76,7 +78,7 @@ Then the data will be filtered using the values of the `name` and `email` keys a
 Values found inside nested objects or arrays can also be used. Suppose the desired key to include is `context` found inside the `events` array that is itself found inside the `activity` array.
 
 ```ts
-useSearch(users, ["activity.n.events.n.context"]);
+useSearch(users, ['activity.n.events.n.context']);
 ```
 
 Then the data will be filtered using the values of the `context` key against a query. `n` is used to describe that the current key is an index value, all items in the array will be considered.

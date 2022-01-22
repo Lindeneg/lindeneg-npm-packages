@@ -1,4 +1,4 @@
-### useQueryParams
+### @lindeneg/query-params
 
 Hook using [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
@@ -30,10 +30,10 @@ Object with properties:
 ```tsx
 function SomeComponent() {
   const { values, onParamChange } = useQueryParams({
-    id: "",
-    context: "",
+    id: '',
+    context: '',
     // optional default value
-    sort: "desc",
+    sort: 'desc',
   });
 }
 ```
@@ -43,7 +43,7 @@ This will result in `window.location.search` having the value `?sort=desc`. If `
 Update param as follows:
 
 ```ts
-onParamChange("context", "products");
+onParamChange('context', 'products');
 ```
 
 Now `window.location.search` will be `?context=products&sort=desc`
@@ -51,7 +51,7 @@ Now `window.location.search` will be `?context=products&sort=desc`
 To remove it, use an empty string:
 
 ```ts
-onParamChange("context", "");
+onParamChange('context', '');
 ```
 
 Now `window.location.search` will be `?sort=desc`
@@ -61,7 +61,7 @@ If default values are specified, an empty string will not remove the key but rat
 So, if `sort` is changed
 
 ```ts
-onParamChange("sort", "asc");
+onParamChange('sort', 'asc');
 ```
 
 Then `window.location.search` will of course be `?sort=asc`
@@ -69,7 +69,7 @@ Then `window.location.search` will of course be `?sort=asc`
 However, if the key is removed
 
 ```ts
-onParamChange("sort", "");
+onParamChange('sort', '');
 ```
 
 The default value will be used and `window.location.search` will be `?sort=desc`

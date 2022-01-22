@@ -1,6 +1,6 @@
-### useMemoryCache
+### @lindeneg/memory-cache
 
-Hook for caching data in-memory. If you'd like to make the cache persistent, take a look at [useBrowserCache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/browser-cache).
+Hook for caching data in-memory. If you'd like to make the cache persistent, take a look at [browser-cache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/browser-cache).
 
 [Sandbox](https://codesandbox.io/s/lindeneg-memory-cache-5ygvx?file=/src/App.tsx) | [Size](https://bundlephobia.com/package/@lindeneg/memory-cache)
 
@@ -41,6 +41,8 @@ Hook for caching data in-memory. If you'd like to make the cache persistent, tak
 #### Usage
 
 ```tsx
+import useMemoryCache from '@lindeneg/memory-cache';
+
 function SomeComponent() {
   const { cache } = useMemoryCache();
 
@@ -54,8 +56,8 @@ function SomeComponent() {
   cache.size();
 
   // listen to event
-  cache.on("trim", (removed) => {
-    console.log("trim removed these keys from cache: ", removed);
+  cache.on('trim', (removed) => {
+    console.log('trim removed these keys from cache: ', removed);
   });
 
   // and so on

@@ -140,7 +140,7 @@ function users() {
   ];
 }
 
-describe('Test Suite: useSearch', () => {
+describe('Test Suite: @lindeneg/search', () => {
   test('returns unfiltered on empty query', () => {
     const usrs = users();
     const { result } = renderHook(() => useSearch(usrs, ['email']));
