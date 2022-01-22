@@ -1,6 +1,6 @@
-#### cl-react-hooks
+#### lindeneg-npm-packages
 
-Mono-repository of [npm](https://npm.com) packages created by [lindeneg](https://github.com/lindeneg).
+Mono-repository for [npm](https://npm.com) packages created by [lindeneg](https://github.com/lindeneg).
 
 ### Utilities
 
