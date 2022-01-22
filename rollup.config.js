@@ -8,13 +8,15 @@ import { terser } from 'rollup-plugin-terser';
 
 const PACKAGE_ROOT_PATH = process.cwd();
 
-const isReactLib =
-  /(browser-cache|memory-cache|on-key|query-params|search)/.test(
-    PACKAGE_ROOT_PATH
-  );
+const NAME = (() => {
+  const s = PACKAGE_ROOT_PATH.split('/');
+  return s[s.length - 1];
+})();
 
-console.log(PACKAGE_ROOT_PATH);
-console.log('REACT-LIB: ', isReactLib ? 'YES' : 'NO');
+const isReactLib =
+  /^(browser-cache|memory-cache|on-key|query-params|search)$/.test(NAME);
+
+console.log('isReact: ' + (isReactLib ? 'Y' : 'N'), '| @lindeneg/' + NAME);
 
 export default {
   input: PACKAGE_ROOT_PATH + '/src/index.ts',

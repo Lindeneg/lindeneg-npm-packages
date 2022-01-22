@@ -1,4 +1,4 @@
-import { EmptyObj } from "@lindeneg/types";
+import { EmptyObj } from '@lindeneg/types';
 
 export type CacheConfig<T extends EmptyObj> = {
   trim: number;
@@ -15,9 +15,9 @@ export type CacheData<T extends EmptyObj> = Partial<{
   [K in keyof T]: CacheEntry<T[K]>;
 }>;
 
-export type _ListenerConstraint = "set" | "remove" | "clear" | "destruct";
+export type _ListenerConstraint = 'set' | 'remove' | 'clear' | 'destruct';
 
-export type ListenerConstraint = _ListenerConstraint | "trim";
+export type ListenerConstraint = _ListenerConstraint | 'trim';
 
 export type ListenerCallback<
   T extends EmptyObj,
@@ -39,7 +39,7 @@ export const DEFAULT_TTL = 3600;
 
 export class Cache<T extends EmptyObj> {
   private interval: NodeJS.Timer;
-  private config: Omit<CacheConfig<T>, "data">;
+  private config: Omit<CacheConfig<T>, 'data'>;
   private data: CacheData<T>;
   private listeners: Listeners<T>;
 
@@ -69,7 +69,7 @@ export class Cache<T extends EmptyObj> {
   };
 
   public has = (key: keyof T) => {
-    return typeof this.data[key] !== "undefined";
+    return typeof this.data[key] !== 'undefined';
   };
 
   public get = <K extends keyof T>(key: K): CacheEntry<T[K]> | null => {
@@ -82,17 +82,17 @@ export class Cache<T extends EmptyObj> {
   };
 
   public set = <K extends keyof T>(key: K, value: T[K]) => {
-    this.runListener("set", key, value);
+    this.runListener('set', key, value);
     this.data[key] = this.createEntry(value);
   };
 
   public remove = (key: keyof T) => {
-    this.runListener("remove", key);
+    this.runListener('remove', key);
     delete this.data[key];
   };
 
   public clear = () => {
-    this.runListener("clear");
+    this.runListener('clear');
     this.each((key) => {
       if (this.has(key)) {
         this.remove(key);
@@ -101,7 +101,7 @@ export class Cache<T extends EmptyObj> {
   };
 
   public destruct = () => {
-    this.runListener("destruct");
+    this.runListener('destruct');
     clearInterval(this.interval);
   };
 
@@ -147,7 +147,7 @@ export class Cache<T extends EmptyObj> {
         removed.push(key);
       }
     });
-    this.runListener("trim", removed);
+    this.runListener('trim', removed);
   };
 
   public static createEntry = <T>(

@@ -1,19 +1,21 @@
 {
-  "name": "@lindeneg/use-search",
+  "name": "@lindeneg/core-search",
   "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
+  "homepage": "https://github.com/lindeneg/cl-react-hooks/tree/master/packages/core-search",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
   "version": "1.0.0",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
-  "typings": "dist/index.d.ts",
-  "description": "Hook for filtering and optionally sorting objects against a query.",
+  "types": "dist/index.d.ts",
+  "description": "Utility for filtering and optionally sorting objects against a query.",
   "keywords": [
-    "react",
-    "hook",
-    "react-hooks",
     "search",
+    "object",
+    "filtering",
     "filter",
+    "sort",
+    "sorting",
     "typescript",
     "nested"
   ],
@@ -27,7 +29,5 @@
     "access": "public"
   },
   "gitHead": "4c3b992a653be2cdffeb05a50fe1c727853d39ce",
-  "peerDependencies": {
-    "react": "^17.0.2"
-  }
+  "peerDependencies": {}
 }

@@ -1,6 +1,7 @@
-import { act, renderHook } from "@testing-library/react-hooks";
-import { Cache, CacheData } from "@lindeneg/cache";
-import useBrowserCache from "../index";
+import { act, renderHook } from '@testing-library/react-hooks';
+import { Cache } from '@lindeneg/cache';
+import type { CacheData } from '@lindeneg/cache';
+import useBrowserCache from '../src';
 
 type TestObj = {
   id: number;
@@ -13,10 +14,10 @@ type TestObj = {
 function getMock(tll?: number): CacheData<TestObj> {
   return {
     id: Cache.createEntry(42, tll),
-    options: Cache.createEntry(["miles", "davis"], tll),
+    options: Cache.createEntry(['miles', 'davis'], tll),
     favorites: Cache.createEntry(
       {
-        albums: ["kind of blue", "sketches of spain"],
+        albums: ['kind of blue', 'sketches of spain'],
       },
       tll
     ),
@@ -48,17 +49,17 @@ function clearLS() {
   });
 }
 
-describe("Test Suite: useBrowserCache", () => {
+describe('Test Suite: @lindeneg/browser-cache', () => {
   afterEach(() => {
     clearLS();
   });
-  test("can initialize cache without initial LS data", () => {
+  test('can initialize cache without initial LS data', () => {
     const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
       .current;
 
     expect(cache.size()).toBe(0);
   });
-  test("can initialize cache with initial LS data", () => {
+  test('can initialize cache with initial LS data', () => {
     const data = getMock();
     setLS(data);
 
@@ -66,30 +67,30 @@ describe("Test Suite: useBrowserCache", () => {
       .current;
 
     expect(cache.size()).toBe(mockSize());
-    expect(cache.value("id")).toBe(data.id?.value);
-    expect(cache.get("id")?.value).toBe(data.id?.value);
+    expect(cache.value('id')).toBe(data.id?.value);
+    expect(cache.get('id')?.value).toBe(data.id?.value);
     Object.keys(data).forEach((key) => {
       expect(getLS(key as MockKey)).toEqual(data[key as MockKey]);
     });
   });
-  test("can set cache item", () => {
+  test('can set cache item', () => {
     const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
       .current;
 
     expect(cache.size()).toBe(0);
-    expect(cache.get("id")).toBe(null);
-    expect(getLS("id")).toBe(null);
+    expect(cache.get('id')).toBe(null);
+    expect(getLS('id')).toBe(null);
 
     act(() => {
-      cache.set("id", 5);
+      cache.set('id', 5);
     });
 
     expect(cache.size()).toBe(1);
-    expect(cache.get("id")?.value).toBe(5);
-    expect(getLS("id")?.value).toBe(5);
+    expect(cache.get('id')?.value).toBe(5);
+    expect(getLS('id')?.value).toBe(5);
   });
 
-  test("can remove cache item", () => {
+  test('can remove cache item', () => {
     const data = getMock();
     setLS(data);
 
@@ -102,14 +103,14 @@ describe("Test Suite: useBrowserCache", () => {
     });
 
     act(() => {
-      cache.remove("id");
+      cache.remove('id');
     });
 
     expect(cache.size()).toBe(mockSize() - 1);
-    expect(cache.value("id")).toBe(null);
-    expect(getLS("id")).toBe(null);
+    expect(cache.value('id')).toBe(null);
+    expect(getLS('id')).toBe(null);
   });
-  test("can clear cache items", () => {
+  test('can clear cache items', () => {
     const data = getMock();
     setLS(data);
 
@@ -131,7 +132,7 @@ describe("Test Suite: useBrowserCache", () => {
     });
   });
 
-  test("can trim cache items", (done) => {
+  test('can trim cache items', (done) => {
     const data = getMock(0.1);
     setLS(data);
 

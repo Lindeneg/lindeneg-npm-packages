@@ -1,5 +1,5 @@
-import { expectType, TypeEqual } from "ts-expect";
-import type { RecursivePartialObj, Substitute, UniqueArray } from "../index";
+import { expectType, TypeEqual } from 'ts-expect';
+import type { RecursivePartialObj, Substitute, UniqueArray } from '../src';
 
 type User = {
   id: number;
@@ -15,14 +15,14 @@ type User = {
 
 expectType<Substitute<User, { name: string; address: string }>>({
   id: 1,
-  name: "hello",
-  address: "there",
+  name: 'hello',
+  address: 'there',
 });
 
 expectType<Substitute<User, { name: [string, string]; address: string }>>({
   id: 1,
-  name: ["hello", "there"],
-  address: "miles",
+  name: ['hello', 'there'],
+  address: 'miles',
 });
 
 expectType<
@@ -39,18 +39,18 @@ expectType<
   >
 >(true);
 
-//@ts-expect-error
+//@ts-expect-error Partial is not recursive, so this should raise an error
 expectType<Partial<User>>({ name: {} });
 
 expectType<RecursivePartialObj<User>>({ name: {} });
-expectType<RecursivePartialObj<User>>({ name: { first: "" } });
-expectType<RecursivePartialObj<User>>({ name: { first: "", last: "" } });
+expectType<RecursivePartialObj<User>>({ name: { first: '' } });
+expectType<RecursivePartialObj<User>>({ name: { first: '', last: '' } });
 expectType<RecursivePartialObj<User>>({
   address: {},
 });
 expectType<RecursivePartialObj<User>>({
-  address: { street: "" },
+  address: { street: '' },
 });
 expectType<RecursivePartialObj<User>>({
-  address: { street: "", city: "" },
+  address: { street: '', city: '' },
 });
