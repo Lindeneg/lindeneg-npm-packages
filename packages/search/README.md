@@ -14,7 +14,7 @@ Filter and optionally sort objects by nested values against a query.
 
 | Name      | Required | Ref | Type                                                                     | Description                                                  |
 | --------- | -------- | --- | ------------------------------------------------------------------------ | ------------------------------------------------------------ |
-| data      | Y        | T   | `Array>`                                                                 | array of objects to filter                                   |
+| data      | Y        | T   | `Array<Record<string | number | symbol, unknown>>`                                                                 | array of objects to filter                                   |
 | predicate | Y        | -   | `string[] \| (query: string, item: T[number], index: number) => boolean` | an array of property names to target or a predicate function |
 | opts      | N        | -   | `UseSearchOptions`                                                       | options, see below                                           |
 
