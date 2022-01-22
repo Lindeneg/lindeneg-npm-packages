@@ -4,10 +4,10 @@ Mono-repository of [npm](https://npm.com) packages created by [lindeneg](https:/
 
 ### Utilities
 
-- [core-search](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/memory-cache)
-- [cache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/search)
-- [ls-cache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/query-params)
-- [types](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/browser-cache)
+- [core-search](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/core-search)
+- [cache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/cache)
+- [ls-cache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/ls-cache)
+- [types](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/types)
 
 ### React Hooks
 
