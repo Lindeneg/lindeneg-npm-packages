@@ -24,9 +24,7 @@ export default class LS {
     });
   };
 
-  public static get = <T extends EmptyObj, K extends keyof T>(
-    key: K
-  ): CacheEntry<T[K]> | null => {
+  public static get = <T extends EmptyObj>(key: keyof T) => {
     return LS.maybe(() => {
       return LS.item(key);
     });
