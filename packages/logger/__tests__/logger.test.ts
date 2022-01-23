@@ -159,4 +159,10 @@ describe('Test Suite: @lindeneg/logger', () => {
       })
     );
   });
+
+  test('respects specified guard function', () => {
+    const { print } = new Logger('someOrigin', () => false);
+    print('some-error', Severity.Debug);
+    expect(consoleOutput.length).toBe(0);
+  });
 });
