@@ -4,7 +4,7 @@
   "homepage": "https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/cache",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "types": "dist/index.d.ts",
@@ -21,6 +21,6 @@
   },
   "gitHead": "4c3b992a653be2cdffeb05a50fe1c727853d39ce",
   "devDependencies": {
-    "@lindeneg/types": "^1.1.0"
+    "@lindeneg/types": "^1.1.1"
   }
 }
