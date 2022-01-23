@@ -7,3 +7,31 @@ Used by: [@lindeneg/browser-cache](https://github.com/lindeneg/cl-react-hooks/tr
 ### Installation
 
 `yarn add @lindeneg/ls-cache`
+
+### Usage
+
+```ts
+import LS from '@lindeneg/ls-cache';
+
+// set a key prefix to avoid localStorage collisions
+LS.setPrefix('__something__');
+
+// set item, second argument in createEntry
+// is optional, default is 3600 seconds
+LS.set('id', LS.createEntry('some-id', 3600));
+
+// remove an item
+LS.remove('id');
+
+// get an item, returns a CacheEntry
+LS.get('id');
+
+// get all items
+LS.getAll();
+
+// destroy all items
+LS.destroy();
+
+// trim items
+LS.trim();
+```

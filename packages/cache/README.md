@@ -7,3 +7,42 @@ Used by: [@lindeneg/memory-cache](https://github.com/lindeneg/cl-react-hooks/tre
 ### Installation
 
 `yarn add @lindeneg/cache`
+
+### Usage
+
+```ts
+// config object is optional
+const cache = new Cache({
+  trim: 600, // default value, in seconds
+  ttl: 3600, // default value, in seconds,
+  data: {}, // initial data
+});
+
+// set item
+cache.set('id', 5);
+
+// get item CacheEntry
+cache.get('id');
+
+// get item value
+cache.value('id');
+
+// listen to events
+cache.on('trim', (removed) => {
+  console.log(removed);
+});
+
+// destroy cache
+cache.destruct();
+
+// and more..
+```
+
+##### CacheEntry
+
+```ts
+type CacheEntry<T> = {
+  expires: number;
+  value: T;
+};
+```
