@@ -51,6 +51,51 @@ describe('Test Suite: @lindeneg/cache', () => {
     expect(cache.value('id')).toBe(5);
     expect(cache.get('id')?.value).toBe(5);
   });
+  test('resolves promise on getAsync with valid key', async () => {
+    const cache = new Cache();
+
+    cache.set('id', 5);
+
+    expect((await cache.getAsync('id')).value).toBe(5);
+  });
+  test('rejects promise on getAsync with invalid key', () => {
+    const cache = new Cache();
+    expect(cache.getAsync('id')).rejects.toMatch("key 'id' could not be found");
+  });
+  test('resolves promise on valueAsync with valid key', () => {
+    const cache = new Cache();
+
+    cache.set('id', 5);
+
+    expect(cache.valueAsync('id')).resolves.toBe(5);
+  });
+  test('rejects promise on valueAsync with invalid key', () => {
+    const cache = new Cache();
+    expect(cache.valueAsync('id')).rejects.toMatch(
+      "key 'id' could not be found"
+    );
+  });
+  test('resolves promise on setAsync', async () => {
+    const cache = new Cache();
+
+    expect((await cache.setAsync('id', 5)).value).toBe(5);
+  });
+  test('resolves promise on removeAsync with valid key', async () => {
+    const cache = new Cache();
+
+    const entry = await cache.setAsync('id', 5);
+
+    expect(cache.size()).toBe(1);
+    expect(cache.removeAsync('id')).resolves.toBe(entry);
+    expect(cache.size()).toBe(0);
+  });
+  test('rejects promise on removeAsync with invalid key', async () => {
+    const cache = new Cache();
+
+    expect(cache.removeAsync('id')).rejects.toMatch(
+      `entry with key 'id' does not exist in cache`
+    );
+  });
   test('can remove item', () => {
     const data = getMock();
     const cache = new Cache({ data });
