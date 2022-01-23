@@ -128,7 +128,9 @@ export default class Cache<T extends EmptyObj> {
     delete this.data[key];
   };
 
-  public removeAsync = (key: keyof T) => {
+  public removeAsync = <K extends keyof T>(
+    key: K
+  ): Promise<CacheEntry<T[K]>> => {
     return new Promise((resolve, reject) => {
       const entry = this.get(key);
       if (!entry) {
