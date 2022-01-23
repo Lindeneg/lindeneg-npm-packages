@@ -4,7 +4,7 @@ Utility types.
 
 ### Installation
 
-`yarn add @lindeneg/types`
+`yarn add -D @lindeneg/types`
 
 ### Types
 
