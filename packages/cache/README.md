@@ -20,12 +20,19 @@ const cache = new Cache({
 
 // set item
 cache.set('id', 5);
+await cache.setAsync('id', 5);
 
 // get item CacheEntry
 cache.get('id');
+await cache.getAsync('id');
 
 // get item value
 cache.value('id');
+await cache.valueAsync('id');
+
+// remove item
+cache.remove('id');
+await cache.removeAsync('id');
 
 // listen to events
 cache.on('trim', (removed) => {
