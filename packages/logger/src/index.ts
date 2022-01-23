@@ -6,11 +6,18 @@ export enum Severity {
   Error,
 }
 
-type ErrorObj = { msg: string } & EmptyObj;
+export type ErrorObj<T extends EmptyObj = EmptyObj> = {
+  origin: string;
+  severity: Severity;
+  ts: number;
+  msg: string;
+} & T;
 
-type ErrorType = string | ErrorObj;
+export type ErrorArg<T extends EmptyObj> = { msg: string } & T;
 
-export default class Logger {
+export type ErrorUnionType<T extends EmptyObj> = string | ErrorArg<T>;
+
+export default class Logger<T extends EmptyObj = Record<string, unknown>> {
   private readonly origin: string;
   private readonly isNode: boolean;
   private readonly guard: () => boolean;
@@ -38,7 +45,12 @@ export default class Logger {
       process.versions.node != null;
   }
 
-  public print = (error: ErrorType, severity: Severity, context = '') => {
+  public print = (
+    error: ErrorUnionType<T>,
+    severity: Severity,
+    context = '',
+    ts = Date.now()
+  ) => {
     if (!this.guard()) {
       return;
     }
@@ -47,29 +59,33 @@ export default class Logger {
 
     const err = typeof error === 'string' ? { msg: error } : error;
 
-    const result = {
-      origin: context ? this.origin + '::' + context : this.origin,
-      severity,
-      ts: Date.now(),
-      ...err,
-    };
+    const result = JSON.stringify(
+      {
+        origin: context ? this.origin + '::' + context : this.origin,
+        severity,
+        ts,
+        ...err,
+      },
+      null,
+      2
+    );
 
     if (this.isNode) {
-      console.log(color, JSON.stringify(result, null, 2));
+      console.log(color, result);
     } else {
       fn(result);
     }
   };
 
-  public log = (error: ErrorType, context?: string) => {
-    this.print(error, Severity.Debug, context);
+  public log = (error: ErrorUnionType<T>, context?: string, ts?: number) => {
+    this.print(error, Severity.Debug, context, ts);
   };
 
-  public warn = (error: ErrorType, context?: string) => {
-    this.print(error, Severity.Warn, context);
+  public warn = (error: ErrorUnionType<T>, context?: string, ts?: number) => {
+    this.print(error, Severity.Warn, context, ts);
   };
 
-  public error = (error: ErrorType, context?: string) => {
-    this.print(error, Severity.Error, context);
+  public error = (error: ErrorUnionType<T>, context?: string, ts?: number) => {
+    this.print(error, Severity.Error, context, ts);
   };
 }
