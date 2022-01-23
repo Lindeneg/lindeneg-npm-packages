@@ -11,7 +11,7 @@ export default class LS {
   private static PREFIX = '';
   private static REGEX = /^(.+)$/;
 
-  public static get = <T extends EmptyObj>() => {
+  public static getAll = <T extends EmptyObj>() => {
     return LS.maybe(() => {
       const result: CacheData<T> = {};
       LS.each<T>((key) => {
@@ -21,6 +21,14 @@ export default class LS {
         }
       });
       return result;
+    });
+  };
+
+  public static get = <T extends EmptyObj, K extends keyof T>(
+    key: K
+  ): CacheEntry<T[K]> | null => {
+    return LS.maybe(() => {
+      return LS.item(key);
     });
   };
 
