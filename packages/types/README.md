@@ -1,4 +1,4 @@
-### Cache
+### @lindeneg/types
 
 Utility types.
 
