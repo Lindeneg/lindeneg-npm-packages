@@ -1,0 +1,29 @@
+{
+  "name": "@lindeneg/logger",
+  "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
+  "homepage": "https://github.com/lindeneg/cl-react-hooks/tree/master/packages/logger",
+  "author": "lindeneg <christian@lindeneg.org>",
+  "license": "MIT",
+  "version": "1.0.0",
+  "main": "dist/bundle.cjs.js",
+  "module": "dist/bundle.esm.js",
+  "types": "dist/index.d.ts",
+  "description": "Very simple utility for logging messages to console.",
+  "keywords": [
+    "logging",
+    "logger",
+    "console",
+    "print",
+    "stdout",
+    "typescript"
+  ],
+  "scripts": {
+    "custom": "echo no custom script"
+  },
+  "dependencies": {
+    "@lindeneg/types": "^1.0.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
