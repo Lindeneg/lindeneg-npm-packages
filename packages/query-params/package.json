@@ -4,7 +4,7 @@
   "homepage": "https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/query-params",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "types": "dist/index.d.ts",
