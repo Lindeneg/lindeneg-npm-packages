@@ -1,4 +1,3 @@
-import Cache from '@lindeneg/cache';
 import type { CacheData } from '@lindeneg/cache';
 import LS from '../src';
 
@@ -16,9 +15,9 @@ type TestObj = {
 
 function getMock(tll?: number): CacheData<TestObj> {
   return {
-    id: Cache.createEntry(42, tll),
-    options: Cache.createEntry(['miles', 'davis'], tll),
-    favorites: Cache.createEntry(
+    id: LS.createEntry(42, tll),
+    options: LS.createEntry(['miles', 'davis'], tll),
+    favorites: LS.createEntry(
       {
         albums: ['kind of blue', 'sketches of spain'],
       },
@@ -53,17 +52,17 @@ describe('Test Suite: @lindeneg/ls-cache', () => {
     clearLS();
   });
   test('can set item', () => {
-    const entry = Cache.createEntry(1);
+    const entry = LS.createEntry(1);
     LS.set('id', entry);
     expect(getLS('id')).toEqual(entry);
   });
   test('can get item', () => {
-    const entry = Cache.createEntry(1);
+    const entry = LS.createEntry(1);
     LS.set('id', entry);
     expect(LS.get('id')).toEqual(entry);
   });
   test('can remove item', () => {
-    const entry = Cache.createEntry(1);
+    const entry = LS.createEntry(1);
     LS.set('id', entry);
     expect(getLS('id')).toEqual(entry);
     LS.remove('id');
@@ -82,12 +81,11 @@ describe('Test Suite: @lindeneg/ls-cache', () => {
   });
   test('can trim items', (done) => {
     const data = getMock(0.1);
-    const { favorites, options } = data;
     setLS(data);
 
     setTimeout(() => {
-      LS.trim(['id']);
-      expect(LS.getAll()).toEqual({ favorites, options });
+      LS.trim();
+      expect(LS.getAll()).toEqual({});
       done();
     }, 300);
   });

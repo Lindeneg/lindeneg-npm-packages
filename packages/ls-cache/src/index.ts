@@ -7,6 +7,10 @@ const { error } = new Logger(
   () => process.env.NODE_ENV === 'development'
 );
 
+function getTime() {
+  return new Date().getTime() / 1000;
+}
+
 export default class LS {
   private static PREFIX = '';
   private static REGEX = /^(.+)$/;
@@ -58,12 +62,29 @@ export default class LS {
     });
   };
 
-  public static trim = <T extends EmptyObj>(keys: Array<keyof T>) => {
+  public static trim = <T extends EmptyObj>(keys?: Array<keyof T>) => {
     LS.maybe(() => {
-      keys.forEach((key) => {
-        LS.remove(key);
-      });
+      if (keys) {
+        keys.forEach((key) => {
+          LS.remove(key);
+        });
+      } else {
+        const now = getTime();
+        LS.each((key) => {
+          const item = LS.item(key);
+          if (item && item.expires < now) {
+            LS.remove(key);
+          }
+        });
+      }
     });
+  };
+
+  public static createEntry = <T>(value: T, ttl = 3600): CacheEntry<T> => {
+    return {
+      value,
+      expires: getTime() + ttl,
+    };
   };
 
   private static item = <T extends EmptyObj, K extends keyof T>(
