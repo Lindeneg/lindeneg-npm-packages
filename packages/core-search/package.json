@@ -23,10 +23,10 @@
     "custom": "echo no custom script"
   },
   "dependencies": {
+    "@lindeneg/logger": "^1.0.0",
     "@lindeneg/types": "^1.0.5"
   },
   "publishConfig": {
     "access": "public"
-  },
-  "peerDependencies": {}
+  }
 }

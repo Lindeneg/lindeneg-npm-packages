@@ -7,6 +7,7 @@ Mono-repository for [npm](https://npm.com) packages created by [lindeneg](https:
 - [core-search](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/core-search)
 - [cache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/cache)
 - [ls-cache](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/ls-cache)
+- [logger](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/logger)
 - [types](https://github.com/lindeneg/cl-react-hooks/tree/master/packages/types)
 
 ### React Hooks

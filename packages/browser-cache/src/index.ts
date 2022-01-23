@@ -14,7 +14,7 @@ export default function useBrowserCache<T extends EmptyObj>(
 ) {
   const _config = useRef(typeof config === 'function' ? config() : config);
   const { cache } = useMemoryCache<T>(() => {
-    const stored = LS.get<T>();
+    const stored = LS.getAll<T>();
     if (stored !== null) {
       return { ..._config.current, data: stored };
     }

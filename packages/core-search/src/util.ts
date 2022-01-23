@@ -1,5 +1,11 @@
+import Logger from '@lindeneg/logger';
 import type { EmptyObj } from '@lindeneg/types';
 import type { SanitizeMode, EntryConstraint, KeyConstraint } from './types';
+
+const { error } = new Logger(
+  '@lindeneg/core-search',
+  () => process.env.NODE_ENV === 'development'
+);
 
 const sanitize = function (str: string, mode: SanitizeMode) {
   const isStrict = mode === 'strict';
@@ -63,11 +69,7 @@ export function $filter<T extends unknown[]>(
         );
         return new RegExp(sanitized, 'gi').test(targets);
       } catch (err) {
-        process.env.NODE_ENV === 'development' &&
-          console.error(
-            '@lindeneg/core-search Error: failed with query: ',
-            query
-          );
+        error({ msg: 'failed to create regex from query', query }, '$filter');
       }
     }
     return false;
