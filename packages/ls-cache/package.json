@@ -1,0 +1,29 @@
+{
+  "name": "@lindeneg/ls-cache",
+  "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
+  "author": "lindeneg <christian@lindeneg.org>",
+  "license": "MIT",
+  "version": "1.0.0",
+  "main": "dist/bundle.cjs.js",
+  "module": "dist/bundle.esm.js",
+  "types": "dist/index.d.ts",
+  "description": "Utility class interacting with localStorage.",
+  "keywords": [
+    "cache",
+    "typescript",
+    "localStorage"
+  ],
+  "dependencies": {
+    "@lindeneg/logger": "^1.0.0"
+  },
+  "scripts": {
+    "custom": "echo no custom script"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@lindeneg/cache": "^1.0.5",
+    "@lindeneg/types": "^1.0.5"
+  }
+}

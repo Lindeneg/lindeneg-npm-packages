@@ -6,7 +6,7 @@
   "version": "1.0.9",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "description": "Hook for filtering and optionally sorting objects against a query.",
   "keywords": [
     "react",
@@ -21,7 +21,7 @@
     "custom": "echo no custom script"
   },
   "dependencies": {
-    "@lindeneg/types": "^1.0.5"
+    "@lindeneg/core-search": "^1.0.0"
   },
   "publishConfig": {
     "access": "public"

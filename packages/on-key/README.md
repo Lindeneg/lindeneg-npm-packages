@@ -1,8 +1,8 @@
-### useOnKey
+### @lindeneg/on-key
 
 Hook to listen for key-strokes and then do something
 
-[Sandbox](https://codesandbox.io/s/lindeneg-on-key-m99cq?file=/src/App.tsx) | [Size](https://bundlephobia.com/package/@lindeneg/on-key)
+[sandbox](https://codesandbox.io/s/lindeneg-on-key-m99cq?file=/src/App.tsx) | [size](https://bundlephobia.com/package/@lindeneg/on-key)
 
 ### Installation
 
@@ -21,6 +21,8 @@ Hook to listen for key-strokes and then do something
 #### Usage
 
 ```tsx
+import useOnKey from "@lindeneg/on-key";
+
 function SomeComponent() {
 
   ...

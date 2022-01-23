@@ -1,0 +1,29 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": [
+      "error",
+      2
+    ],
+    "max-len": [
+      "error",
+      85
+    ],
+     "no-else-return": 2,
+    "semi": [
+      "error",
+      "always"
+    ],
+     "space-unary-ops": 2
+  },
+  "ignorePatterns": "**/dist",
+  "extends": [
+    "eslint:recommended",
+    "plugin:eslint-plugin-react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended"
+  ]
+}

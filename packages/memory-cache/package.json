@@ -6,7 +6,7 @@
   "version": "1.0.5",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "description": "Hook for caching data in memory.",
   "keywords": [
     "react",
@@ -17,8 +17,7 @@
     "use-cache"
   ],
   "dependencies": {
-    "@lindeneg/cache": "^1.0.5",
-    "@lindeneg/types": "^1.0.5"
+    "@lindeneg/cache": "^1.0.5"
   },
   "scripts": {
     "custom": "echo no custom script"
@@ -29,5 +28,8 @@
   "gitHead": "4c3b992a653be2cdffeb05a50fe1c727853d39ce",
   "peerDependencies": {
     "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@lindeneg/types": "^1.0.5"
   }
 }

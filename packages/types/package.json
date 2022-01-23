@@ -4,7 +4,7 @@
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
   "version": "1.0.5",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "description": "Utility types.",
   "scripts": {
     "custom": "rm -f dist/bundle.*",

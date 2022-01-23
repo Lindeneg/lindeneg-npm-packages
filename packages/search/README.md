@@ -1,8 +1,8 @@
-### useSearch
+### @lindeneg/search
 
 Filter and optionally sort objects by nested values against a query.
 
-[Sandbox](https://codesandbox.io/s/lindeneg-search-5ccji?file=/src/App.tsx) | [Size](https://bundlephobia.com/package/@lindeneg/search)
+[sandbox](https://codesandbox.io/s/lindeneg-search-5ccji?file=/src/App.tsx) | [size](https://bundlephobia.com/package/@lindeneg/search)
 
 ### Installation
 
@@ -14,7 +14,7 @@ Filter and optionally sort objects by nested values against a query.
 
 | Name      | Required | Ref | Type                                                                     | Description                                                  |
 | --------- | -------- | --- | ------------------------------------------------------------------------ | ------------------------------------------------------------ |
-| data      | Y        | T   | `Array>`                                                                 | array of objects to filter                                   |
+| data      | Y        | T   | `Array<Record<string \| number \| symbol, unknown>>`                     | array of objects to filter                                   |
 | predicate | Y        | -   | `string[] \| (query: string, item: T[number], index: number) => boolean` | an array of property names to target or a predicate function |
 | opts      | N        | -   | `UseSearchOptions`                                                       | options, see below                                           |
 
@@ -38,6 +38,8 @@ Object with properties:
 #### Usage
 
 ```tsx
+import useSearch from '@lindeneg/search';
+
 function SomeComponent() {
   const { filtered, query, onQueryChange } = useSearch(
     data,
@@ -68,7 +70,7 @@ interface User {
 Say the interesting keys when filtering are `name` and `email`:
 
 ```ts
-useSearch(users, ["name", "email"]);
+useSearch(users, ['name', 'email']);
 ```
 
 Then the data will be filtered using the values of the `name` and `email` keys against a query.
@@ -76,7 +78,7 @@ Then the data will be filtered using the values of the `name` and `email` keys a
 Values found inside nested objects or arrays can also be used. Suppose the desired key to include is `context` found inside the `events` array that is itself found inside the `activity` array.
 
 ```ts
-useSearch(users, ["activity.n.events.n.context"]);
+useSearch(users, ['activity.n.events.n.context']);
 ```
 
 Then the data will be filtered using the values of the `context` key against a query. `n` is used to describe that the current key is an index value, all items in the array will be considered.
