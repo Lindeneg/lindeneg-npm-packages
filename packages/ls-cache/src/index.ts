@@ -1,5 +1,11 @@
+import Logger from '@lindeneg/logger';
 import type { EmptyObj } from '@lindeneg/types';
 import type { CacheData, CacheEntry } from '@lindeneg/cache';
+
+const { error } = new Logger(
+  '@lindeneg/ls-cache',
+  () => process.env.NODE_ENV === 'development'
+);
 
 export default class LS {
   private static PREFIX = '';
@@ -63,8 +69,10 @@ export default class LS {
         try {
           return JSON.parse(item);
         } catch (err) {
-          console.error('@lindeneg/ls-cache could not parse key: ' + key);
-          console.error(err);
+          error(
+            { msg: `could not parse key '${key}'`, originalErr: err },
+            'LS.item'
+          );
         }
       }
       return null;
@@ -76,10 +84,10 @@ export default class LS {
       return cb();
     } catch (err) {
       if (process.env.NODE_ENV === 'development') {
-        console.error(
-          '@lindeneg/ls-cache could not use localStorage for cache.'
+        error(
+          { msg: 'failed to access localStorage', originalErr: err },
+          'LS.maybe'
         );
-        console.error(err);
       }
     }
     return null;
