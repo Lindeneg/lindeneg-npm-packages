@@ -20,8 +20,7 @@
   ],
   "dependencies": {
     "@lindeneg/ls-cache": "^1.0.0",
-    "@lindeneg/memory-cache": "^1.0.5",
-    "@lindeneg/types": "^1.0.5"
+    "@lindeneg/memory-cache": "^1.0.5"
   },
   "scripts": {
     "custom": "echo no custom script"
@@ -32,5 +31,9 @@
   "gitHead": "4c3b992a653be2cdffeb05a50fe1c727853d39ce",
   "peerDependencies": {
     "react": "^17.0.2"
+  },
+  "devDependencies": {
+    "@lindeneg/cache": "^1.0.5",
+    "@lindeneg/types": "^1.0.5"
   }
 }

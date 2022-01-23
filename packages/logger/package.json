@@ -20,10 +20,10 @@
   "scripts": {
     "custom": "echo no custom script"
   },
-  "dependencies": {
-    "@lindeneg/types": "^1.0.5"
-  },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@lindeneg/types": "^1.0.5"
   }
 }

@@ -14,14 +14,16 @@
     "localStorage"
   ],
   "dependencies": {
-    "@lindeneg/cache": "^1.0.5",
-    "@lindeneg/logger": "^1.0.0",
-    "@lindeneg/types": "^1.0.5"
+    "@lindeneg/logger": "^1.0.0"
   },
   "scripts": {
     "custom": "echo no custom script"
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@lindeneg/cache": "^1.0.5",
+    "@lindeneg/types": "^1.0.5"
   }
 }

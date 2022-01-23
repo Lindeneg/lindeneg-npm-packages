@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 import useMemoryCache from '@lindeneg/memory-cache';
 import LS from '@lindeneg/ls-cache';
-import Cache from '@lindeneg/cache';
 import type { CacheConfig } from '@lindeneg/cache';
 import type { EmptyObj } from '@lindeneg/types';
 
@@ -22,7 +21,7 @@ export default function useBrowserCache<T extends EmptyObj>(
   });
 
   cache.on('set', (key, value) => {
-    LS.set(key, Cache.createEntry(value, _config.current?.ttl));
+    LS.set(key, LS.createEntry(value, _config.current?.ttl));
   });
 
   cache.on('remove', (key) => {

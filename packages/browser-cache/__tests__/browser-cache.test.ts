@@ -1,8 +1,7 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import Cache from '@lindeneg/cache';
+import LS from '@lindeneg/ls-cache';
 import type { CacheData } from '@lindeneg/cache';
 import useBrowserCache from '../src';
-
 
 type TestObj = {
   id: number;
@@ -14,9 +13,9 @@ type TestObj = {
 
 function getMock(tll?: number): CacheData<TestObj> {
   return {
-    id: Cache.createEntry(42, tll),
-    options: Cache.createEntry(['miles', 'davis'], tll),
-    favorites: Cache.createEntry(
+    id: LS.createEntry(42, tll),
+    options: LS.createEntry(['miles', 'davis'], tll),
+    favorites: LS.createEntry(
       {
         albums: ['kind of blue', 'sketches of spain'],
       },
