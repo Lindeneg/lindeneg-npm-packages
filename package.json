@@ -10,7 +10,7 @@
     "custom:run": "lerna exec --parallel -- yarn custom",
     "clean": "lerna exec --parallel -- rm -rf dist",
     "reset": "rm yarn.lock && lerna exec --parallel -- rm -rf dist node_modules && yarn run bs",
-    "bs": "yarn install && lerna bootstrap",
+    "bs": "yarn install && lerna bootstrap && yarn run build",
     "dev": "ts-node",
     "pub": "yarn run pub:prepare && yarn run pub:deploy",
     "pub:prepare": "yarn run clean && yarn run lint && yarn run build && yarn run test",
