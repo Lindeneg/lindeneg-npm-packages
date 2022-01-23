@@ -76,9 +76,31 @@ export default class Cache<T extends EmptyObj> {
     return this.data[key] || null;
   };
 
+  public getAsync = <K extends keyof T>(key: K): Promise<CacheEntry<T[K]>> => {
+    return new Promise((resolve, reject) => {
+      const item = this.get(key);
+      if (item) {
+        resolve(item);
+      } else {
+        reject(`key '${key}' could not be found`);
+      }
+    });
+  };
+
   public value = <K extends keyof T>(key: K): T[K] | null => {
     const entry = this.data[key];
     return entry ? entry.value : null;
+  };
+
+  public valueAsync = <K extends keyof T>(key: K): Promise<T[K]> => {
+    return new Promise((resolve, reject) => {
+      const item = this.value(key);
+      if (item) {
+        resolve(item);
+      } else {
+        reject(`key '${key}' could not be found`);
+      }
+    });
   };
 
   public set = <K extends keyof T>(key: K, value: T[K]) => {
@@ -86,9 +108,36 @@ export default class Cache<T extends EmptyObj> {
     this.data[key] = this.createEntry(value);
   };
 
+  public setAsync = <K extends keyof T>(
+    key: K,
+    value: T[K]
+  ): Promise<CacheEntry<T[K]>> => {
+    return new Promise((resolve, reject) => {
+      this.set(key, value);
+      const entry = this.get(key);
+      if (entry) {
+        resolve(entry);
+      } else {
+        reject(`failed to set key '${key}'`);
+      }
+    });
+  };
+
   public remove = (key: keyof T) => {
     this.runListener('remove', key);
     delete this.data[key];
+  };
+
+  public removeAsync = (key: keyof T) => {
+    return new Promise((resolve, reject) => {
+      const entry = this.get(key);
+      if (!entry) {
+        reject(`entry with key '${key}' does not exist in cache`);
+      } else {
+        this.remove(key);
+        resolve(entry);
+      }
+    });
   };
 
   public clear = () => {
