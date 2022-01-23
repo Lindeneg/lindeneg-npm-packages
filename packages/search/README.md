@@ -2,7 +2,7 @@
 
 Filter and optionally sort objects by nested values against a query.
 
-[sandbox](https://codesandbox.io/s/lindeneg-search-5ccji?file=/src/App.tsx) | [size](https://bundlephobia.com/package/@lindeneg/search)
+[sandbox](https://codesandbox.io/s/lindeneg-search-5ccji?file=/src/App.tsx) | [bundle-size](https://bundlephobia.com/package/@lindeneg/search)
 
 ### Installation
 
@@ -87,4 +87,4 @@ Decent type-safety is also achieved, as can be seen in this example:
 
 _the search depth is 5 layers, so `x.y.z.i.j` will be inferred while `x.y.z.i.j.k` will not_
 
-![use-search-type-safety](https://raw.githubusercontent.com/Lindeneg/cl-react-hooks/master/assets/useSearch.png)
+![use-search-type-safety](https://raw.githubusercontent.com/Lindeneg/lindeneg-npm-packages/master/assets/useSearch.png)

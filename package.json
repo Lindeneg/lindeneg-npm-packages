@@ -1,7 +1,7 @@
 {
-  "name": "cl-react-hooks",
+  "name": "lindeneg-npm-packages",
   "private": "true",
-  "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
+  "repository": "git@github.com:Lindeneg/lindeneg-npm-packages.git",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
   "scripts": {

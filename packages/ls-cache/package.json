@@ -1,6 +1,7 @@
 {
   "name": "@lindeneg/ls-cache",
-  "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
+  "repository": "git@github.com:Lindeneg/lindeneg-npm-packages.git",
+  "homepage": "https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/ls-cache",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
   "version": "1.0.0",

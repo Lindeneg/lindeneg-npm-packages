@@ -1,7 +1,7 @@
 {
   "name": "@lindeneg/core-search",
-  "repository": "git@github.com:Lindeneg/cl-react-hooks.git",
-  "homepage": "https://github.com/lindeneg/cl-react-hooks/tree/master/packages/core-search",
+  "repository": "git@github.com:Lindeneg/lindeneg-npm-packages.git",
+  "homepage": "https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/core-search",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
   "version": "1.0.0",
