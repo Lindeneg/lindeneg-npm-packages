@@ -1,97 +1,86 @@
 import Logger from '@lindeneg/logger';
+import Cache from '@lindeneg/cache';
 import type { EmptyObj } from '@lindeneg/types';
-import type { CacheData, CacheEntry } from '@lindeneg/cache';
+import type { CacheEntry, CacheConfig } from '@lindeneg/cache';
 
 const { error } = new Logger(
   '@lindeneg/ls-cache',
+  /* istanbul ignore next */
   () => process.env.NODE_ENV === 'development'
 );
 
-function getTime() {
-  return new Date().getTime() / 1000;
-}
+type Config<T extends EmptyObj> = Partial<Omit<CacheConfig<T>, 'data'>>;
 
-export default class LS {
-  private static PREFIX = '';
-  private static REGEX = /^(.+)$/;
+export default class LS<T extends EmptyObj> extends Cache<T> {
+  private readonly prefix: string;
+  private readonly regex: RegExp;
 
-  public static getAll = <T extends EmptyObj>() => {
-    return LS.maybe(() => {
-      const result: CacheData<T> = {};
-      LS.each<T>((key) => {
-        const value = LS.item<T, typeof key>(key);
+  constructor(prefix: string, config?: Config<T>) {
+    super(config);
+    this.prefix = prefix.replace(/[^a-z0-9_]/gi, '');
+    this.regex = new RegExp(`^${this.prefix}(.+)$`);
+
+    this.initializeFromLS();
+    this.initializeListeners();
+  }
+
+  private initializeFromLS = (): void => {
+    this.maybe(async () => {
+      this.LSEach(async (key) => {
+        const value = await this.item(key);
         if (value !== null) {
-          result[key] = value;
+          this.setEntry(key, value);
         }
       });
-      return result;
     });
   };
 
-  public static get = <T extends EmptyObj>(key: keyof T) => {
-    return LS.maybe(() => {
-      return LS.item(key);
-    });
+  private initializeListeners = (): void => {
+    this.on('set', this.onSetListener);
+    this.on('remove', this.onRemoveListener);
+    this.on('trim', this.onTrimListener);
+    this.on('clear', this.onClearListener);
   };
 
-  public static setPrefix = (newPrefix: string) => {
-    LS.PREFIX = newPrefix;
-    LS.REGEX = new RegExp(`^${LS.PREFIX}(.+)$`);
-  };
-
-  public static set = <T extends EmptyObj, K extends keyof T>(
+  private onSetListener = <K extends keyof T>(
     key: K,
     value: CacheEntry<T[K]>
-  ) => {
-    LS.maybe(() => {
-      window.localStorage.setItem(`${LS.PREFIX}${key}`, JSON.stringify(value));
+  ): void => {
+    this.maybe(async () => {
+      window.localStorage.setItem(
+        `${this.prefix}${key}`,
+        JSON.stringify(value)
+      );
     });
   };
 
-  public static remove = <T extends EmptyObj>(key: keyof T) => {
-    LS.maybe(() => {
-      window.localStorage.removeItem(`${LS.PREFIX}${key}`);
+  private onRemoveListener = <T extends EmptyObj>(key: keyof T): void => {
+    this.maybe(async () => {
+      window.localStorage.removeItem(`${this.prefix}${key}`);
     });
   };
 
-  public static destroy = () => {
-    LS.maybe(() => {
-      LS.each((key) => {
-        LS.remove(key);
+  private onClearListener = (): void => {
+    this.maybe(async () => {
+      this.LSEach(async (key) => {
+        this.onRemoveListener(key);
       });
     });
   };
 
-  public static trim = <T extends EmptyObj>(keys?: Array<keyof T>) => {
-    LS.maybe(() => {
-      if (keys) {
-        keys.forEach((key) => {
-          LS.remove(key);
-        });
-      } else {
-        const now = getTime();
-        LS.each((key) => {
-          const item = LS.item(key);
-          if (item && item.expires < now) {
-            LS.remove(key);
-          }
-        });
-      }
+  private onTrimListener = (keys: Array<keyof T>): void => {
+    this.maybe(async () => {
+      keys.forEach((key) => {
+        this.onRemoveListener(key);
+      });
     });
   };
 
-  public static createEntry = <T>(value: T, ttl = 3600): CacheEntry<T> => {
-    return {
-      value,
-      expires: getTime() + ttl,
-    };
-  };
-
-  private static item = <T extends EmptyObj, K extends keyof T>(
+  private item = async <K extends keyof T>(
     key: K
-  ): CacheEntry<T[K]> | null => {
-    return LS.maybe(() => {
-      const item = window.localStorage.getItem(`${LS.PREFIX}${key}`);
+  ): Promise<CacheEntry<T[K]> | null> => {
+    return this.maybe(async () => {
+      const item = window.localStorage.getItem(`${this.prefix}${key}`);
       if (item) {
         try {
           return JSON.parse(item);
@@ -106,24 +95,22 @@ export default class LS {
     });
   };
 
-  private static maybe = <T>(cb: () => T) => {
+  private maybe = async <T>(cb: () => Promise<T>) => {
     try {
       return cb();
     } catch (err) {
-      if (process.env.NODE_ENV === 'development') {
-        error(
-          { msg: 'failed to access localStorage', originalErr: err },
-          'LS.maybe'
-        );
-      }
+      error(
+        { msg: 'failed to access localStorage', originalErr: err },
+        'LS.maybe'
+      );
     }
     return null;
   };
 
-  private static each = <T extends EmptyObj>(cb: (match: keyof T) => void) => {
+  private LSEach = async (cb: (match: keyof T) => Promise<void>) => {
     for (const key in window.localStorage) {
       if (typeof window.localStorage[key] !== 'undefined') {
-        const match = LS.REGEX.exec(key);
+        const match = this.regex.exec(key);
         if (match && match.length > 1) {
           cb(match[1]);
         }
