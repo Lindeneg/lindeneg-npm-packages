@@ -10,4 +10,14 @@ module.exports = {
       tsconfig: './tsconfig-base.json',
     },
   },
+  verbose: true,
+  collectCoverage: true,
+  collectCoverageFrom: ['**/src/*.ts'],
+  coverageThreshold: {
+    global: {
+      branches: 90,
+      functions: 90,
+      lines: 90,
+    },
+  },
 };

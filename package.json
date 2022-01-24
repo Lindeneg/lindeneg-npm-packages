@@ -13,10 +13,14 @@
     "bs": "yarn install && lerna bootstrap && yarn run build",
     "dev": "ts-node",
     "pub": "yarn run pub:prepare && yarn run pub:deploy",
-    "pub:prepare": "yarn run clean && yarn run lint && yarn run build && yarn run test",
+    "ghcov": "yarn run ghcov:prepare && yarn run ghcov:deploy",
+    "ghcov:prepare": "yarn run prepare:all && yarn run test:js --coverageReporters lcov",
+    "ghcov:deploy": "gh deploy -d coverage/lcov-report",
+    "pub:prepare": "yarn run prepare:all && yarn run test",
     "pub:deploy": "lerna publish",
-    "test": "yarn run test:js && yarn run test:ts",
-    "test:js": "jest --verbose",
+    "prepare:all": "yarn run clean && yarn run lint && yarn run build",
+    "test": "yarn run test:js --coverageReporters text && yarn run test:ts",
+    "test:js": "jest",
     "test:ts": "lerna exec --scope=@lindeneg/types yarn test",
     "lint": "yarn eslint ./packages",
     "lint:fix": "yarn eslint ./packages --fix"
@@ -35,6 +39,7 @@
     "@typescript-eslint/parser": "^5.10.0",
     "eslint": "^8.7.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "gh-pages": "^3.2.3",
     "jest": "^27.4.7",
     "jest-fetch-mock": "^3.0.3",
     "jsdom": "^19.0.0",
@@ -51,6 +56,5 @@
     "typescript": "^4.5.4"
   },
   "peerDependencies": {},
-  "dependencies": {
-  }
+  "dependencies": {}
 }

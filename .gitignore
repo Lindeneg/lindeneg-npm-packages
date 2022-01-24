@@ -3,3 +3,4 @@ lib
 .eslintcache
 notes
 dist
+coverage
