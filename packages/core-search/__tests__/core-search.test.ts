@@ -177,6 +177,13 @@ describe('Test Suite: @lindeneg/core-search', () => {
     expect(filtered[0]).toEqual(users[0]);
     expect(filtered[1]).toEqual(users[1]);
   });
+  test('resolves promise on filterAsync with single query', () => {
+    const search = S(['email']);
+    expect(search.filterAsync('@example.com')).resolves.toEqual([
+      users[0],
+      users[1],
+    ]);
+  });
   test('respect strict mode on non-alphabetic character', () => {
     const search = S(['email'], { mode: 'strict' });
     const filtered = search.filter('@example.com');

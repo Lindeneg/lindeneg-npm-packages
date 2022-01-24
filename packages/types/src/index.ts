@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export type EmptyObj = Record<string | number | symbol, unknown>;
 
 export type AllowedPrimitivesValues<T> = T extends

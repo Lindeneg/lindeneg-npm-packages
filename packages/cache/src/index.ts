@@ -1,7 +1,5 @@
 import type { EmptyObj } from '@lindeneg/types';
 
-type _ListenerConstraint = 'set' | 'remove' | 'clear' | 'destruct';
-
 function getTime() {
   return new Date().getTime() / 1000;
 }
@@ -24,14 +22,23 @@ export type CacheData<T extends EmptyObj> = Partial<{
   [K in keyof T]: CacheEntry<T[K]>;
 }>;
 
-export type ListenerConstraint = _ListenerConstraint | 'trim';
+export type ListenerConstraint =
+  | 'remove'
+  | 'clear'
+  | 'destruct'
+  | 'trim'
+  | 'set';
 
 export type ListenerCallback<
   T extends EmptyObj,
   K extends ListenerConstraint
-> = K extends _ListenerConstraint
-  ? Cache<T>[K]
-  : (removed: Array<keyof T>) => void;
+> = K extends 'trim'
+  ? (removed: Array<keyof T>) => void
+  : K extends 'set'
+  ? (key: keyof T, entry: CacheEntry<T[keyof T]>) => void
+  : K extends 'remove'
+  ? (key: keyof T) => void
+  : () => void;
 
 export type Listeners<T extends EmptyObj> = Partial<{
   [K in ListenerConstraint]: Array<ListenerCallback<T, K>>;
@@ -54,7 +61,7 @@ export default class Cache<T extends EmptyObj> {
     this.interval = setInterval(this.trim, this.config.trim * 1000);
   }
 
-  public keys = () => {
+  public keys = (): Array<keyof T> => {
     const keys: Array<keyof T> = [];
     this.each((key) => {
       if (this.has(key)) {
@@ -64,11 +71,11 @@ export default class Cache<T extends EmptyObj> {
     return keys;
   };
 
-  public size = () => {
+  public size = (): number => {
     return this.keys().length;
   };
 
-  public has = (key: keyof T) => {
+  public has = (key: keyof T): boolean => {
     return typeof this.data[key] !== 'undefined';
   };
 
@@ -103,29 +110,31 @@ export default class Cache<T extends EmptyObj> {
     });
   };
 
-  public set = <K extends keyof T>(key: K, value: T[K]) => {
-    this.runListener('set', key, value);
-    this.data[key] = this.createEntry(value);
+  public set = <K extends keyof T>(key: K, value: T[K]): CacheEntry<T[K]> => {
+    const entry = this.createEntry(value);
+    this.runListener('set', key, entry);
+    this.data[key] = entry;
+    return entry;
   };
 
   public setAsync = <K extends keyof T>(
     key: K,
     value: T[K]
   ): Promise<CacheEntry<T[K]>> => {
-    return new Promise((resolve, reject) => {
-      this.set(key, value);
-      const entry = this.get(key);
-      if (entry) {
-        resolve(entry);
-      } else {
-        reject(`failed to set key '${key}'`);
-      }
+    return new Promise((resolve) => {
+      const entry = this.set(key, value);
+      resolve(entry);
     });
   };
 
-  public remove = (key: keyof T) => {
+  public remove = <K extends keyof T>(key: K): CacheEntry<T[K]> | null => {
     this.runListener('remove', key);
-    delete this.data[key];
+    const entry = this.data[key];
+    if (entry) {
+      delete this.data[key];
+      return entry;
+    }
+    return null;
   };
 
   public removeAsync = <K extends keyof T>(
@@ -142,7 +151,7 @@ export default class Cache<T extends EmptyObj> {
     });
   };
 
-  public clear = () => {
+  public clear = (): void => {
     this.runListener('clear');
     this.each((key) => {
       if (this.has(key)) {
@@ -151,7 +160,7 @@ export default class Cache<T extends EmptyObj> {
     });
   };
 
-  public destruct = () => {
+  public destruct = (): void => {
     this.runListener('destruct');
     clearInterval(this.interval);
   };
@@ -173,7 +182,14 @@ export default class Cache<T extends EmptyObj> {
     }
   };
 
-  private runListener = (event: ListenerConstraint, ...args: unknown[]) => {
+  protected setEntry = <K extends keyof T>(key: K, entry: CacheEntry<T[K]>) => {
+    this.data[key] = entry;
+  };
+
+  private runListener = (
+    event: ListenerConstraint,
+    ...args: unknown[]
+  ): void => {
     const callbacks = this.listeners[event];
     if (callbacks) {
       callbacks.forEach((callback) => {
@@ -182,13 +198,13 @@ export default class Cache<T extends EmptyObj> {
     }
   };
 
-  private each = (cb: (key: keyof T) => void) => {
+  private each = (cb: (key: keyof T) => void): void => {
     for (const key in this.data) {
       cb(key);
     }
   };
 
-  private trim = () => {
+  private trim = (): Array<keyof T> => {
     const now = getTime();
     const removed: Array<keyof T> = [];
     this.each((key) => {
@@ -199,6 +215,7 @@ export default class Cache<T extends EmptyObj> {
       }
     });
     this.runListener('trim', removed);
+    return removed;
   };
 
   public static createEntry = <T>(
