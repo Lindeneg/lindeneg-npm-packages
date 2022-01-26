@@ -1,17 +1,12 @@
 import { useRef, useEffect } from 'react';
 import LS from '@lindeneg/ls-cache';
-import type { CacheConfig } from '@lindeneg/cache';
+import type { Config } from '@lindeneg/ls-cache';
 import type { EmptyObj } from '@lindeneg/types';
 
-type Config<T extends EmptyObj> = Partial<Omit<CacheConfig<T>, 'data'>> & {
-  prefix?: string;
-};
-
-export default function useBrowserCache<T extends EmptyObj>({
-  prefix = '__clch__',
-  ...config
-}: Config<T>) {
-  const ref = useRef<LS<T>>(new LS(prefix, config));
+export default function useBrowserCache<T extends EmptyObj>(
+  config?: Config<T>
+) {
+  const ref = useRef<LS<T>>(new LS(config));
 
   useEffect(() => {
     return () => {
