@@ -47,8 +47,8 @@ export type Listeners<T extends EmptyObj> = Partial<{
 export default class Cache<T extends EmptyObj> {
   private interval: NodeJS.Timer;
   private config: Omit<CacheConfig<T>, 'data'>;
-  private data: CacheData<T>;
   private listeners: Listeners<T>;
+  protected data: CacheData<T>;
 
   constructor(config?: Partial<CacheConfig<T>>) {
     this.config = {
