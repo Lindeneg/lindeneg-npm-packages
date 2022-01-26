@@ -9,112 +9,144 @@ const { error } = new Logger(
   () => process.env.NODE_ENV === 'development'
 );
 
-type Config<T extends EmptyObj> = Partial<Omit<CacheConfig<T>, 'data'>>;
+export type Config<T extends EmptyObj> = Partial<
+  Omit<CacheConfig<T>, 'data'>
+> & {
+  prefix?: string;
+  delayInitialize?: boolean;
+};
+
+export const DEFAULT_PREFIX = '__cl_ls_cache__';
+
+export type MappedKeys<T extends EmptyObj> = {
+  lKey: string;
+  pKey: keyof T;
+};
 
 export default class LS<T extends EmptyObj> extends Cache<T> {
   private readonly prefix: string;
   private readonly regex: RegExp;
 
-  constructor(prefix: string, config?: Config<T>) {
+  constructor({ prefix, delayInitialize, ...config }: Config<T> = {}) {
     super(config);
-    this.prefix = prefix.replace(/[^a-z0-9_]/gi, '');
+    this.prefix = (prefix || DEFAULT_PREFIX).replace(/[^a-z0-9_]/gi, '');
     this.regex = new RegExp(`^${this.prefix}(.+)$`);
-
-    this.initializeFromLS();
     this.initializeListeners();
+
+    if (!delayInitialize) {
+      this.initialize();
+    }
   }
 
-  private initializeFromLS = (): void => {
-    this.maybe(async () => {
-      this.LSEach(async (key) => {
-        const value = await this.item(key);
-        if (value !== null) {
-          this.setEntry(key, value);
-        }
-      });
+  public initialize = async (): Promise<void> => {
+    await this.initializeFromLocalStorage();
+  };
+
+  private initializeFromLocalStorage = async (): Promise<void> => {
+    const keys = await this.getLSKeys();
+    const items = await Promise.all(
+      keys.map(async (key) => {
+        return { key, value: await this.item(key.lKey) };
+      })
+    );
+    items.forEach((e) => {
+      if (e.value) {
+        this.setEntry(e.key.pKey, e.value);
+      }
     });
   };
 
-  private initializeListeners = (): void => {
+  private initializeListeners = async (): Promise<void> => {
     this.on('set', this.onSetListener);
     this.on('remove', this.onRemoveListener);
     this.on('trim', this.onTrimListener);
     this.on('clear', this.onClearListener);
   };
 
-  private onSetListener = <K extends keyof T>(
+  private onSetListener = async <K extends keyof T>(
     key: K,
     value: CacheEntry<T[K]>
-  ): void => {
-    this.maybe(async () => {
+  ): Promise<void> => {
+    try {
       window.localStorage.setItem(
         `${this.prefix}${key}`,
         JSON.stringify(value)
       );
-    });
+    } catch (err) {
+      /* istanbul ignore next */
+      error(
+        { msg: 'failed to access localStorage', originalErr: err },
+        'LS.maybe'
+      );
+    }
   };
 
-  private onRemoveListener = <T extends EmptyObj>(key: keyof T): void => {
-    this.maybe(async () => {
+  private onRemoveListener = async <T extends EmptyObj>(
+    key: keyof T
+  ): Promise<void> => {
+    try {
       window.localStorage.removeItem(`${this.prefix}${key}`);
-    });
+    } catch (err) {
+      /* istanbul ignore next */
+      error(
+        { msg: 'failed to access localStorage', originalErr: err },
+        'LS.maybe'
+      );
+    }
   };
 
-  private onClearListener = (): void => {
-    this.maybe(async () => {
-      this.LSEach(async (key) => {
-        this.onRemoveListener(key);
+  private onClearListener = async (): Promise<void> => {
+    this.getLSKeys().then((keys) => {
+      keys.map(({ lKey }) => {
+        this.onRemoveListener(lKey);
       });
     });
   };
 
-  private onTrimListener = (keys: Array<keyof T>): void => {
-    this.maybe(async () => {
-      keys.forEach((key) => {
-        this.onRemoveListener(key);
-      });
+  /* istanbul ignore next : is tested: ls-cache.test.ts:'can trim items' */
+  private onTrimListener = async (keys: Array<keyof T>): Promise<void> => {
+    keys.map((key) => {
+      this.onRemoveListener(key);
     });
   };
 
   private item = async <K extends keyof T>(
     key: K
   ): Promise<CacheEntry<T[K]> | null> => {
-    return this.maybe(async () => {
-      const item = window.localStorage.getItem(`${this.prefix}${key}`);
-      if (item) {
-        try {
-          return JSON.parse(item);
-        } catch (err) {
-          error(
-            { msg: `could not parse key '${key}'`, originalErr: err },
-            'LS.item'
-          );
+    return new Promise((resolve) => {
+      try {
+        const item = window.localStorage.getItem(String(key));
+        if (item) {
+          const parsed = JSON.parse(item);
+          resolve(parsed);
         }
+      } catch (err) {
+        /* istanbul ignore next */
+        error(
+          { msg: `could not get and parse key '${key}'`, originalErr: err },
+          'LS.item'
+        );
       }
-      return null;
+      resolve(null);
     });
   };
 
-  private maybe = async <T>(cb: () => Promise<T>) => {
+  private getLSKeys = async (): Promise<Array<MappedKeys<T>>> => {
+    const result: Array<MappedKeys<T>> = [];
     try {
-      return cb();
+      for (const key in window.localStorage) {
+        const match = this.regex.exec(key);
+        if (match && match.length > 1) {
+          result.push({ lKey: key, pKey: match[1] });
+        }
+      }
     } catch (err) {
+      /* istanbul ignore next */
       error(
         { msg: 'failed to access localStorage', originalErr: err },
         'LS.maybe'
       );
     }
-    return null;
-  };
-
-  private LSEach = async (cb: (match: keyof T) => Promise<void>) => {
-    for (const key in window.localStorage) {
-      if (typeof window.localStorage[key] !== 'undefined') {
-        const match = this.regex.exec(key);
-        if (match && match.length > 1) {
-          cb(match[1]);
-        }
-      }
-    }
+    return result;
   };
 }
