@@ -1,40 +1,24 @@
-import { useRef } from 'react';
-import useMemoryCache from '@lindeneg/memory-cache';
+import { useRef, useEffect } from 'react';
 import LS from '@lindeneg/ls-cache';
 import type { CacheConfig } from '@lindeneg/cache';
 import type { EmptyObj } from '@lindeneg/types';
 
-type Config<T extends EmptyObj> = Partial<Omit<CacheConfig<T>, 'data'>>;
+type Config<T extends EmptyObj> = Partial<Omit<CacheConfig<T>, 'data'>> & {
+  prefix?: string;
+};
 
-LS.setPrefix('__clch__');
+export default function useBrowserCache<T extends EmptyObj>({
+  prefix = '__clch__',
+  ...config
+}: Config<T>) {
+  const ref = useRef<LS<T>>(new LS(prefix, config));
 
-export default function useBrowserCache<T extends EmptyObj>(
-  config?: Config<T> | (() => Config<T>)
-) {
-  const _config = useRef(typeof config === 'function' ? config() : config);
-  const { cache } = useMemoryCache<T>(() => {
-    const stored = LS.getAll<T>();
-    if (stored !== null) {
-      return { ..._config.current, data: stored };
-    }
-    return { ..._config.current };
-  });
+  useEffect(() => {
+    return () => {
+      const { current } = ref;
+      current.destruct();
+    };
+  }, []);
 
-  cache.on('set', (key, value) => {
-    LS.set(key, LS.createEntry(value, _config.current?.ttl));
-  });
-
-  cache.on('remove', (key) => {
-    LS.remove(key);
-  });
-
-  cache.on('clear', () => {
-    LS.destroy();
-  });
-
-  cache.on('trim', (keys) => {
-    LS.trim(keys);
-  });
-
-  return { cache };
+  return { cache: ref.current };
 }
