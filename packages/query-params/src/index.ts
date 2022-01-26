@@ -1,11 +1,12 @@
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo, useEffect } from 'react';
 
 export default function useQueryParams<T extends Record<string, string>>(
   params: T
 ) {
   const [query, setQuery] = useState<URLSearchParams>(() => {
     const initial = new URLSearchParams(
-      window?.document?.location?.search || ""
+      /* istanbul ignore next */
+      window?.document?.location?.search || ''
     );
     Object.keys(params).forEach((key) => {
       const entry = params[key];
@@ -35,15 +36,15 @@ export default function useQueryParams<T extends Record<string, string>>(
   );
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.history.pushState) {
+    if (typeof window !== 'undefined' && window.history.pushState) {
       const url =
         window.location.protocol +
-        "//" +
+        '//' +
         window.location.host +
         window.location.pathname +
-        "?" +
+        '?' +
         query.toString();
-      window.history.pushState({ path: url }, "", url);
+      window.history.pushState({ path: url }, '', url);
     }
   }, [query]);
 
