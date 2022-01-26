@@ -138,9 +138,9 @@ describe('Test Suite: @lindeneg/cache', () => {
 
   test('can listen to set events', () => {
     const cache = new Cache();
-    const fn = jest.fn((key, value) => {
+    const fn = jest.fn((key, entry) => {
       expect(key).toBe('id');
-      expect(value).toBe(45);
+      expect(entry.value).toBe(45);
     });
 
     cache.on('set', fn);
