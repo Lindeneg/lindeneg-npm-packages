@@ -115,9 +115,9 @@ describe('Test Suite: @lindeneg/memory-cache', () => {
     const { cache } = renderHook(() => useMemoryCache<TestObj>()).result
       .current;
 
-    const fn = jest.fn((key, value) => {
+    const fn = jest.fn((key, entry) => {
       expect(key).toBe('id');
-      expect(value).toBe(45);
+      expect(entry.value).toBe(45);
     });
 
     act(() => {
