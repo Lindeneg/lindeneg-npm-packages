@@ -13,7 +13,6 @@ export type Config<T extends EmptyObj> = Partial<
   Omit<CacheConfig<T>, 'data'>
 > & {
   prefix?: string;
-  delayInitialize?: boolean;
 };
 
 export const DEFAULT_PREFIX = '__cl_ls_cache__';
@@ -27,19 +26,16 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
   private readonly prefix: string;
   private readonly regex: RegExp;
 
-  constructor({ prefix, delayInitialize, ...config }: Config<T> = {}) {
+  constructor({ prefix, ...config }: Config<T> = {}) {
     super(config);
     this.prefix = (prefix || DEFAULT_PREFIX).replace(/[^a-z0-9_]/gi, '');
     this.regex = new RegExp(`^${this.prefix}(.+)$`);
-    this.initializeListeners();
-
-    if (!delayInitialize) {
-      this.initialize();
-    }
   }
 
-  public initialize = async (): Promise<void> => {
+  public initialize = async (): Promise<LS<T>> => {
     await this.initializeFromLocalStorage();
+    await this.initializeListeners();
+    return this;
   };
 
   private initializeFromLocalStorage = async (): Promise<void> => {
@@ -76,7 +72,7 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
       /* istanbul ignore next */
       error(
         { msg: 'failed to access localStorage', originalErr: err },
-        'LS.maybe'
+        'onSetListener'
       );
     }
   };
@@ -90,7 +86,7 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
       /* istanbul ignore next */
       error(
         { msg: 'failed to access localStorage', originalErr: err },
-        'LS.maybe'
+        'onRemoveListener'
       );
     }
   };
@@ -124,7 +120,7 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
         /* istanbul ignore next */
         error(
           { msg: `could not get and parse key '${key}'`, originalErr: err },
-          'LS.item'
+          'item'
         );
       }
       resolve(null);
@@ -144,7 +140,7 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
       /* istanbul ignore next */
       error(
         { msg: 'failed to access localStorage', originalErr: err },
-        'LS.maybe'
+        'getLSKeys'
       );
     }
     return result;
