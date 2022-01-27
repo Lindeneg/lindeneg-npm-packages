@@ -11,7 +11,9 @@ module.exports = {
     },
   },
   verbose: true,
+  collectCoverage: true,
   collectCoverageFrom: ['**/src/*.ts'],
+  coverageReporters: ['lcov', 'text'],
   coverageThreshold: {
     global: {
       branches: 90,
