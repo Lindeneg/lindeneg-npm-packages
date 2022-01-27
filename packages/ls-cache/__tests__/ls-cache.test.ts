@@ -55,11 +55,15 @@ describe('Test Suite: @lindeneg/ls-cache', () => {
     clearLS(PREFIX);
     clearLS(PREFIX2);
   });
-  test('initialize cache with empty localStorage', async () => {
-    const ls = await newLS().initialize();
+  test('asynchronously initializes cache with empty localStorage', async () => {
+    const ls = await newLS({ delayInit: true }).initialize();
     expect(ls.size()).toBe(0);
   });
-  test('initialize cache with non-empty localStorage', async () => {
+  test('synchronously initializes cache with empty localStorage', () => {
+    const ls = newLS();
+    expect(ls.size()).toBe(0);
+  });
+  test('asynchronously initializes cache with non-empty localStorage', async () => {
     const data = getMock();
     setLS(data);
     const ls = await newLS({ delayInit: true }).initialize();
@@ -71,7 +75,7 @@ describe('Test Suite: @lindeneg/ls-cache', () => {
       expect(getLS(<MockKey>key)).toEqual(entry);
     });
   });
-  test('initialize cache with non-empty localStorage', async () => {
+  test('synchronously initializes cache with non-empty localStorage', () => {
     const data = getMock();
     setLS(data);
     const ls = newLS();
@@ -83,78 +87,83 @@ describe('Test Suite: @lindeneg/ls-cache', () => {
       expect(getLS(<MockKey>key)).toEqual(entry);
     });
   });
-  test('initializes with specified prefix', async () => {
-    const ls = await newLS({ prefix: PREFIX2 }).initialize();
+  test('asynchronously initializes with specified prefix', async () => {
+    const ls = await newLS({ prefix: PREFIX2, delayInit: true }).initialize();
     ls.set('id', 1);
     expect(getLS('id', PREFIX2).value).toBe(1);
     expect(getLS('id', PREFIX)).toBe(null);
   });
-  test('can set item', async () => {
-    const ls = await newLS().initialize();
+  test('synchronously initializes with specified prefix', () => {
+    const ls = newLS({ prefix: PREFIX2 });
     ls.set('id', 1);
-    expect(getLS('id').value).toEqual(1);
+    expect(getLS('id', PREFIX2).value).toBe(1);
+    expect(getLS('id', PREFIX)).toBe(null);
   });
-  test('can set item using async', async () => {
-    const ls = await newLS().initialize();
+  test('asynchronously sets item', async () => {
+    const ls = await newLS({ delayInit: true }).initialize();
     await ls.setAsync('id', 1);
     expect(getLS('id').value).toEqual(1);
   });
-  test('can get item', async () => {
-    const ls = await newLS().initialize();
+  test('synchronously sets item', () => {
+    const ls = newLS();
+    ls.set('id', 1);
+    expect(getLS('id').value).toEqual(1);
+  });
+  test('asynchronously gets item', async () => {
+    const ls = await newLS({ delayInit: true }).initialize();
+    ls.set('id', 1);
+    expect((await ls.getAsync('id'))?.value).toEqual(1);
+  });
+  test('synchronously gets item', () => {
+    const ls = newLS();
     ls.set('id', 1);
     expect(ls.get('id')?.value).toEqual(1);
   });
-  test('returns null on get invalid item', async () => {
-    const ls = await newLS().initialize();
-    expect(ls.get('id')).toEqual(null);
-  });
-  test('rejects promise on getAsync with invalid item', async () => {
-    const ls = await newLS().initialize();
+  test('asynchronously rejects promise on invalid get', async () => {
+    const ls = await newLS({ delayInit: true }).initialize();
     expect(ls.getAsync('id')).rejects.toMatch("key 'id' could not be found");
   });
-  test('can get item using async', async () => {
-    const ls = await newLS().initialize();
-    await ls.setAsync('id', 1);
-    expect((await ls.getAsync('id')).value).toEqual(1);
-  });
-  test('can get value', async () => {
-    const ls = await newLS().initialize();
+  test('synchronously gets value', () => {
+    const ls = newLS();
     ls.set('id', 1);
     expect(ls.value('id')).toEqual(1);
   });
-  test('can get value using async', async () => {
-    const ls = await newLS().initialize();
+  test('asynchronously gets value', async () => {
+    const ls = await newLS({ delayInit: true }).initialize();
     await ls.setAsync('id', 1);
     expect(await ls.valueAsync('id')).toEqual(1);
   });
-  test('can remove item', async () => {
-    const ls = await newLS().initialize();
+  test('synchronously removes item', () => {
+    const ls = newLS();
     ls.set('id', 1);
     expect(ls.get('id')?.value).toBe(1);
     ls.remove('id');
     expect(ls.get('id')).toBe(null);
+    expect(getLS('id')).toBe(null);
   });
-  test('can remove item using async', async () => {
-    const ls = await newLS().initialize();
+  test('asynchronously removes item', async () => {
+    const ls = await newLS({ delayInit: true }).initialize();
     await ls.setAsync('id', 1);
     expect(await ls.valueAsync('id')).toEqual(1);
+    expect(getLS('id').value).toBe(1);
+    await ls.removeAsync('id');
+    expect(ls.valueAsync('id')).rejects.toMatch("key 'id' could not be found");
+    expect(getLS('id')).toBe(null);
   });
-  test('can clear items', async () => {
+  test('can clear items', () => {
     const data = getMock();
     setLS(data);
-    const ls = await newLS().initialize();
-    await ls.initialize();
+    const ls = newLS();
     expect(ls.size()).toBeGreaterThan(0);
     expect(ls.size()).toBe(Object.keys(window.localStorage).length);
     ls.clear();
     expect(ls.size()).toBe(0);
     expect(ls.size()).toBe(Object.keys(window.localStorage).length);
   });
-  test('can trim items', async () => {
+  test('can trim items', () => {
     const data = getMock(0.1);
     setLS(data);
     const ls = newLS({ trim: 0.2 });
-    await ls.initialize();
     expect(ls.size()).toBeGreaterThan(0);
     expect(ls.size()).toBe(Object.keys(data).length);
     setTimeout(() => {
