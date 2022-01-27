@@ -15,15 +15,16 @@ Follows the same usage as: [@lindeneg/cache](https://github.com/lindeneg/lindene
 ```ts
 import LS from '@lindeneg/ls-cache';
 
+// default usage
 const ls = new LS({
   // all config items are optional, these are defaults
   prefix: '__cl_ls_cache__', // avoids key collisions
-  delayInit: false, // allows to initialize when appropriate
+  delayInit: false, // allows to initialize when wanted
   trim: 600, // trim interval in seconds
   ttl: 3600, // entry time-to-live in seconds
 });
 
-// with async
+// async usage
 const ls = new LS({
   delayInit: true,
 });
