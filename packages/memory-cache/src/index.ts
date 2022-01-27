@@ -4,11 +4,9 @@ import type { CacheConfig } from '@lindeneg/cache';
 import type { EmptyObj } from '@lindeneg/types';
 
 export default function useMemoryCache<T extends EmptyObj>(
-  config?: Partial<CacheConfig<T>> | (() => Partial<CacheConfig<T>>)
+  config?: Partial<CacheConfig<T>>
 ) {
-  const ref = useRef<Cache<T>>(
-    new Cache(typeof config === 'function' ? config() : config)
-  );
+  const ref = useRef<Cache<T>>(new Cache(config));
 
   useEffect(() => {
     return () => {
