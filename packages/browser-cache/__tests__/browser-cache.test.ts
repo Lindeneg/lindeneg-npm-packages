@@ -69,17 +69,12 @@ describe('Test Suite: @lindeneg/browser-cache', () => {
 
     expect(cache.size()).toBe(0);
   });
-  /*
 
-  test('can initialize cache with initial LS data', async () => {
+  test('can initialize cache with initial LS data', () => {
     const data = getMock();
     setLS(data);
     const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
       .current;
-
-    cache.initialize();
-
-    console.log(Object.keys(window.localStorage));
 
     expect(cache.size()).toBe(mockSize());
     expect(cache.value('id')).toBe(data.id?.value);
@@ -168,5 +163,4 @@ describe('Test Suite: @lindeneg/browser-cache', () => {
       done();
     }, 300);
   });
-  */
 });
