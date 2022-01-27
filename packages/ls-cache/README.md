@@ -10,28 +10,23 @@ Used by: [@lindeneg/browser-cache](https://github.com/lindeneg/lindeneg-npm-pack
 
 ### Usage
 
+Follows the same usage as: [@lindeneg/cache](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/cache), however a `prefix` may be specified to avoid `localStorage` key collisions.
+
 ```ts
 import LS from '@lindeneg/ls-cache';
 
-// set a key prefix to avoid localStorage collisions
-LS.setPrefix('__something__');
+const ls = new LS({
+  // all config items are optional, these are defaults
+  prefix: '__cl_ls_cache__', // avoids key collisions
+  delayInit: false, // allows to initialize when appropriate
+  trim: 600, // trim interval in seconds
+  ttl: 3600, // entry time-to-live in seconds
+});
 
-// set item, second argument in createEntry
-// is optional, default is 3600 seconds
-LS.set('id', LS.createEntry('some-id', 3600));
+// with async
+const ls = new LS({
+  delayInit: true,
+});
 
-// remove an item
-LS.remove('id');
-
-// get an item, returns a CacheEntry
-LS.get('id');
-
-// get all items
-LS.getAll();
-
-// destroy all items
-LS.destroy();
-
-// trim items
-LS.trim();
+await ls.initialize();
 ```

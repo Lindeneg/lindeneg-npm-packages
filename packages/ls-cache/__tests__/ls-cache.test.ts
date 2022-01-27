@@ -62,7 +62,19 @@ describe('Test Suite: @lindeneg/ls-cache', () => {
   test('initialize cache with non-empty localStorage', async () => {
     const data = getMock();
     setLS(data);
-    const ls = await newLS().initialize();
+    const ls = await newLS({ delayInit: true }).initialize();
+    expect(ls.size()).toBe(3);
+    expect(Object.keys(window.localStorage).length).toBe(3);
+    Object.keys(data).forEach((key) => {
+      const entry = data[<MockKey>key];
+      expect(ls.get(<MockKey>key)).toEqual(entry);
+      expect(getLS(<MockKey>key)).toEqual(entry);
+    });
+  });
+  test('initialize cache with non-empty localStorage', async () => {
+    const data = getMock();
+    setLS(data);
+    const ls = newLS();
     expect(ls.size()).toBe(3);
     expect(Object.keys(window.localStorage).length).toBe(3);
     Object.keys(data).forEach((key) => {
