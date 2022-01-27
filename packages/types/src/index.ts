@@ -28,3 +28,5 @@ export type UniqueArray<T, U extends unknown[] = []> = T extends [
 ]
   ? UniqueArray<J, I extends U[number] ? U : [...U, I]>
   : U;
+
+export type SafeOmit<T extends EmptyObj, K extends keyof T> = Omit<T, K>;
