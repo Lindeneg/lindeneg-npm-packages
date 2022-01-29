@@ -2,6 +2,8 @@
 
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/cache) ![license](https://badgen.net/npm/license/@lindeneg/cache)
 
+---
+
 Utility class for caching data.
 
 Used by: [@lindeneg/memory-cache](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/memory-cache) | [@lindeneg/ls-cache](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/ls-cache)
