@@ -45,7 +45,6 @@ function SomeComponent() {
 
 | Name        | Types - Note: `K extends keyof T`                                                                                 | Description                                                       |
 | ----------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| initialize  | `() => Promise<LS<T>>`                                                                                            | initializes localStorage collection and internal listeners        |
 | get         | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | gets entry, use `getAsync` for promise                            |
 | value       | `(key: K) => T[K] \| null`                                                                                        | gets entry value, use `valueAsync` for promise                    |
 | set         | `(key: K, value: T[K]) => { expires: number; value: T[K] }`                                                       | sets entry, use `setAsync` for promise                            |
