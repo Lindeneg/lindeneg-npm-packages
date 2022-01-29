@@ -1,6 +1,10 @@
 ### @lindeneg/ls-cache
 
-Utility class for interacting with [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) | [bundle-size](https://bundlephobia.com/package/@lindeneg/ls-cache)
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/ls-cache) ![license](https://badgen.net/npm/license/@lindeneg/ls-cache)
+
+---
+
+Utility class for interacting with [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
 
 Used by: [@lindeneg/browser-cache](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/browser-cache)
 
@@ -10,19 +14,11 @@ Used by: [@lindeneg/browser-cache](https://github.com/lindeneg/lindeneg-npm-pack
 
 ### Usage
 
-Follows the same usage as: [@lindeneg/cache](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/cache), however a `prefix` may be specified to avoid `localStorage` key collisions.
-
 ```ts
 import LS from '@lindeneg/ls-cache';
 
 // default usage
-const ls = new LS({
-  // all config items are optional, these are defaults
-  prefix: '__cl_ls_cache__', // avoids key collisions
-  delayInit: false, // allows to initialize when wanted
-  trim: 600, // trim interval in seconds
-  ttl: 3600, // entry time-to-live in seconds
-});
+const ls = new LS();
 
 // async usage
 const ls = new LS({
@@ -31,3 +27,30 @@ const ls = new LS({
 
 await ls.initialize();
 ```
+
+#### Config
+
+| Name      | Required | Type      | Default           | Description                                  |
+| --------- | -------- | --------- | ----------------- | -------------------------------------------- |
+| prefix    | N        | `string`  | `__cl_ls_cache__` | prefix localStorage keys to avoid collisions |
+| delayInit | N        | `boolean` | `false`           | delay localStorage initialization            |
+| trim      | N        | `number`  | `600`             | trimming interval in seconds.                |
+| ttl       | N        | `number`  | `3600`            | time-to-live in seconds.                     |
+
+#### Methods
+
+| Name                 | Types - Note: `K extends keyof T`                                                                                 | Description                                                       |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| initialize           | `() => Promise<LS<T>>`                                                                                            | initializes localStorage collection and internal listeners        |
+| get                  | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | gets entry, use `getAsync` for promise                            |
+| value                | `(key: K) => T[K] \| null`                                                                                        | gets entry value, use `valueAsync` for promise                    |
+| set                  | `(key: K, value: T[K]) => { expires: number; value: T[K] }`                                                       | sets entry, use `setAsync` for promise                            |
+| remove               | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | removes entry, use `removeAsync` for promise                      |
+| has                  | `(key: K) => boolean`                                                                                             | check if entry exists                                             |
+| size                 | `() => number`                                                                                                    | get size of cache                                                 |
+| keys                 | `() => Array`                                                                                                     | get array of defined keys                                         |
+| clear                | `() => void`                                                                                                      | clear cache, use `clearAsync` for promise                         |
+| destruct             | `() => void`                                                                                                      | destroy cache, removes trim listener                              |
+| createEntry          | `(value: unknown) => { expires: number; value: unknown }`                                                         | create a cache entry                                              |
+| `static` createEntry | `(value: unknown, ttl = 3600) => { expires: number; value: unknown }`                                             | create a cache entry without instantiating a new instance         |
+| on                   | `(event: "set" \| "remove" \| "clear" \| "destruct" \| "trim", callback: ((...args: unknown[]) => void)) => void` | set event callback, supports multiple listeners on the same event |
