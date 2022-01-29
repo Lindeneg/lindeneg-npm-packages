@@ -11,6 +11,7 @@ export default function useMemoryCache<T extends EmptyObj>(
   useEffect(() => {
     return () => {
       const { current } = ref;
+      // removes trim interval
       current.destruct();
     };
   }, []);
