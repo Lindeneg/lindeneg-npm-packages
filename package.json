@@ -4,6 +4,9 @@
   "repository": "git@github.com:Lindeneg/lindeneg-npm-packages.git",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
+  "engines": {
+    "node": ">=14.17.6"
+  },
   "scripts": {
     "build": "bash ./build.sh",
     "clean": "lerna exec --parallel -- rm -rf dist",
