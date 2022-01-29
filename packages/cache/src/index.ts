@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 export { default as default } from './cache';
 export { DEFAULT_TRIM, DEFAULT_TTL } from './constants';
 export type {
