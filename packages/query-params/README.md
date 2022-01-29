@@ -1,8 +1,10 @@
 ### @lindeneg/query-params
 
-Hook using [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/query-params) ![license](https://badgen.net/npm/license/@lindeneg/query-params)
 
-[sandbox](https://codesandbox.io/s/lindeneg-query-params-rnmi9?file=/src/App.tsx) | [bundle-size](https://bundlephobia.com/package/@lindeneg/query-params)
+---
+
+Hook using [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
 
 ### Installation
 

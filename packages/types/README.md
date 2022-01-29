@@ -1,23 +1,18 @@
 ### @lindeneg/types
 
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![license](https://badgen.net/npm/license/@lindeneg/types)
+
 Utility types.
 
 ### Installation
 
 `yarn add -D @lindeneg/types`
 
-### Types
+### Usage
+
+We'll use the this `User` type in the following examples:
 
 ```ts
-import type {
-  // Partial but recursive
-  RecursivePartialObj,
-  // substitute keys with new values
-  Substitute,
-  // unique values in an array
-  UniqueArray,
-} from '@lindeneg/types';
-
 type User = {
   id: number;
   name: {
@@ -29,10 +24,17 @@ type User = {
     city: string;
   };
 };
+```
+
+#### RecursivePartialObj
+
+`Partial` but recursive.
+
+```ts
+import type { RecursivePartialObj } from '@lindeneg/types';
 
 type PartialUser = RecursivePartialObj<User>;
-
-// PartialUser would be the following type
+// becomes:
 {
   id?: number;
   name?: {
@@ -44,18 +46,51 @@ type PartialUser = RecursivePartialObj<User>;
     city?: string;
   };
 };
+```
 
-type SubstitutedUser = Substitute<User, { name: [string, string]; address: string }>;
+#### Substitute
 
-// SubstitutedUser would be the following type
+Substitute types in an object.
+
+```ts
+import type { Substitute } from '@lindeneg/types';
+
+type SubstitutedUser = Substitute<User, { name: [string, string] }>;
+// becomes:
 {
   id: number;
   name: [string, string];
-  address: string;
-};
+  address: {
+    street: string;
+    city: string;
+  }
+}
+```
+
+#### UniqueArray
+
+Substitute a keys type in an object with another type.
+
+```ts
+import type { UniqueArray } from '@lindeneg/types';
 
 type Arr = UniqueArray<[1, 1, 2, 3, 4, 4, 5, 5, 5, 6, 7]>;
 
-// Arr would be the following type
-[1, 2, 3, 4, 5, 6, 7]
+// becomes:
+[1, 2, 3, 4, 5, 6, 7];
+```
+
+#### SafeOmit
+
+`Omit` but with enhanced type-safety.
+
+```ts
+import type { SafeOmit } from '@lindeneg/types';
+
+type OmittedUser = SafeOmit<User, 'name' | 'address'>;
+
+// becomes:
+{
+  id: string;
+}
 ```

@@ -43,17 +43,17 @@ function SomeComponent() {
 
 #### Methods
 
-| Name                 | Types - Note: `K extends keyof T`                                                                                 | Description                                                       |
-| -------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| get                  | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | gets entry, use `getAsync` for promise                            |
-| value                | `(key: K) => T[K] \| null`                                                                                        | gets entry value, use `valueAsync` for promise                    |
-| set                  | `(key: K, value: T[K]) => { expires: number; value: T[K] }`                                                       | sets entry, use `setAsync` for promise                            |
-| remove               | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | removes entry, use `removeAsync` for promise                      |
-| has                  | `(key: K) => boolean`                                                                                             | check if entry exists                                             |
-| size                 | `() => number`                                                                                                    | get size of cache                                                 |
-| keys                 | `() => Array<K>`                                                                                                  | get array of defined keys                                         |
-| clear                | `() => void`                                                                                                      | clear cache, use `clearAsync` for promise                         |
-| destruct             | `() => void`                                                                                                      | destroy cache, removes trim listener                              |
-| createEntry          | `(value: unknown) => { expires: number; value: unknown }`                                                         | create a cache entry                                              |
-| `static` createEntry | `(value: unknown, ttl = 3600) => { expires: number; value: unknown }`                                             | create a cache entry without instantiating a new instance         |
-| on                   | `(event: "set" \| "remove" \| "clear" \| "destruct" \| "trim", callback: ((...args: unknown[]) => void)) => void` | set event callback, supports multiple listeners on the same event |
+| Name        | Types - Note: `K extends keyof T`                                                                                 | Description                                                       |
+| ----------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| initialize  | `() => Promise<LS<T>>`                                                                                            | initializes localStorage collection and internal listeners        |
+| get         | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | gets entry, use `getAsync` for promise                            |
+| value       | `(key: K) => T[K] \| null`                                                                                        | gets entry value, use `valueAsync` for promise                    |
+| set         | `(key: K, value: T[K]) => { expires: number; value: T[K] }`                                                       | sets entry, use `setAsync` for promise                            |
+| remove      | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | removes entry, use `removeAsync` for promise                      |
+| has         | `(key: K) => boolean`                                                                                             | check if entry exists                                             |
+| size        | `() => number`                                                                                                    | get size of cache                                                 |
+| keys        | `() => Array`                                                                                                     | get array of defined keys                                         |
+| clear       | `() => void`                                                                                                      | clear cache, use `clearAsync` for promise                         |
+| destruct    | `() => void`                                                                                                      | destroy cache, removes trim listener                              |
+| createEntry | `(value: unknown) => { expires: number; value: unknown }`                                                         | create a cache entry                                              |
+| on          | `(event: "set" \| "remove" \| "clear" \| "destruct" \| "trim", callback: ((...args: unknown[]) => void)) => void` | set event callback, supports multiple listeners on the same event |
