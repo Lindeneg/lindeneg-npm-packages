@@ -20,8 +20,7 @@
     "use-local-storage"
   ],
   "dependencies": {
-    "@lindeneg/ls-cache": "^1.1.1",
-    "@lindeneg/memory-cache": "^1.1.1"
+    "@lindeneg/ls-cache": "^1.1.1"
   },
   "scripts": {
     "custom": "echo no custom script"

@@ -16,7 +16,10 @@ const NAME = (() => {
 const isReactLib =
   /^(browser-cache|memory-cache|on-key|query-params|search)$/.test(NAME);
 
-console.log('isReact: ' + (isReactLib ? 'Y' : 'N'), '| @lindeneg/' + NAME);
+console.log({
+  msg: '@lindeneg/' + NAME,
+  isReactLib,
+});
 
 export default {
   input: PACKAGE_ROOT_PATH + '/src/index.ts',

@@ -207,6 +207,24 @@ describe('Test Suite: @lindeneg/search', () => {
     expect(filtered[0]).toEqual(usrs[1]);
     expect(filtered[1]).toEqual(usrs[2]);
   });
+  test('returns filtered on HTMLInputElement event', () => {
+    const usrs = users();
+    const { result } = renderHook(() =>
+      useSearch(usrs, ['activity.n.events.n.context'])
+    );
+
+    act(() =>
+      result.current.onQueryChange({
+        currentTarget: { value: 'move' },
+      } as React.FormEvent<HTMLInputElement>)
+    );
+
+    const { filtered } = result.current;
+
+    expect(filtered.length).toEqual(2);
+    expect(filtered[0]).toEqual(usrs[1]);
+    expect(filtered[1]).toEqual(usrs[2]);
+  });
   test('returns filtered on multiple nested queries', () => {
     const usrs = users();
     const { result } = renderHook(() =>

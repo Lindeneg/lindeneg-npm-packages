@@ -42,34 +42,111 @@ describe('Test Suite: @lindeneg/cache', () => {
       Math.round(Number(data.id?.expires))
     );
   });
-  test('can set item', () => {
+  test('can synchronously set entry', () => {
     const cache = new Cache();
 
-    cache.set('id', 5);
-
+    expect(cache.set('id', 5).value).toBe(5);
     expect(cache.size()).toBe(1);
     expect(cache.value('id')).toBe(5);
     expect(cache.get('id')?.value).toBe(5);
   });
-  test('can remove item', () => {
-    const data = getMock();
-    const cache = new Cache({ data });
+  test('can asynchronously set entry', async () => {
+    const cache = new Cache();
 
-    expect(cache.size()).toBe(mockSize());
+    expect((await cache.setAsync('id', 5)).value).toBe(5);
+    expect(cache.size()).toBe(1);
+    expect(cache.value('id')).toBe(5);
+    expect(cache.get('id')?.value).toBe(5);
+  });
+  test('can synchronously get entry with valid key', () => {
+    const cache = new Cache();
 
-    cache.remove('id');
-    expect(cache.size()).toBe(mockSize() - 1);
+    cache.set('id', 5);
+
+    expect(cache.get('id')?.value).toBe(5);
+  });
+  test('can asynchronously get entry with valid key', async () => {
+    const cache = new Cache();
+
+    cache.set('id', 5);
+
+    expect((await cache.getAsync('id')).value).toBe(5);
+  });
+  test('can synchronously get null with invalid key', () => {
+    const cache = new Cache();
+
+    expect(cache.get('id')).toBe(null);
+  });
+  test('can asynchronously throw on get with invalid key', () => {
+    const cache = new Cache();
+
+    expect(cache.getAsync('id')).rejects.toMatch("key 'id' could not be found");
+  });
+  test('can synchronously get value with valid key', () => {
+    const cache = new Cache();
+
+    cache.set('id', 5);
+
+    expect(cache.value('id')).toBe(5);
+  });
+  test('can asynchronously get value with valid key', () => {
+    const cache = new Cache();
+
+    cache.set('id', 5);
+
+    expect(cache.valueAsync('id')).resolves.toBe(5);
+  });
+  test('can synchronously get null value with invalid key', () => {
+    const cache = new Cache();
     expect(cache.value('id')).toBe(null);
   });
-  test('can check item', () => {
-    const data = getMock();
-    const cache = new Cache({ data });
-
-    expect(cache.has('id')).toBe(true);
-    //@ts-expect-error unknown key test
-    expect(cache.has('not-id')).toBe(false);
+  test('can asynchronously throw on get value with invalid key', () => {
+    const cache = new Cache();
+    expect(cache.valueAsync('id')).rejects.toMatch(
+      "key 'id' could not be found"
+    );
   });
-  test('can clear items', () => {
+  test('can synchronously remove entry with valid key', () => {
+    const cache = new Cache();
+
+    const entry = cache.set('id', 5);
+
+    expect(entry.value).toBe(5);
+    expect(cache.size()).toBe(1);
+
+    const removed = cache.remove('id');
+
+    expect(removed).toEqual(entry);
+    expect(cache.size()).toBe(0);
+  });
+  test('can asynchronously remove entry with valid key', async () => {
+    const cache = new Cache();
+
+    const entry = await cache.setAsync('id', 5);
+
+    expect(entry.value).toBe(5);
+    expect(cache.size()).toBe(1);
+
+    const removed = await cache.removeAsync('id');
+
+    expect(removed).toEqual(entry);
+    expect(cache.size()).toBe(0);
+  });
+  test('can synchronously get null on remove entry with invalid key', () => {
+    const cache = new Cache();
+
+    const removed = cache.remove('id');
+
+    expect(removed).toEqual(null);
+  });
+  test('can asynchronously throw on remove entry with invalid key', () => {
+    const cache = new Cache();
+
+    expect(cache.removeAsync('id')).rejects.toMatch(
+      "entry with key 'id' does not exist in cache"
+    );
+  });
+  test('can synchronously clear cache', () => {
     const data = getMock();
     const cache = new Cache({ data });
 
@@ -79,7 +156,25 @@ describe('Test Suite: @lindeneg/cache', () => {
 
     expect(cache.size()).toBe(0);
   });
-  test('can trim items', (done) => {
+  test('can asynchronously clear cache', async () => {
+    const data = getMock();
+    const cache = new Cache({ data });
+
+    expect(cache.size()).toBe(mockSize());
+
+    await cache.clearAsync();
+
+    expect(cache.size()).toBe(0);
+  });
+  test('can check entry status', () => {
+    const data = getMock();
+    const cache = new Cache({ data });
+
+    expect(cache.has('id')).toBe(true);
+    //@ts-expect-error unknown key test
+    expect(cache.has('not-id')).toBe(false);
+  });
+  test('can trim entries', (done) => {
     const data = getMock(0.1);
     const cache = new Cache({ data, trim: 0.2 });
 
@@ -93,9 +188,9 @@ describe('Test Suite: @lindeneg/cache', () => {
 
   test('can listen to set events', () => {
     const cache = new Cache();
-    const fn = jest.fn((key, value) => {
+    const fn = jest.fn((key, entry) => {
       expect(key).toBe('id');
-      expect(value).toBe(45);
+      expect(entry.value).toBe(45);
     });
 
     cache.on('set', fn);

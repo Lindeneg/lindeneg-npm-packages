@@ -1,5 +1,5 @@
 import Logger, { Severity } from '../src';
-import { EmptyObj } from '@lindeneg/types';
+import type { EmptyObj } from '@lindeneg/types';
 
 function json(obj: EmptyObj) {
   return JSON.stringify(obj, null, 2);
@@ -159,10 +159,53 @@ describe('Test Suite: @lindeneg/logger', () => {
       })
     );
   });
-
-  test('respects specified guard function', () => {
-    const { print } = new Logger('someOrigin', () => false);
+  test('passes severity to guard function', () => {
+    const fn = jest.fn((s) => {
+      expect(s).toEqual(Severity.Debug);
+      return false;
+    });
+    const { print } = new Logger('someOrigin', fn);
     print('some-error', Severity.Debug);
     expect(consoleOutput.length).toBe(0);
+  });
+  test('respects specified guard function', () => {
+    const { print, log, warn, error } = new Logger('someOrigin', () => false);
+    print('some-error', Severity.Debug);
+    log('some-error');
+    warn('some-error');
+    error('some-error');
+    expect(consoleOutput.length).toBe(0);
+  });
+  test('respects specified dynamic guard function', () => {
+    const ts = Date.now();
+    const fn = jest.fn<boolean, [Severity]>((s) => {
+      return s >= Severity.Warn;
+    });
+    const { print, log, warn, error } = new Logger('someOrigin', fn);
+    print('some-error', Severity.Debug, '', ts);
+    log('some-error', '', ts);
+    warn('some-error', '', ts);
+    error('some-error', '', ts);
+
+    expect(consoleOutput.length).toBe(4);
+    expect(consoleOutput[0]).toBe('\x1b[33m%s\x1b');
+    expect(consoleOutput[1]).toBe(
+      json({
+        origin: 'someOrigin',
+        severity: Severity.Warn,
+        ts,
+        msg: 'some-error',
+      })
+    );
+
+    expect(consoleOutput[2]).toBe('\x1b[31m%s\x1b');
+    expect(consoleOutput[3]).toBe(
+      json({
+        origin: 'someOrigin',
+        severity: Severity.Error,
+        ts,
+        msg: 'some-error',
+      })
+    );
   });
 });

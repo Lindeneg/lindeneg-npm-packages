@@ -1,8 +1,10 @@
 ### @lindeneg/search
 
-Filter and optionally sort objects by nested values against a query.
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/search) ![license](https://badgen.net/npm/license/@lindeneg/search)
 
-[sandbox](https://codesandbox.io/s/lindeneg-search-5ccji?file=/src/App.tsx) | [bundle-size](https://bundlephobia.com/package/@lindeneg/search)
+---
+
+Filter and optionally sort objects by nested values against a query in a type-safe way.
 
 ### Installation
 

@@ -1,5 +1,10 @@
 import { expectType, TypeEqual } from 'ts-expect';
-import type { RecursivePartialObj, Substitute, UniqueArray } from '../src';
+import type {
+  RecursivePartialObj,
+  SafeOmit,
+  Substitute,
+  UniqueArray,
+} from '../src';
 
 type User = {
   id: number;
@@ -54,3 +59,8 @@ expectType<RecursivePartialObj<User>>({
 expectType<RecursivePartialObj<User>>({
   address: { street: '', city: '' },
 });
+
+expectType<TypeEqual<SafeOmit<User, 'address' | 'name'>, { id: number }>>(true);
+expectType<TypeEqual<SafeOmit<User, 'address'>, { id: number }>>(false);
+//@ts-expect-error should raise a TypeScript error because the key is not found
+expectType<TypeEqual<SafeOmit<User, 'not-exist'>, User>>(true);

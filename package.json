@@ -4,19 +4,24 @@
   "repository": "git@github.com:Lindeneg/lindeneg-npm-packages.git",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
+  "engines": {
+    "node": ">=14.17.6"
+  },
   "scripts": {
-    "build": "yarn run build:all && yarn run custom:run ",
-    "build:all": "lerna exec -- 'rollup -c ../../rollup.config.js && tsc --project ./tsconfig-prod.json --declaration --emitDeclarationOnly --declarationDir ./dist'",
-    "custom:run": "lerna exec --parallel -- yarn custom",
+    "build": "bash ./build.sh",
     "clean": "lerna exec --parallel -- rm -rf dist",
     "reset": "rm yarn.lock && lerna exec --parallel -- rm -rf dist node_modules && yarn run bs",
     "bs": "yarn install && lerna bootstrap && yarn run build",
     "dev": "ts-node",
     "pub": "yarn run pub:prepare && yarn run pub:deploy",
-    "pub:prepare": "yarn run clean && yarn run lint && yarn run build && yarn run test",
+    "ghcov": "yarn run ghcov:prepare && yarn run ghcov:deploy",
+    "ghcov:prepare": "yarn run prepare:all && yarn run test:js",
+    "ghcov:deploy": "gh deploy -d coverage/lcov-report",
+    "pub:prepare": "yarn run prepare:all && yarn run test",
     "pub:deploy": "lerna publish",
+    "prepare:all": "yarn run clean && yarn run lint && yarn run build",
     "test": "yarn run test:js && yarn run test:ts",
-    "test:js": "jest --verbose",
+    "test:js": "jest",
     "test:ts": "lerna exec --scope=@lindeneg/types yarn test",
     "lint": "yarn eslint ./packages",
     "lint:fix": "yarn eslint ./packages --fix"
@@ -35,6 +40,7 @@
     "@typescript-eslint/parser": "^5.10.0",
     "eslint": "^8.7.0",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "gh-pages": "^3.2.3",
     "jest": "^27.4.7",
     "jest-fetch-mock": "^3.0.3",
     "jsdom": "^19.0.0",
@@ -50,5 +56,6 @@
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   },
-  "peerDependencies": {}
+  "peerDependencies": {},
+  "dependencies": {}
 }

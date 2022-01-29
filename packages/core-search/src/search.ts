@@ -19,12 +19,18 @@ export default class Search<T extends unknown[]> {
     this.sort = opts?.sort;
   }
 
-  public filter(query: string) {
+  public filter = (query: string) => {
     return this.search(query);
-  }
+  };
+
+  public filterAsync = (query: string): Promise<T> => {
+    return new Promise((resolve) => {
+      resolve(this.search(query));
+    });
+  };
 
   private search(query: string) {
-    let data: T;
+    let data: T = this.obj;
     if (Array.isArray(this.predicate)) {
       data = $filter<T>(this.obj, this.predicate, query, this.mode);
     } else if (typeof this.predicate === 'function') {
@@ -33,8 +39,6 @@ export default class Search<T extends unknown[]> {
           (<PredicateFn<T>>this.predicate)(query, <T[number]>entry, index)
         )
       );
-    } else {
-      data = this.obj;
     }
     return this.sort ? <T>[...data].sort(this.sort) : data;
   }

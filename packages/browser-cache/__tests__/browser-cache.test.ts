@@ -1,7 +1,9 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import LS from '@lindeneg/ls-cache';
 import type { CacheData } from '@lindeneg/cache';
+import LS from '@lindeneg/ls-cache';
 import useBrowserCache from '../src';
+
+const PREFIX = '__clch__';
 
 type TestObj = {
   id: number;
@@ -34,36 +36,44 @@ type MockKey = keyof MockData;
 function setLS(data: MockData) {
   Object.keys(data).forEach((key) => {
     const entry = data[key as MockKey];
-    window.localStorage.setItem(`__clch__${key}`, JSON.stringify(entry));
+    window.localStorage.setItem(`${PREFIX}${key}`, JSON.stringify(entry));
   });
 }
 
 function getLS(key: MockKey) {
-  const item = window.localStorage.getItem(`__clch__${key}`);
+  const item = window.localStorage.getItem(`${PREFIX}${key}`);
   return item ? JSON.parse(item) : null;
 }
 
 function clearLS() {
   Object.keys(getMock()).forEach((key) => {
-    window.localStorage.removeItem(`__clch__${key}`);
+    window.localStorage.removeItem(`${PREFIX}${key}`);
   });
 }
 
+function c(config: Parameters<typeof useBrowserCache>[0] = {}) {
+  return {
+    prefix: PREFIX,
+    ...config,
+  };
+}
+
 describe('Test Suite: @lindeneg/browser-cache', () => {
-  afterEach(() => {
+  beforeEach(() => {
     clearLS();
   });
+
   test('can initialize cache without initial LS data', () => {
-    const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
+    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
       .current;
 
     expect(cache.size()).toBe(0);
   });
+
   test('can initialize cache with initial LS data', () => {
     const data = getMock();
     setLS(data);
-
-    const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
+    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
       .current;
 
     expect(cache.size()).toBe(mockSize());
@@ -74,7 +84,7 @@ describe('Test Suite: @lindeneg/browser-cache', () => {
     });
   });
   test('can set cache item', () => {
-    const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
+    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
       .current;
 
     expect(cache.size()).toBe(0);
@@ -94,7 +104,7 @@ describe('Test Suite: @lindeneg/browser-cache', () => {
     const data = getMock();
     setLS(data);
 
-    const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
+    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
       .current;
 
     expect(cache.size()).toBe(mockSize());
@@ -114,7 +124,7 @@ describe('Test Suite: @lindeneg/browser-cache', () => {
     const data = getMock();
     setLS(data);
 
-    const { cache } = renderHook(() => useBrowserCache<TestObj>()).result
+    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
       .current;
 
     expect(cache.size()).toBe(mockSize());
@@ -136,12 +146,13 @@ describe('Test Suite: @lindeneg/browser-cache', () => {
     const data = getMock(0.1);
     setLS(data);
 
-    const { cache } = renderHook(() => useBrowserCache<TestObj>({ trim: 0.2 }))
-      .result.current;
+    const { cache } = renderHook(() =>
+      useBrowserCache<TestObj>(c({ trim: 0.2 }))
+    ).result.current;
 
     expect(cache.size()).toBe(mockSize());
     Object.keys(data).forEach((key) => {
-      expect(getLS(key as MockKey)).toEqual(data[key as MockKey]);
+      expect(getLS(key as MockKey)).toEqual(cache.get(key as MockKey));
     });
 
     setTimeout(() => {
@@ -151,5 +162,97 @@ describe('Test Suite: @lindeneg/browser-cache', () => {
       });
       done();
     }, 300);
+  });
+  test('can listen to set events', () => {
+    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
+      .current;
+
+    const fn = jest.fn((key, entry) => {
+      expect(key).toBe('id');
+      expect(entry.value).toBe(45);
+    });
+
+    cache.on('set', fn);
+    cache.set('id', 45);
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(cache.value('id')).toBe(45);
+  });
+  test('can listen to remove events', () => {
+    const data = getMock();
+    setLS(data);
+    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
+      .current;
+
+    const fn = jest.fn((key) => {
+      expect(key).toBe('id');
+    });
+
+    cache.on('remove', fn);
+    cache.remove('id');
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(cache.value('id')).toBe(null);
+  });
+
+  test('can listen to clear events', () => {
+    const data = getMock();
+    setLS(data);
+    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
+      .current;
+
+    const fn = jest.fn();
+
+    cache.on('clear', fn);
+    cache.clear();
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(cache.size()).toBe(0);
+  });
+  test('can listen to trim events', (done) => {
+    const data = getMock(0.1);
+    setLS(data);
+    const { cache } = renderHook(() =>
+      useBrowserCache<TestObj>(c({ trim: 0.2 }))
+    ).result.current;
+
+    expect(cache.size()).toBe(mockSize());
+
+    const fn = jest.fn((removed) => {
+      expect(removed.length).toBe(mockSize());
+    });
+
+    cache.on('trim', fn);
+
+    setTimeout(() => {
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(cache.size()).toBe(0);
+      done();
+    }, 300);
+  });
+  test('can listen to destruct event', () => {
+    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
+      .current;
+
+    const fn = jest.fn();
+
+    cache.on('destruct', fn);
+    cache.destruct();
+
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+  test('can set multiple listeners on same event', () => {
+    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
+      .current;
+
+    const setFn1 = jest.fn();
+    const setFn2 = jest.fn();
+
+    cache.on('set', setFn1);
+    cache.on('set', setFn2);
+    cache.set('id', 42);
+
+    expect(setFn1).toHaveBeenCalledTimes(1);
+    expect(setFn2).toHaveBeenCalledTimes(1);
   });
 });

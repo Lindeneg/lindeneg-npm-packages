@@ -1,8 +1,10 @@
 ### @lindeneg/on-key
 
-Hook to listen for key-strokes and then do something
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/on-key) ![license](https://badgen.net/npm/license/@lindeneg/on-key)
 
-[sandbox](https://codesandbox.io/s/lindeneg-on-key-m99cq?file=/src/App.tsx) | [bundle-size](https://bundlephobia.com/package/@lindeneg/on-key)
+---
+
+Hook to listen for key-strokes and then do something
 
 ### Installation
 
@@ -21,12 +23,9 @@ Hook to listen for key-strokes and then do something
 #### Usage
 
 ```tsx
-import useOnKey from "@lindeneg/on-key";
+import useOnKey from '@lindeneg/on-key';
 
 function SomeComponent() {
-
-  ...
-
-  useOnKey("ArrowRight", (event) => console.log("ArrowRight: keydown", event));
+  useOnKey('ArrowRight', (event) => console.log('ArrowRight: keydown', event));
 }
 ```
