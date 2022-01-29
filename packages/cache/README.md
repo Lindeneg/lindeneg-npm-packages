@@ -15,6 +15,8 @@ Used by: [@lindeneg/memory-cache](https://github.com/lindeneg/lindeneg-npm-packa
 ### Usage
 
 ```ts
+import Cache from '@lindeneg/cache';
+
 const cache = new Cache();
 
 // set item
