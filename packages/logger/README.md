@@ -1,8 +1,10 @@
 ### @lindeneg/logger
 
-Very simple utility for logging messages to console. | [bundle-size](https://bundlephobia.com/package/@lindeneg/logger)
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/logger) ![license](https://badgen.net/npm/license/@lindeneg/logger)
 
-Used by: [@lindeneg/core-search](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/core-search) | [@lindeneg/ls-cache](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/ls-cache)
+---
+
+Very simple utility for logging messages to console.
 
 ### Installation
 
