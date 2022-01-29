@@ -170,4 +170,86 @@ describe('Test Suite: @lindeneg/ls-cache', () => {
       expect(ls.size()).toBe(0);
     }, 300);
   });
+  test('can listen to set events', () => {
+    const cache = newLS();
+    const fn = jest.fn((key, entry) => {
+      expect(key).toBe('id');
+      expect(entry.value).toBe(45);
+    });
+
+    cache.on('set', fn);
+    cache.set('id', 45);
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(cache.value('id')).toBe(45);
+  });
+  test('can listen to remove events', () => {
+    const data = getMock();
+    setLS(data);
+    const cache = newLS();
+
+    const fn = jest.fn((key) => {
+      expect(key).toBe('id');
+    });
+
+    cache.on('remove', fn);
+    cache.remove('id');
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(cache.value('id')).toBe(null);
+  });
+
+  test('can listen to clear events', () => {
+    const data = getMock();
+    setLS(data);
+    const cache = newLS();
+
+    const fn = jest.fn();
+
+    cache.on('clear', fn);
+    cache.clear();
+
+    expect(fn).toHaveBeenCalledTimes(1);
+    expect(cache.size()).toBe(0);
+  });
+  test('can listen to trim events', (done) => {
+    const data = getMock(0.1);
+    setLS(data);
+    const cache = newLS({ trim: 0.2 });
+
+    const fn = jest.fn((removed: Array<unknown>) => {
+      expect(removed.length).toBe(Object.keys(data).length);
+    });
+
+    cache.on('trim', fn);
+
+    setTimeout(() => {
+      expect(fn).toHaveBeenCalledTimes(1);
+      expect(cache.size()).toBe(0);
+      done();
+    }, 300);
+  });
+  test('can listen to destruct event', () => {
+    const cache = newLS();
+
+    const fn = jest.fn();
+
+    cache.on('destruct', fn);
+    cache.destruct();
+
+    expect(fn).toHaveBeenCalledTimes(1);
+  });
+  test('can set multiple listeners on same event', () => {
+    const cache = newLS();
+
+    const setFn1 = jest.fn();
+    const setFn2 = jest.fn();
+
+    cache.on('set', setFn1);
+    cache.on('set', setFn2);
+    cache.set('id', 42);
+
+    expect(setFn1).toHaveBeenCalledTimes(1);
+    expect(setFn2).toHaveBeenCalledTimes(1);
+  });
 });
