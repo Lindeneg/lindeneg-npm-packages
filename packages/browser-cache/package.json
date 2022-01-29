@@ -4,7 +4,7 @@
   "homepage": "https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/browser-cache",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "types": "dist/index.d.ts",
@@ -20,7 +20,7 @@
     "use-local-storage"
   ],
   "dependencies": {
-    "@lindeneg/ls-cache": "^1.1.1"
+    "@lindeneg/ls-cache": "^2.0.0"
   },
   "scripts": {
     "custom": "echo no custom script"
@@ -33,7 +33,7 @@
     "react": "^17.0.2"
   },
   "devDependencies": {
-    "@lindeneg/cache": "^2.0.1",
-    "@lindeneg/types": "^1.1.1"
+    "@lindeneg/cache": "^2.1.0",
+    "@lindeneg/types": "^1.1.2"
   }
 }

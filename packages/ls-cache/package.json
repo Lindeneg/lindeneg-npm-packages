@@ -4,7 +4,7 @@
   "homepage": "https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/ls-cache",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "types": "dist/index.d.ts",
@@ -15,8 +15,8 @@
     "localStorage"
   ],
   "dependencies": {
-    "@lindeneg/cache": "^2.0.1",
-    "@lindeneg/logger": "^1.1.1"
+    "@lindeneg/cache": "^2.1.0",
+    "@lindeneg/logger": "^1.2.0"
   },
   "scripts": {
     "custom": "echo no custom script"
@@ -25,6 +25,6 @@
     "access": "public"
   },
   "devDependencies": {
-    "@lindeneg/types": "^1.1.1"
+    "@lindeneg/types": "^1.1.2"
   }
 }
