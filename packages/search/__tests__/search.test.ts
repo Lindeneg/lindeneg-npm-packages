@@ -267,7 +267,7 @@ describe('Test Suite: @lindeneg/search', () => {
     expect(filtered[0]).toEqual(usrs[0]);
     expect(filtered[1]).toEqual(usrs[3]);
   });
-  test('returns filtered on nested array of strings with no n', () => {
+  test('returns filtered on nested array of strings with no n using cache', () => {
     const usrs = users();
     const { result } = renderHook(() => useSearch(usrs, ['strings.n']));
 
@@ -288,6 +288,8 @@ describe('Test Suite: @lindeneg/search', () => {
     act(() => result.current.onQueryChange('something7'));
 
     const { filtered } = result.current;
+
+    act(() => result.current.onQueryChange('something7'));
 
     expect(filtered.length).toEqual(2);
     expect(filtered[0]).toEqual(usrs[0]);
