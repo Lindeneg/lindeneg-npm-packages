@@ -2,6 +2,8 @@
 
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/search) ![license](https://badgen.net/npm/license/@lindeneg/search)
 
+[Sandbox](https://codesandbox.io/s/lindeneg-search-5ccji)
+
 ---
 
 Filter and optionally sort objects by nested values against a query in a type-safe way.
@@ -31,11 +33,11 @@ Filter and optionally sort objects by nested values against a query in a type-sa
 
 Object with properties:
 
-| Name          | Type                                                             | Description                                   |
-| ------------- | ---------------------------------------------------------------- | --------------------------------------------- |
-| filtered      | `T`                                                              | array of filtered, optionally sorted, objects |
-| query         | `string`                                                         | current query used for filtering              |
-| onQueryChange | `(target: string \| React.FormEvent<HTMLInputElement>) => void;` | function to change query                      |
+| Name              | Type                                                                                           | Description                                   |
+| ----------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------- |
+| filtered          | `T`                                                                                            | array of filtered, optionally sorted, objects |
+| onQueryChange     | `(target: string \| React.FormEvent<HTMLInputElement>) => void;`                               | function to change query                      |
+| onPredicateChange | `(predicate: string[] \| (query: string, item: T[number], index: number) => boolean) => void;` | function to change predicate                  |
 
 #### Usage
 
@@ -43,10 +45,18 @@ Object with properties:
 import useSearch from '@lindeneg/search';
 
 function SomeComponent() {
-  const { filtered, query, onQueryChange } = useSearch(
+  const { filtered, onQueryChange, onPredicateChange } = useSearch(
     data,
     predicate,
     optionalSortFunction
+  );
+
+  console.log(filtered);
+
+  return (
+    <div>
+      <input onChange={onQueryChange} />
+    </div>
   );
 }
 ```

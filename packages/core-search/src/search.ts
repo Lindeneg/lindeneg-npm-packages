@@ -8,9 +8,9 @@ import type {
 
 export default class Search<T extends unknown[]> {
   private readonly obj: T;
-  private readonly predicate: SearchPredicate<T>;
   private readonly mode: SanitizeMode;
   private readonly sort: SearchOptions<T>['sort'];
+  private predicate: SearchPredicate<T>;
 
   constructor(obj: T, predicate: SearchPredicate<T>, opts?: SearchOptions<T>) {
     this.obj = obj;
@@ -27,6 +27,10 @@ export default class Search<T extends unknown[]> {
     return new Promise((resolve) => {
       resolve(this.search(query));
     });
+  };
+
+  public setPredicate = (predicate: SearchPredicate<T>) => {
+    this.predicate = predicate;
   };
 
   private search(query: string) {

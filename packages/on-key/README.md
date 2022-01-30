@@ -2,6 +2,8 @@
 
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/on-key) ![license](https://badgen.net/npm/license/@lindeneg/on-key)
 
+[Sandbox](https://codesandbox.io/s/lindeneg-on-key-m99cq)
+
 ---
 
 Hook to listen for key-strokes and then do something

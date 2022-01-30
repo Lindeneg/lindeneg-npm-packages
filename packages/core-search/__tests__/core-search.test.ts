@@ -196,6 +196,20 @@ describe('Test Suite: @lindeneg/core-search', () => {
 
     expect(filtered.length).toEqual(0);
   });
+  test('allows to set predicate after initialization', () => {
+    const search = S(['name']);
+    const filtered = search.filter('@example.com');
+
+    expect(filtered.length).toEqual(0);
+
+    search.setPredicate(['email']);
+
+    const filtered2 = search.filter('@example.com');
+
+    expect(filtered2.length).toEqual(2);
+    expect(filtered2[0]).toEqual(users[0]);
+    expect(filtered2[1]).toEqual(users[1]);
+  });
   test('returns filtered on single nested object query', () => {
     const search = S(['interest.name']);
     const filtered = search.filter('piano');
