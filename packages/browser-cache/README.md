@@ -2,6 +2,10 @@
 
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/browser-cache) ![license](https://badgen.net/npm/license/@lindeneg/browser-cache)
 
+[Sandbox](https://codesandbox.io/s/lindeneg-browser-cache-q502j)
+
+---
+
 Hook for caching data in [localStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
 
 ### Installation

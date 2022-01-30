@@ -2,6 +2,8 @@
 
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/search) ![license](https://badgen.net/npm/license/@lindeneg/search)
 
+[Sandbox](https://codesandbox.io/s/lindeneg-search-5ccji)
+
 ---
 
 Filter and optionally sort objects by nested values against a query in a type-safe way.

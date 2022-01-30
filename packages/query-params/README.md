@@ -2,6 +2,8 @@
 
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/query-params) ![license](https://badgen.net/npm/license/@lindeneg/query-params)
 
+[Sandbox](https://codesandbox.io/s/lindeneg-query-params-rnmi9)
+
 ---
 
 Hook using [URLSearchParams](https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams)
