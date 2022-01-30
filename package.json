@@ -16,7 +16,7 @@
     "pub": "yarn run pub:prepare && yarn run pub:deploy",
     "ghcov": "yarn run ghcov:prepare && yarn run ghcov:deploy",
     "ghcov:prepare": "yarn run prepare:all && yarn run test:js",
-    "ghcov:deploy": "gh deploy -d coverage/lcov-report",
+    "ghcov:deploy": "gh-pages deploy -d coverage/lcov-report",
     "pub:prepare": "yarn run prepare:all && yarn run test",
     "pub:deploy": "lerna publish",
     "prepare:all": "yarn run clean && yarn run lint && yarn run build",
