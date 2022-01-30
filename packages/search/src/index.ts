@@ -56,8 +56,11 @@ export default function useSearch<T extends unknown[]>(
     [onFilter]
   );
 
+  const query = queryRef.current;
+
   return {
     filtered,
+    query,
     onQueryChange,
     onPredicateChange,
   };

@@ -36,6 +36,7 @@ Object with properties:
 | Name              | Type                                                                                           | Description                                   |
 | ----------------- | ---------------------------------------------------------------------------------------------- | --------------------------------------------- |
 | filtered          | `T`                                                                                            | array of filtered, optionally sorted, objects |
+| query             | `string`                                                                                       | the current query                             |
 | onQueryChange     | `(target: string \| React.FormEvent<HTMLInputElement>) => void;`                               | function to change query                      |
 | onPredicateChange | `(predicate: string[] \| (query: string, item: T[number], index: number) => boolean) => void;` | function to change predicate                  |
 
@@ -45,7 +46,7 @@ Object with properties:
 import useSearch from '@lindeneg/search';
 
 function SomeComponent() {
-  const { filtered, onQueryChange, onPredicateChange } = useSearch(
+  const { filtered, query, onQueryChange, onPredicateChange } = useSearch(
     data,
     predicate,
     optionalSortFunction
@@ -55,7 +56,7 @@ function SomeComponent() {
 
   return (
     <div>
-      <input onChange={onQueryChange} />
+      <input value={query} onChange={onQueryChange} />
     </div>
   );
 }
