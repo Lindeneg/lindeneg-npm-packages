@@ -182,6 +182,22 @@ describe('Test Suite: @lindeneg/search', () => {
 
     expect(filtered.length).toEqual(0);
   });
+  test('allows change of predicate function', () => {
+    const usrs = users();
+    const { result } = renderHook(() => useSearch(usrs, ['name']));
+
+    act(() => result.current.onQueryChange('@example.com'));
+
+    expect(result.current.filtered.length).toEqual(0);
+
+    act(() => {
+      result.current.onPredicateChange(['email']);
+    });
+
+    expect(result.current.filtered.length).toEqual(2);
+    expect(result.current.filtered[0]).toEqual(usrs[0]);
+    expect(result.current.filtered[1]).toEqual(usrs[1]);
+  });
   test('returns filtered on single nested object query', () => {
     const usrs = users();
     const { result } = renderHook(() => useSearch(usrs, ['interest.name']));
