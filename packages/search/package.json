@@ -22,7 +22,8 @@
     "custom": "echo no custom script"
   },
   "dependencies": {
-    "@lindeneg/core-search": "^1.1.2"
+    "@lindeneg/core-search": "^1.1.2",
+    "@lindeneg/memory-cache": "^1.1.2"
   },
   "publishConfig": {
     "access": "public"
