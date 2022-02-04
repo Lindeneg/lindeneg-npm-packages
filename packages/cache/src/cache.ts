@@ -61,7 +61,7 @@ export default class Cache<T extends EmptyObj> {
   };
 
   public value = <K extends keyof T>(key: K): T[K] | null => {
-    const entry = this.data[key];
+    const entry = this.get(key);
     return entry ? entry.value : null;
   };
 
