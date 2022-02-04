@@ -33,31 +33,22 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
   };
 
   private initializeFromLocalStorage = (): void => {
-    this.getLSKeys()
-      .map((key) => {
-        return { key, value: this.item(key.lKey) };
-      })
-      .forEach((items) => {
-        if (items.value) {
-          this.setEntry(items.key.pKey, items.value);
-        }
-      });
+    this.getLSKeys().forEach(({ lKey, pKey }) => {
+      const item = this.item(lKey);
+      if (item) {
+        this.setEntry(pKey, item);
+      }
+    });
   };
 
   private initializeFromLocalStorageAsync = async (): Promise<void> => {
-    await this.getLSKeysAsync().then((keys) => {
-      Promise.all(
-        keys.map(async (key) => {
-          return { key, value: await this.itemAsync(key.lKey) };
-        })
-      ).then((items) => {
-        items.forEach((item) => {
-          if (item.value) {
-            this.setEntry(item.key.pKey, item.value);
-          }
-        });
-      });
-    });
+    const keys = await this.getLSKeysAsync();
+    for (const { lKey, pKey } of keys) {
+      const item = await this.itemAsync(lKey);
+      if (item) {
+        this.setEntry(pKey, item);
+      }
+    }
   };
 
   private initializeListeners = (): void => {
