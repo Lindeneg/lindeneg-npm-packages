@@ -177,18 +177,8 @@ export default class Cache<T extends EmptyObj> {
     }
   };
 
-  private trim = (): Array<keyof T> => {
-    const now = nowInSeconds();
-    const removed: Array<keyof T> = [];
-    this.each((key) => {
-      const entry = this.data[key];
-      if (entry && entry.expires < now) {
-        this.remove(key);
-        removed.push(key);
-      }
-    });
-    this.runListener('trim', removed);
-    return removed;
+  private hasExpired = (entry?: CacheEntry<unknown>) => {
+    return entry && entry.expires < nowInSeconds();
   };
 
   public static createEntry = <T>(
