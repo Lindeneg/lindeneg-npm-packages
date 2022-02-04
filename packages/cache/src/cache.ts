@@ -42,7 +42,7 @@ export default class Cache<T extends EmptyObj> {
   };
 
   public has = (key: keyof T): boolean => {
-    return typeof this.data[key] !== 'undefined';
+    return !!this.get(key);
   };
 
   public get = <K extends keyof T>(key: K): CacheEntry<T[K]> | null => {
