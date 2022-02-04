@@ -22,12 +22,14 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
   public initialize = async (): Promise<LS<T>> => {
     await this.initializeFromLocalStorageAsync();
     await this.initializeListenersAsync();
+    await this.trimAsync();
     return this;
   };
 
   private _initialize = (): void => {
     this.initializeFromLocalStorage();
     this.initializeListeners();
+    this.trim();
   };
 
   private initializeFromLocalStorage = (): void => {
