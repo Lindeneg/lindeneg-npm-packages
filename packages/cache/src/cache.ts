@@ -46,7 +46,15 @@ export default class Cache<T extends EmptyObj> {
   };
 
   public get = <K extends keyof T>(key: K): CacheEntry<T[K]> | null => {
-    return this.data[key] || null;
+    const entry = this.data[key];
+    if (entry) {
+      if (this.hasExpired(entry)) {
+        this.remove(key);
+      } else {
+        return entry;
+      }
+    }
+    return null;
   };
 
   public getAsync = <K extends keyof T>(key: K): Promise<CacheEntry<T[K]>> => {
