@@ -58,17 +58,17 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
     this.on('clear', this.onClearListener);
   };
 
-  private trimAsync = (): Promise<Array<keyof T>> => {
-    return new Promise((resolve) => {
-      const removed = this.trim();
-      resolve(removed);
-    });
-  };
-
   private initializeListenersAsync = async (): Promise<void> => {
     return new Promise((resolve) => {
       this.initializeListeners();
       resolve();
+    });
+  };
+
+  private trimAsync = (): Promise<Array<keyof T>> => {
+    return new Promise((resolve) => {
+      const removed = this.trim();
+      resolve(removed);
     });
   };
 
