@@ -159,6 +159,19 @@ export default class Cache<T extends EmptyObj> {
     this.data[key] = entry;
   };
 
+  protected trim = (): Array<keyof T> => {
+    const removed: Array<keyof T> = [];
+    this.each((key) => {
+      const entry = this.data[key];
+      if (this.hasExpired(entry)) {
+        this.remove(key);
+        removed.push(key);
+      }
+    });
+    this.runListener('trim', removed);
+    return removed;
+  };
+
   private runListener = (
     event: ListenerConstraint,
     ...args: unknown[]
