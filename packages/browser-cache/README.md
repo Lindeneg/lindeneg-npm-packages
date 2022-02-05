@@ -90,7 +90,3 @@ function ConsumerComponent() {
 | destruct    | `() => void`                                                                                                      | destroy cache, removes trim listener                              |
 | createEntry | `(value: unknown) => { expires: number; value: unknown }`                                                         | create a cache entry                                              |
 | on          | `(event: "set" \| "remove" \| "clear" \| "destruct" \| "trim", callback: ((...args: unknown[]) => void)) => void` | set event callback, supports multiple listeners on the same event |
-
-```
-
-```
