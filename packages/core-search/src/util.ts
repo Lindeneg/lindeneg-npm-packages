@@ -19,7 +19,6 @@ export function reduceToString(obj: Array<EmptyObj>, key: string | null) {
   return obj
     .reduce((a, b) => {
       const val = key ? b[key] : b;
-      /* istanbul ignore next */
       return a + ' ' + (val ? String(val) : '');
     }, '')
     .trim();
@@ -77,7 +76,6 @@ export function $filter<T extends unknown[]>(
         error({ msg: 'failed to create regex from query', query }, '$filter');
       }
     }
-    /* istanbul ignore next */
     return false;
   });
 }
