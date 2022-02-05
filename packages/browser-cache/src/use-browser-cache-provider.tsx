@@ -1,14 +1,14 @@
 import React, { useState, createContext, useContext } from 'react';
 import LS from '@lindeneg/ls-cache';
 import type { Config } from '@lindeneg/ls-cache';
-import type { EmptyObj } from '@lindeneg/types';
+import type { EmptyObj, SafeOmit } from '@lindeneg/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const BrowserCacheContext = createContext<LS<any>>(new LS());
 
 export type BrowserCacheContextProviderProps<T extends EmptyObj> = {
   children: React.ReactNode;
-  config?: Config<T>;
+  config?: SafeOmit<Config<T>, 'delayInit'>;
 };
 
 export function BrowserCacheContextProvider<T extends EmptyObj>({

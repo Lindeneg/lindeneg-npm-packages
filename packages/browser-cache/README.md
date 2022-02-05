@@ -17,14 +17,18 @@ Hook for caching data in [localStorage](https://developer.mozilla.org/en-US/docs
 ```tsx
 import useBrowserCache from '@lindeneg/browser-cache';
 
+type SomeCacheType = {
+  ...
+}
+
 function SomeComponent() {
-  const { cache } = useBrowserCache<{ id: number }>();
+  const { cache } = useBrowserCache<SomeCacheType>(config);
 
   // set item
   cache.set('id', 1);
 
   // get item
-  cache.get('id');
+  cache.value('id');
 
   // listen to event
   cache.on('trim', (removed) => {
@@ -32,6 +36,34 @@ function SomeComponent() {
   });
 
   // and so on
+}
+```
+
+Or with `React.Context` for a shared cache to be used by multiple components.
+
+```tsx
+import {
+  BrowserCacheContextProvider,
+  useCacheContext,
+} from '@lindeneg/browser-cache';
+
+function ParentComponent({ children }: { children: React.ReactNde }) {
+  return (
+    <BrowserCacheContextProvider config={config}>
+      {children}
+    </BrowserCacheContextProvider>
+  );
+}
+
+function SomeChildComponent() {
+  const cache = useCacheContext<SomeCacheType>();
+
+  // set item
+  cache.set('id', 1);
+
+  // and so on
+
+  return <div></div>;
 }
 ```
 
@@ -58,3 +90,7 @@ function SomeComponent() {
 | destruct    | `() => void`                                                                                                      | destroy cache, removes trim listener                              |
 | createEntry | `(value: unknown) => { expires: number; value: unknown }`                                                         | create a cache entry                                              |
 | on          | `(event: "set" \| "remove" \| "clear" \| "destruct" \| "trim", callback: ((...args: unknown[]) => void)) => void` | set event callback, supports multiple listeners on the same event |
+
+```
+
+```

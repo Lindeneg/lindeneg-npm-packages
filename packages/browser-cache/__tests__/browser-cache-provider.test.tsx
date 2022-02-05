@@ -13,9 +13,7 @@ function renderWithContext(
   config?: BrowserCacheContextProviderProps<TestObj>['config']
 ) {
   return render(
-    <BrowserCacheContextProvider<TestObj>
-      config={{ prefix: PREFIX, ...config }}
-    >
+    <BrowserCacheContextProvider config={{ prefix: PREFIX, ...config }}>
       <Component />
     </BrowserCacheContextProvider>
   );
