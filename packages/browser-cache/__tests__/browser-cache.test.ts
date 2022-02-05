@@ -58,7 +58,7 @@ function c(config: Parameters<typeof useBrowserCache>[0] = {}) {
   };
 }
 
-describe('Test Suite: @lindeneg/browser-cache', () => {
+describe('Test Suite: @lindeneg/browser-cache/cache', () => {
   beforeEach(() => {
     clearLS();
   });
