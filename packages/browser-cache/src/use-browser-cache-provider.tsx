@@ -1,7 +1,8 @@
-import React, { useState, createContext, useContext } from 'react';
+import React, { createContext, useContext } from 'react';
 import LS from '@lindeneg/ls-cache';
 import type { Config } from '@lindeneg/ls-cache';
 import type { EmptyObj, SafeOmit } from '@lindeneg/types';
+import useBrowserCache from './use-browser-cache';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const BrowserCacheContext = createContext<LS<any>>(new LS());
@@ -15,7 +16,7 @@ export function BrowserCacheContextProvider<T extends EmptyObj>({
   children,
   config,
 }: BrowserCacheContextProviderProps<T>) {
-  const [cache] = useState(new LS<T>(config));
+  const { cache } = useBrowserCache<T>(config);
   return (
     <BrowserCacheContext.Provider value={cache}>
       {children}
