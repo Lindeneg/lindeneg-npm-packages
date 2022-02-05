@@ -19,7 +19,6 @@ export function reduceToString(obj: Array<EmptyObj>, key: string | null) {
   return obj
     .reduce((a, b) => {
       const val = key ? b[key] : b;
-      /* istanbul ignore next */
       return a + ' ' + (val ? String(val) : '');
     }, '')
     .trim();
@@ -37,7 +36,10 @@ export function handleArray(keys: string[], current: EmptyObj[]) {
 export function getNestedValue(obj: EntryConstraint, keys: string[]): string {
   const isArray = Array.isArray(obj);
   if (keys.length === 1) {
-    const result = isArray ? reduceToString(obj, null) : obj[keys[0]];
+    const _key = keys[0];
+    const result = isArray
+      ? reduceToString(obj, _key === 'n' ? null : _key)
+      : obj[_key];
     return result ? String(result) : '';
   }
   const newKeys = [...keys];
@@ -77,7 +79,6 @@ export function $filter<T extends unknown[]>(
         error({ msg: 'failed to create regex from query', query }, '$filter');
       }
     }
-    /* istanbul ignore next */
     return false;
   });
 }

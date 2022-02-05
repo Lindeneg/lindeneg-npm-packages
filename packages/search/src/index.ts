@@ -8,11 +8,12 @@ type SearchCache<T extends unknown[]> = {
 };
 
 function hashCode(s: string) {
-  let h = s.length;
-  for (let i = 0; i < s.length; i++)
-    h = (Math.imul(31, h) + s.charCodeAt(i)) | 0;
-
-  return h;
+  let hash = 0;
+  for (let i = 0; i < s.length; i++) {
+    hash += Math.pow(s.charCodeAt(i) * 31, s.length - i);
+    hash = hash & hash;
+  }
+  return hash;
 }
 
 export default function useSearch<T extends unknown[]>(
@@ -27,7 +28,9 @@ export default function useSearch<T extends unknown[]>(
   const searchRef = useRef(new Search(obj, predicateRef.current, opts));
 
   const onFilter = useCallback(() => {
-    const key = hashCode(queryRef.current + String(predicateRef.current));
+    const key = hashCode(
+      String(queryRef.current) + String(predicateRef.current)
+    );
     const value = cache.value(key);
     if (value) {
       setFiltered(value);

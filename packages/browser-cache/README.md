@@ -17,14 +17,18 @@ Hook for caching data in [localStorage](https://developer.mozilla.org/en-US/docs
 ```tsx
 import useBrowserCache from '@lindeneg/browser-cache';
 
+type SomeCacheType = {
+  ...
+}
+
 function SomeComponent() {
-  const { cache } = useBrowserCache<{ id: number }>();
+  const { cache } = useBrowserCache<SomeCacheType>(config);
 
   // set item
   cache.set('id', 1);
 
   // get item
-  cache.get('id');
+  cache.value('id');
 
   // listen to event
   cache.on('trim', (removed) => {
@@ -32,6 +36,34 @@ function SomeComponent() {
   });
 
   // and so on
+}
+```
+
+Or with `React.Context` for a shared cache to be used by multiple components.
+
+```tsx
+import {
+  BrowserCacheContextProvider,
+  useCacheContext,
+} from '@lindeneg/browser-cache';
+
+function ProviderComponent({ children }: { children: React.ReactNode }) {
+  return (
+    <BrowserCacheContextProvider config={config}>
+      {children}
+    </BrowserCacheContextProvider>
+  );
+}
+
+function ConsumerComponent() {
+  const { cache } = useCacheContext<SomeCacheType>();
+
+  // set item
+  cache.set('id', 1);
+
+  // and so on
+
+  return <div></div>;
 }
 ```
 

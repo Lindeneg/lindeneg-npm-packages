@@ -42,11 +42,19 @@ export default class Cache<T extends EmptyObj> {
   };
 
   public has = (key: keyof T): boolean => {
-    return typeof this.data[key] !== 'undefined';
+    return !!this.get(key);
   };
 
   public get = <K extends keyof T>(key: K): CacheEntry<T[K]> | null => {
-    return this.data[key] || null;
+    const entry = this.data[key];
+    if (entry) {
+      if (this.hasExpired(entry)) {
+        this.remove(key);
+      } else {
+        return entry;
+      }
+    }
+    return null;
   };
 
   public getAsync = <K extends keyof T>(key: K): Promise<CacheEntry<T[K]>> => {
@@ -61,7 +69,7 @@ export default class Cache<T extends EmptyObj> {
   };
 
   public value = <K extends keyof T>(key: K): T[K] | null => {
-    const entry = this.data[key];
+    const entry = this.get(key);
     return entry ? entry.value : null;
   };
 
@@ -159,6 +167,19 @@ export default class Cache<T extends EmptyObj> {
     this.data[key] = entry;
   };
 
+  protected trim = (): Array<keyof T> => {
+    const removed: Array<keyof T> = [];
+    this.each((key) => {
+      const entry = this.data[key];
+      if (this.hasExpired(entry)) {
+        this.remove(key);
+        removed.push(key);
+      }
+    });
+    this.runListener('trim', removed);
+    return removed;
+  };
+
   private runListener = (
     event: ListenerConstraint,
     ...args: unknown[]
@@ -177,18 +198,8 @@ export default class Cache<T extends EmptyObj> {
     }
   };
 
-  private trim = (): Array<keyof T> => {
-    const now = nowInSeconds();
-    const removed: Array<keyof T> = [];
-    this.each((key) => {
-      const entry = this.data[key];
-      if (entry && entry.expires < now) {
-        this.remove(key);
-        removed.push(key);
-      }
-    });
-    this.runListener('trim', removed);
-    return removed;
+  private hasExpired = (entry?: CacheEntry<unknown>) => {
+    return entry && entry.expires < nowInSeconds();
   };
 
   public static createEntry = <T>(

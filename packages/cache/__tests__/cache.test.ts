@@ -1,5 +1,5 @@
 import Cache from '../src';
-import type { CacheData } from '../src';
+import type { CacheData, CacheEntry } from '../src';
 
 type TestObj = {
   id: number;
@@ -105,6 +105,14 @@ describe('Test Suite: @lindeneg/cache', () => {
     expect(cache.valueAsync('id')).rejects.toMatch(
       "key 'id' could not be found"
     );
+  });
+  test('can remove expired key on get call', (done) => {
+    const cache = new Cache({ ttl: 0.1 });
+    cache.set('id', 5);
+    setTimeout(() => {
+      expect(cache.get('id')).toBe(null);
+      done();
+    }, 200);
   });
   test('can synchronously remove entry with valid key', () => {
     const cache = new Cache();
@@ -264,5 +272,19 @@ describe('Test Suite: @lindeneg/cache', () => {
 
     expect(setFn1).toHaveBeenCalledTimes(1);
     expect(setFn2).toHaveBeenCalledTimes(1);
+  });
+  test('can setEntry via protected method', () => {
+    class ExtendedCache extends Cache<TestObj> {
+      constructor(
+        key: keyof TestObj,
+        entry: CacheEntry<TestObj[keyof TestObj]>
+      ) {
+        super();
+        this.setEntry(key, entry);
+      }
+    }
+    const entry = Cache.createEntry(5);
+    const cache = new ExtendedCache('id', entry);
+    expect(cache.get('id')).toEqual(entry);
   });
 });
