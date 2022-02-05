@@ -47,7 +47,7 @@ import {
   useCacheContext,
 } from '@lindeneg/browser-cache';
 
-function ParentComponent({ children }: { children: React.ReactNde }) {
+function ProviderComponent({ children }: { children: React.ReactNode }) {
   return (
     <BrowserCacheContextProvider config={config}>
       {children}
@@ -55,7 +55,7 @@ function ParentComponent({ children }: { children: React.ReactNde }) {
   );
 }
 
-function SomeChildComponent() {
+function ConsumerComponent() {
   const cache = useCacheContext<SomeCacheType>();
 
   // set item
