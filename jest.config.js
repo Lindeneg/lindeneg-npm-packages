@@ -11,7 +11,7 @@ module.exports = {
     },
   },
   verbose: true,
-  collectCoverage: false,
+  collectCoverage: true,
   collectCoverageFrom: ['**/src/*.ts'],
   coverageReporters: ['lcov', 'text'],
   coverageThreshold: {
