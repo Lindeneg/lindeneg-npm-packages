@@ -1,21 +1,18 @@
 {
-  "name": "@lindeneg/http-req",
+  "name": "@lindeneg/core-http-req",
   "repository": "git@github.com:Lindeneg/lindeneg-npm-packages.git",
-  "homepage": "https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/http-req",
+  "homepage": "https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/core-http-req",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
   "version": "1.0.0",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "types": "dist/index.d.ts",
-  "description": "React hook for sending HTTP requests.",
+  "description": "Utility class for sending HTTP requests.",
   "keywords": [
     "http",
     "request",
-    "fetch",
-    "react",
-    "hook",
-    "react-hook"
+    "fetch"
   ],
   "scripts": {
     "custom": "echo no custom script"
@@ -23,6 +20,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "dependencies": {},
-  "devDependencies": {}
+  "dependencies": {
+    "@lindeneg/cache": "^2.1.1",
+    "@lindeneg/ls-cache": "^2.0.1"
+  },
+  "devDependencies": {
+    "@lindeneg/types": "^1.1.2"
+  }
 }
