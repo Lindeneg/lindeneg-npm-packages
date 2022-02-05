@@ -28,7 +28,9 @@ export default function useSearch<T extends unknown[]>(
   const searchRef = useRef(new Search(obj, predicateRef.current, opts));
 
   const onFilter = useCallback(() => {
-    const key = hashCode(queryRef.current + String(predicateRef.current));
+    const key = hashCode(
+      String(queryRef.current) + String(predicateRef.current)
+    );
     const value = cache.value(key);
     if (value) {
       setFiltered(value);
