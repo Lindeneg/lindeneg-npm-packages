@@ -29,6 +29,29 @@ export default class HttpReq {
     this.handleListener('add');
   }
 
+  public request = async (
+    url: string,
+    options?: RequestConfig
+  ): Promise<RequestResult<Response>> => {
+    const result: RequestResult<Response> = {};
+    const abortController = new AbortController();
+    this.activeRequests.push(abortController);
+    try {
+      this.fetchOrThrow();
+      const response = await fetch(url, {
+        ...this.getOptions(options),
+        signal: abortController.signal,
+      });
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      result.data = response;
+    } catch (err) {
+      result.error = <Error>err;
+    }
+    return { ...result, fromCache: false };
+  };
+
   public getJson = async <T extends EmptyObj>(
     url: string,
     options?: PartialRequestConfig
@@ -71,29 +94,6 @@ export default class HttpReq {
       body: JSON.stringify(body || {}),
     });
     return await this.handleJsonResponse<T>(req);
-  };
-
-  public request = async (
-    url: string,
-    options?: RequestConfig
-  ): Promise<RequestResult<Response>> => {
-    const result: RequestResult<Response> = {};
-    const abortController = new AbortController();
-    this.activeRequests.push(abortController);
-    try {
-      this.fetchOrThrow();
-      const response = await fetch(url, {
-        ...this.getOptions(options),
-        signal: abortController.signal,
-      });
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-      result.data = response;
-    } catch (err) {
-      result.error = <Error>err;
-    }
-    return { ...result, fromCache: false };
   };
 
   public destroy = (): void => {
