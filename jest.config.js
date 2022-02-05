@@ -7,11 +7,11 @@ module.exports = {
   },
   globals: {
     'ts-jest': {
-      tsconfig: './tsconfig-base.json',
+      tsconfig: './tsconfig-test.json',
     },
   },
   verbose: true,
-  collectCoverage: true,
+  collectCoverage: false,
   collectCoverageFrom: ['**/src/*.ts'],
   coverageReporters: ['lcov', 'text'],
   coverageThreshold: {
