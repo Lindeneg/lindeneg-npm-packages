@@ -17,6 +17,8 @@ export type PartialRequestConfig = SafeOmit<RequestConfig, 'method' | 'body'>;
 
 export type HttpReqConstructor = {
   sharedOptions?: RequestConfig;
-  cacheConfig?: SafeOmit<CacheConfig<EmptyObj>, 'data'>;
+  cacheConfig?: SafeOmit<CacheConfig<EmptyObj>, 'data'> & {
+    strategy: 'memory' | 'localStorage';
+  };
   shouldSetListeners?: boolean;
 };

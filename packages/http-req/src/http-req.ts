@@ -1,4 +1,5 @@
 import Cache from '@lindeneg/cache';
+import LS from '@lindeneg/ls-cache';
 import type { EmptyObj } from '@lindeneg/types';
 import type {
   RequestConfig,
@@ -9,18 +10,19 @@ import type {
 } from './types';
 
 export default class HttpReq {
-  private readonly cache: Cache<EmptyObj>;
+  private readonly cache: Cache<EmptyObj> | LS<EmptyObj>;
   private readonly sharedOptions: RequestConfig | null;
   private readonly activeRequests: AbortController[];
   private readonly shouldSetListeners: boolean;
 
   constructor(config?: HttpReqConstructor) {
     const {
-      cacheConfig,
+      cacheConfig = { strategy: 'memory' },
       sharedOptions,
       shouldSetListeners = true,
     } = config || {};
-    this.cache = new Cache(cacheConfig);
+    const { strategy, ..._config } = cacheConfig;
+    this.cache = strategy === 'memory' ? new Cache(_config) : new LS(_config);
     this.sharedOptions = sharedOptions || null;
     this.activeRequests = [];
     this.shouldSetListeners = shouldSetListeners;
@@ -91,6 +93,13 @@ export default class HttpReq {
     return { ...result, fromCache: false };
   };
 
+  public destroy = (): void => {
+    this.activeRequests.forEach((controller) => {
+      controller.abort();
+    });
+    this.handleListener('remove');
+  };
+
   private handleJsonResponse = async <T extends EmptyObj>(
     req: RequestResult<Response>
   ): Promise<RequestResult<T>> => {
@@ -135,17 +144,10 @@ export default class HttpReq {
   private handleListener = (type: 'add' | 'remove'): void => {
     if (this.shouldSetListeners && typeof window !== 'undefined') {
       if (type === 'add') {
-        window.addEventListener('unload', this.cleanUp);
+        window.addEventListener('unload', this.destroy);
       } else {
-        window.removeEventListener('unload', this.cleanUp);
+        window.removeEventListener('unload', this.destroy);
       }
     }
-  };
-
-  private cleanUp = (): void => {
-    this.activeRequests.forEach((controller) => {
-      controller.abort();
-    });
-    this.handleListener('remove');
   };
 }
