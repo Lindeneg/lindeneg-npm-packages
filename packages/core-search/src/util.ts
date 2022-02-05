@@ -36,7 +36,10 @@ export function handleArray(keys: string[], current: EmptyObj[]) {
 export function getNestedValue(obj: EntryConstraint, keys: string[]): string {
   const isArray = Array.isArray(obj);
   if (keys.length === 1) {
-    const result = isArray ? reduceToString(obj, null) : obj[keys[0]];
+    const _key = keys[0];
+    const result = isArray
+      ? reduceToString(obj, _key === 'n' ? null : _key)
+      : obj[_key];
     return result ? String(result) : '';
   }
   const newKeys = [...keys];
