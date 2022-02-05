@@ -82,7 +82,10 @@ export default class HttpReq {
     this.activeRequests.push(abortController);
     try {
       this.fetchOrThrow();
-      const response = await fetch(url, this.getOptions(options));
+      const response = await fetch(url, {
+        ...this.getOptions(options),
+        signal: abortController.signal,
+      });
       if (!response.ok) {
         throw new Error(response.statusText);
       }
