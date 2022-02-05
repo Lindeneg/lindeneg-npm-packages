@@ -9,9 +9,12 @@ export type RequestResult<T> = {
 
 export type PromiseRequestResult<T> = Promise<RequestResult<T>>;
 
-export type RequestConfig = {
-  [K in keyof RequestInit]: RequestInit[K];
-};
+export type RequestConfig = SafeOmit<
+  {
+    [K in keyof RequestInit]: RequestInit[K];
+  },
+  'signal'
+>;
 
 export type PartialRequestConfig = SafeOmit<RequestConfig, 'method' | 'body'>;
 
