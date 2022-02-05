@@ -4,24 +4,26 @@ import type { Config } from '@lindeneg/ls-cache';
 import type { EmptyObj } from '@lindeneg/types';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const CacheContext = createContext<LS<any>>(new LS());
+export const BrowserCacheContext = createContext<LS<any>>(new LS());
 
-export type CacheContextProviderProps<T extends EmptyObj> = {
+export type BrowserCacheContextProviderProps<T extends EmptyObj> = {
   children: React.ReactNode;
   config?: Config<T>;
 };
 
-export function CacheContextProvider<T extends EmptyObj>({
+export function BrowserCacheContextProvider<T extends EmptyObj>({
   children,
   config,
-}: CacheContextProviderProps<T>) {
+}: BrowserCacheContextProviderProps<T>) {
   const [cache] = useState(new LS<T>(config));
   return (
-    <CacheContext.Provider value={cache}>{children}</CacheContext.Provider>
+    <BrowserCacheContext.Provider value={cache}>
+      {children}
+    </BrowserCacheContext.Provider>
   );
 }
 
 export function useCacheContext<T extends EmptyObj>() {
-  const context = useContext<LS<T>>(CacheContext);
+  const context = useContext<LS<T>>(BrowserCacheContext);
   return context;
 }

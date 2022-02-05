@@ -1,8 +1,8 @@
 /* istanbul ignore file */
 export { default as default } from './use-browser-cache';
 export {
-  CacheContext,
-  CacheContextProvider,
+  BrowserCacheContext,
+  BrowserCacheContextProvider,
   useCacheContext,
 } from './use-browser-cache-provider';
-export type { CacheContextProviderProps } from './use-browser-cache-provider';
+export type { BrowserCacheContextProviderProps } from './use-browser-cache-provider';
