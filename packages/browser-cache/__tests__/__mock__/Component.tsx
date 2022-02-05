@@ -10,7 +10,7 @@ export type TestObj = {
 };
 
 export function Component() {
-  const cache = useCacheContext<TestObj>();
+  const { cache } = useCacheContext<TestObj>();
   const [keys, setKeys] = useState(cache.keys());
 
   const onSomething = (type: string) => {

@@ -24,6 +24,6 @@ export function BrowserCacheContextProvider<T extends EmptyObj>({
 }
 
 export function useCacheContext<T extends EmptyObj>() {
-  const context = useContext<LS<T>>(BrowserCacheContext);
-  return context;
+  const cache = useContext<LS<T>>(BrowserCacheContext);
+  return { cache };
 }

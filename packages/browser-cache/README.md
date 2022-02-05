@@ -56,7 +56,7 @@ function ProviderComponent({ children }: { children: React.ReactNode }) {
 }
 
 function ConsumerComponent() {
-  const cache = useCacheContext<SomeCacheType>();
+  const { cache } = useCacheContext<SomeCacheType>();
 
   // set item
   cache.set('id', 1);
