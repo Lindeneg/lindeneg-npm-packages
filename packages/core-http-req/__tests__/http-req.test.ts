@@ -1,3 +1,4 @@
+import { ReqMethod } from '../src';
 import HttpReq from '../src/http-req';
 
 const post = { id: 'md1', title: 'awesome', description: 'miles davis' };
@@ -16,39 +17,36 @@ describe('Test Suite: @lindeneg/http-req', () => {
     httpReq && httpReq.destroy();
     httpReq = new HttpReq({ baseUrl: 'http://localhost:8000/api' });
   });
-  test('200: can get a valid item without baseUrl', async () => {
+  test('GET 200: can get a valid item without baseUrl', async () => {
     const _httpReq = new HttpReq();
-    const { data, error, fromCache, statusCode } = await _httpReq.getJson<
-      Post,
-      ErrorResponse
-    >('http://localhost:8000/api/post/md1');
+    const { data, error, fromCache, statusCode } = await _httpReq.getJson<Post>(
+      'http://localhost:8000/api/post/md1'
+    );
     expect(data).toEqual(post);
     expect(error).toBeUndefined();
     expect(fromCache).toEqual(false);
     expect(statusCode).toEqual(200);
   });
-  test('200: can get a valid item', async () => {
-    const { data, error, fromCache, statusCode } = await httpReq.getJson<
-      Post,
-      ErrorResponse
-    >('/post/md1');
+  test('GET 200: can get a valid item', async () => {
+    const { data, error, fromCache, statusCode } = await httpReq.getJson<Post>(
+      '/post/md1'
+    );
     expect(data).toEqual(post);
     expect(error).toBeUndefined();
     expect(fromCache).toEqual(false);
     expect(statusCode).toEqual(200);
   });
-  test('200: can get valid item from cache', async () => {
+  test('GET 200: can get valid item from cache', async () => {
     await httpReq.getJson('/post/md1');
-    const { data, error, fromCache, statusCode } = await httpReq.getJson<
-      Post,
-      ErrorResponse
-    >('/post/md1');
+    const { data, error, fromCache, statusCode } = await httpReq.getJson<Post>(
+      '/post/md1'
+    );
     expect(data).toEqual(post);
     expect(error).toBeUndefined();
     expect(fromCache).toEqual(true);
     expect(statusCode).toBeUndefined();
   });
-  test('404: can not get invalid item', async () => {
+  test('GET 404: can not get invalid item', async () => {
     const { data, error, fromCache, statusCode } = await httpReq.getJson<
       Post,
       ErrorResponse
@@ -59,6 +57,115 @@ describe('Test Suite: @lindeneg/http-req', () => {
       message: 'The requested resource could not be found.',
     });
     expect(fromCache).toEqual(false);
+    expect(statusCode).toEqual(404);
+  });
+  test('POST 201: can post valid item', async () => {
+    const { data, error, fromCache, statusCode } = await httpReq.sendJson<Post>(
+      '/post',
+      { title: post.title, description: post.description },
+      ReqMethod.POST
+    );
+    expect(data).toEqual(post);
+    expect(error).toBeUndefined();
+    expect(fromCache).toBeUndefined();
+    expect(statusCode).toEqual(201);
+  });
+  test('POST 400: cannot post with invalid body', async () => {
+    const { data, error, fromCache, statusCode } = await httpReq.sendJson<
+      Post,
+      ErrorResponse
+    >('/post', { title: post.title }, ReqMethod.POST);
+    expect(data).toBeUndefined();
+    expect(error).toEqual({
+      dev: 'description is missing from body',
+      message:
+        'The requested action could not be exercised due to malformed syntax.',
+    });
+    expect(fromCache).toBeUndefined();
+    expect(statusCode).toEqual(400);
+  });
+  test('PUT 201: can put valid item', async () => {
+    const { data, error, fromCache, statusCode } = await httpReq.sendJson<Post>(
+      '/post',
+      { title: post.title, description: post.description },
+      ReqMethod.PUT
+    );
+    expect(data).toEqual(post);
+    expect(error).toBeUndefined();
+    expect(fromCache).toBeUndefined();
+    expect(statusCode).toEqual(201);
+  });
+  test('PUT 400: cannot put with invalid body', async () => {
+    const { data, error, fromCache, statusCode } = await httpReq.sendJson<
+      Post,
+      ErrorResponse
+    >('/post', { description: post.description }, ReqMethod.PUT);
+    expect(data).toBeUndefined();
+    expect(error).toEqual({
+      dev: 'title is missing from body',
+      message:
+        'The requested action could not be exercised due to malformed syntax.',
+    });
+    expect(fromCache).toBeUndefined();
+    expect(statusCode).toEqual(400);
+  });
+  test('PATCH 200: can patch valid item', async () => {
+    const { data, error, fromCache, statusCode } = await httpReq.sendJson<Post>(
+      '/post/' + post.id,
+      { title: 'new title' },
+      ReqMethod.PATCH
+    );
+    expect(data).toEqual({ ...post, title: 'new title' });
+    expect(error).toBeUndefined();
+    expect(fromCache).toBeUndefined();
+    expect(statusCode).toEqual(200);
+  });
+  test('PATCH 404: cannot patch invalid item', async () => {
+    const { data, error, fromCache, statusCode } = await httpReq.sendJson<
+      Post,
+      ErrorResponse
+    >('/post/md2', { title: 'new title' }, ReqMethod.PATCH);
+    expect(data).toBeUndefined();
+    expect(error).toEqual({
+      dev: 'id does not exist',
+      message: 'The requested resource could not be found.',
+    });
+    expect(fromCache).toBeUndefined();
+    expect(statusCode).toEqual(404);
+  });
+  test('PATCH 400: cannot patch with invalid body', async () => {
+    const { data, error, fromCache, statusCode } = await httpReq.sendJson<
+      Post,
+      ErrorResponse
+    >('/post/' + post.id, {}, ReqMethod.PATCH);
+    expect(data).toBeUndefined();
+    expect(error).toEqual({
+      dev: 'no properties specified to update',
+      message:
+        'The requested action could not be exercised due to malformed syntax.',
+    });
+    expect(fromCache).toBeUndefined();
+    expect(statusCode).toEqual(400);
+  });
+  test('DELETE 200: can patch valid item', async () => {
+    const { data, error, fromCache, statusCode } =
+      await httpReq.deleteJson<Post>('/post/' + post.id);
+    expect(data).toEqual(post);
+    expect(error).toBeUndefined();
+    expect(fromCache).toBeUndefined();
+    expect(statusCode).toEqual(200);
+  });
+  test('DELETE 404: cannot patch invalid item', async () => {
+    const { data, error, fromCache, statusCode } = await httpReq.deleteJson<
+      Post,
+      ErrorResponse
+    >('/post/md2');
+    expect(data).toBeUndefined();
+    expect(error).toEqual({
+      dev: 'id does not exist',
+      message: 'The requested resource could not be found.',
+    });
+    expect(fromCache).toBeUndefined();
     expect(statusCode).toEqual(404);
   });
 });

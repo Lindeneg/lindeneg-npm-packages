@@ -3,6 +3,13 @@ import { HTTPException } from '../util/http-exception';
 
 const post = { id: 'md1', title: 'awesome', description: 'miles davis' };
 
+function merge(obj: Partial<typeof post>) {
+  return {
+    ...post,
+    ...obj,
+  };
+}
+
 export async function postPost(
   req: Request,
   res: Response,
@@ -15,7 +22,7 @@ export async function postPost(
     } else if (!obj.description) {
       next(HTTPException.malformedErr('description is missing from body'));
     } else {
-      res.status(201).json(obj);
+      res.status(201).json(merge(obj));
     }
   } catch (err) {
     next(HTTPException.internalErr(err));
@@ -48,11 +55,11 @@ export async function patchPost(
     } else if (!obj.title && !obj.description) {
       next(
         HTTPException.malformedErr(
-          'please provide at least one property to update'
+          'no properties specified to update'
         )
       );
     } else {
-      res.status(200).json(obj);
+      res.status(200).json(merge(obj));
     }
   } catch (err) {
     next(HTTPException.internalErr(err));
@@ -67,7 +74,7 @@ export async function putPost(req: Request, res: Response, next: NextFunction) {
     } else if (!obj.description) {
       next(HTTPException.malformedErr('description is missing from body'));
     } else {
-      res.status(201).json(obj);
+      res.status(201).json(merge(obj));
     }
   } catch (err) {
     next(HTTPException.internalErr(err));

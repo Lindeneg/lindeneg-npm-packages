@@ -59,7 +59,10 @@ export default class HttpReq {
     return <RequestResult<Response, E>>result;
   };
 
-  public getJson = async <T extends EmptyObj, E extends CustomError>(
+  public getJson = async <
+    T extends EmptyObj,
+    E extends CustomError = CustomError
+  >(
     url: string,
     options?: PartialRequestConfig
   ): PromiseRequestResult<T, E> => {
@@ -76,7 +79,10 @@ export default class HttpReq {
     return { ...result, fromCache: false };
   };
 
-  public sendJson = async <T extends EmptyObj, E extends CustomError>(
+  public sendJson = async <
+    T extends EmptyObj,
+    E extends CustomError = CustomError
+  >(
     url: string,
     body: EmptyObj,
     method: ReqMethod.POST | ReqMethod.PUT | ReqMethod.PATCH = ReqMethod.POST,
@@ -90,7 +96,10 @@ export default class HttpReq {
     return await this.handleJsonResponse<T, E>(req);
   };
 
-  public deleteJson = async <T extends EmptyObj, E extends CustomError>(
+  public deleteJson = async <
+    T extends EmptyObj,
+    E extends CustomError = CustomError
+  >(
     url: string,
     body?: EmptyObj,
     options?: PartialRequestConfig

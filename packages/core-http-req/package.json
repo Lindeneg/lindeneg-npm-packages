@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "@lindeneg/cache": "^2.1.1",
-    "@lindeneg/ls-cache": "^2.0.1"
+    "@lindeneg/ls-cache": "^2.0.1",
+    "whatwg-fetch": "^3.6.2"
   },
   "devDependencies": {
     "@lindeneg/types": "^1.1.2"
