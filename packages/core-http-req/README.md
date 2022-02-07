@@ -37,14 +37,25 @@ const {
 
 #### Config
 
-An object of type:
+An optional object of type:
 
-| Name               | Required | Type                                                       | Default                                                  | Description                                                                                                                                                                         |
-| ------------------ | -------- | ---------------------------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| baseUrl            | N        | `string`                                                   | `''`                                                     | url to be used for all requests. url given to specific requests, is simply appended.                                                                                                |
-| sharedOptions      | N        | `RequestInit                                               | `undefined`                                              | shared request config to be used for all requests. if the request itself is called with a request config, the two configs are merged with the shared config yielding to overwrites. |
-| cacheConfig        | N        | `{strategy: CacheStrategy; ttl?: number; trim?: number; }` | `{ttl: 3600, trim: 600, strategy: CacheStrategy.Memory}` | cache config to be used for caching get requests                                                                                                                                    |
-| shouldSetListeners | N        | `boolean`                                                  | `true`                                                   | if true, will set listeners to abort active requests on `unload` event                                                                                                              |
+```ts
+type Config = {
+  /* url to be used by all requests. If a url is 
+     given to specific requests, is simply appended. */
+  baseUrl?: string;
+  /* shared request config to be used for all requests. 
+     if the request itself is called with a request config, 
+     the two configs are merged with the shared config yielding to overwrites. */
+  sharedOptions?: RequestConfig;
+  /* cache config to be used for caching get requests */
+  cacheConfig?: Partial<SafeOmit<CacheConfig<EmptyObj>, 'data'>> & {
+    strategy: CacheStrategy;
+  };
+  /* if true, will set listeners to abort active requests on unload event */
+  shouldSetListeners?: boolean;
+};
+```
 
 #### Methods
 
