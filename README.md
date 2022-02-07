@@ -14,7 +14,6 @@ Mono-repository for [npm](https://npm.com) packages created by [lindeneg](https:
 ### React Hooks
 
 - [search](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/search)
-- [http-req](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/http-req)
 - [browser-cache](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/browser-cache)
 - [memory-cache](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/memory-cache)
 - [query-params](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/query-params)
