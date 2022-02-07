@@ -77,7 +77,7 @@ function ConsumerComponent() {
 
 #### Methods
 
-| Name        | Types - Note: `K extends keyof T`                                                                                 | Description                                                       |
+| Name        | Types                                                                                                             | Description                                                       |
 | ----------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | get         | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | gets entry, use `getAsync` for promise                            |
 | value       | `(key: K) => T[K] \| null`                                                                                        | gets entry value, use `valueAsync` for promise                    |

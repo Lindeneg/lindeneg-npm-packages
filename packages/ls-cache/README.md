@@ -39,7 +39,7 @@ await ls.initialize();
 
 #### Methods
 
-| Name                 | Types - Note: `K extends keyof T`                                                                                 | Description                                                       |
+| Name                 | Types                                                                                                             | Description                                                       |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
 | initialize           | `() => Promise<LS<T>>`                                                                                            | initializes localStorage collection and internal listeners        |
 | get                  | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | gets entry, use `getAsync` for promise                            |
