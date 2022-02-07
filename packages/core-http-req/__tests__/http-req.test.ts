@@ -224,6 +224,21 @@ describe('Test Suite: @lindeneg/http-req', () => {
     expect(fromCache).toBeUndefined();
     expect(statusCode).toEqual(404);
   });
+  test('can commence with no AbortController', async () => {
+    //@ts-expect-error asd
+    window.AbortController = null;
+    const { data, error, fromCache, statusCode } = await httpReq.deleteJson<
+      Post,
+      ErrorResponse
+    >('/post/md2');
+    expect(data).toBeUndefined();
+    expect(error).toEqual({
+      dev: 'id does not exist',
+      message: 'The requested resource could not be found.',
+    });
+    expect(fromCache).toBeUndefined();
+    expect(statusCode).toEqual(404);
+  });
   test('returns error on no window.fetch', async () => {
     //@ts-expect-error asd
     window.fetch = null;

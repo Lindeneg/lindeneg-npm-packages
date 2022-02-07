@@ -40,13 +40,15 @@ export default class HttpReq {
     options?: RequestConfig
   ): Promise<RequestResult<Response, E>> => {
     const result: Partial<RequestResult<Response, E>> = {};
-    const abortController = new AbortController();
-    this.activeRequests.push(abortController);
+    const abortController = window.AbortController
+      ? new window.AbortController()
+      : null;
+    abortController && this.activeRequests.push(abortController);
     try {
       this.fetchOrThrow();
       const response = await window.fetch(this.fullUrl(url), {
         ...this.getOptions(options),
-        signal: abortController.signal,
+        signal: abortController?.signal,
       });
       result.statusCode = response.status;
       if (!response.ok) {
