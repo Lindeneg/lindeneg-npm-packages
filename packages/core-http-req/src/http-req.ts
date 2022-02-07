@@ -1,7 +1,8 @@
 import 'whatwg-fetch';
 import Cache from '@lindeneg/cache';
 import LS from '@lindeneg/ls-cache';
-import type { EmptyObj } from '@lindeneg/types';
+import type { Config } from '@lindeneg/ls-cache';
+import type { EmptyObj, SafeOmit } from '@lindeneg/types';
 import { CacheStrategy, ListenerAction, ReqMethod } from './constants';
 import type {
   RequestConfig,
@@ -13,7 +14,7 @@ import type {
 } from './types';
 
 export default class HttpReq {
-  private readonly cache: Cache<EmptyObj> | LS<EmptyObj>;
+  private readonly cache: Cache<EmptyObj> | null;
   private readonly baseUrl: string;
   private readonly sharedOptions: RequestConfig | null;
   private readonly activeRequests: AbortController[];
@@ -21,14 +22,14 @@ export default class HttpReq {
 
   constructor(config?: HttpReqConstructor) {
     const {
-      cacheConfig = { strategy: CacheStrategy.M },
+      cacheConfig = { strategy: CacheStrategy.Memory },
       shouldSetListeners = true,
       baseUrl = '',
       sharedOptions,
     } = config || {};
     const { strategy, ..._config } = cacheConfig;
     this.baseUrl = baseUrl;
-    this.cache = this.isLS(strategy) ? new LS(_config) : new Cache(_config);
+    this.cache = this.getCacheFromStrategy(strategy, _config);
     this.sharedOptions = sharedOptions || null;
     this.activeRequests = [];
     this.shouldSetListeners = shouldSetListeners;
@@ -44,7 +45,7 @@ export default class HttpReq {
     this.activeRequests.push(abortController);
     try {
       this.fetchOrThrow();
-      const response = await window.fetch(this.baseUrl + url, {
+      const response = await window.fetch(this.fullUrl(url), {
         ...this.getOptions(options),
         signal: abortController.signal,
       });
@@ -66,7 +67,8 @@ export default class HttpReq {
     url: string,
     options?: PartialRequestConfig
   ): PromiseRequestResult<T, E> => {
-    const cached = <T | null>this.cache.value(url);
+    const fullUrl = this.fullUrl(url);
+    const cached = this.cache ? <T | null>this.cache.value(fullUrl) : null;
     if (cached) {
       return { data: cached, fromCache: true };
     }
@@ -75,7 +77,7 @@ export default class HttpReq {
       method: ReqMethod.GET,
     });
     const result = await this.handleJsonResponse<T, E>(req);
-    result.data && this.cache.set(url, result.data);
+    result.data && this.cache && this.cache.set(fullUrl, result.data);
     return { ...result, fromCache: false };
   };
 
@@ -117,7 +119,7 @@ export default class HttpReq {
       controller.abort();
     });
     this.handleListener(ListenerAction.REMOVE);
-    this.cache.destruct();
+    this.cache && this.cache.destruct();
   };
 
   private handleJsonResponse = async <
@@ -139,8 +141,16 @@ export default class HttpReq {
     return result;
   };
 
-  private isLS = (strategy: CacheStrategy): boolean => {
-    return strategy === CacheStrategy.LS;
+  private getCacheFromStrategy = (
+    strategy: CacheStrategy,
+    config: SafeOmit<Config<EmptyObj>, 'delayInit' | 'prefix'>
+  ): Cache<EmptyObj> | null => {
+    if (strategy === CacheStrategy.Memory) {
+      return new Cache<EmptyObj>(config);
+    } else if (strategy === CacheStrategy.LocalStorage) {
+      return new LS<EmptyObj>(config);
+    }
+    return null;
   };
 
   private getOptions = (options?: RequestConfig): RequestConfig => {
@@ -166,6 +176,10 @@ export default class HttpReq {
     if (typeof window.fetch === 'undefined') {
       throw new Error("'fetch' is not available in current environment");
     }
+  };
+
+  private fullUrl = (url: string): string => {
+    return this.baseUrl + url;
   };
 
   private handleListener = (type: ListenerAction): void => {
