@@ -65,7 +65,7 @@ The type of properties `data` and `error` can be specified on a per request basi
 
 ##### request
 
-This is the base for all requests and is called by all below methods. It returns a standard `Response` object.
+This is the base for all requests and is called by all below methods. It contains a standard `Response` object in the `data` property of `RequestResult`.
 
 ```ts
 function request<E extends CustomError>(
