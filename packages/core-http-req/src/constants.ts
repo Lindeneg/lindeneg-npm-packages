@@ -1,6 +1,7 @@
 export enum CacheStrategy {
-  M,
-  LS,
+  None,
+  Memory,
+  LocalStorage,
 }
 
 export enum ListenerAction {
