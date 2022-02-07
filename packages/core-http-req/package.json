@@ -4,7 +4,7 @@
   "homepage": "https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/core-http-req",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "types": "dist/index.d.ts",
@@ -21,8 +21,8 @@
     "access": "public"
   },
   "dependencies": {
-    "@lindeneg/cache": "^2.1.1",
-    "@lindeneg/ls-cache": "^2.0.1"
+    "@lindeneg/cache": "^2.1.2",
+    "@lindeneg/ls-cache": "^2.0.2"
   },
   "devDependencies": {
     "@lindeneg/types": "^1.1.2"
