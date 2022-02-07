@@ -1,4 +1,4 @@
-import { ReqMethod } from '../src';
+import { CacheStrategy, ReqMethod } from '../src';
 import HttpReq from '../src/http-req';
 
 const post = { id: 'md1', title: 'awesome', description: 'miles davis' };
@@ -14,8 +14,64 @@ describe('Test Suite: @lindeneg/http-req', () => {
   let httpReq: HttpReq;
 
   beforeEach(() => {
+    window.localStorage.clear();
     httpReq && httpReq.destroy();
     httpReq = new HttpReq({ baseUrl: 'http://localhost:8000/api' });
+  });
+  test('GET 200: can initialize with LS cache strategy', async () => {
+    const _httpReq = new HttpReq({
+      baseUrl: 'http://localhost:8000/api',
+      cacheConfig: {
+        strategy: CacheStrategy.LocalStorage,
+      },
+    });
+    const { data, error, fromCache, statusCode } = await _httpReq.getJson<Post>(
+      '/post/md1'
+    );
+    expect(data).toEqual(post);
+    expect(error).toBeUndefined();
+    expect(fromCache).toEqual(false);
+    expect(statusCode).toEqual(200);
+  });
+  test('GET 200: can get valid item from LS cache', async () => {
+    const _httpReq = new HttpReq({
+      baseUrl: 'http://localhost:8000/api',
+      cacheConfig: { strategy: CacheStrategy.LocalStorage },
+    });
+    await _httpReq.getJson('/post/md1');
+    const { data, error, fromCache, statusCode } = await _httpReq.getJson<Post>(
+      '/post/md1'
+    );
+    expect(data).toEqual(post);
+    expect(error).toBeUndefined();
+    expect(fromCache).toEqual(true);
+    expect(
+      JSON.parse(
+        window.localStorage.getItem(
+          '__cl_ls_cache__http://localhost:8000/api/post/md1'
+        ) || ''
+      ).value
+    ).toEqual(post);
+    expect(statusCode).toBeUndefined();
+  });
+  test('GET 200: can get valid item with no cache strategy', async () => {
+    const _httpReq = new HttpReq({
+      baseUrl: 'http://localhost:8000/api',
+      cacheConfig: { strategy: CacheStrategy.None },
+    });
+    await _httpReq.getJson('/post/md1');
+    const { data, error, fromCache, statusCode } = await _httpReq.getJson<Post>(
+      '/post/md1'
+    );
+    expect(data).toEqual(post);
+    expect(error).toBeUndefined();
+    expect(fromCache).toEqual(false);
+    expect(
+      window.localStorage.getItem(
+        '__cl_ls_cache__http://localhost:8000/api/post/md1'
+      )
+    ).toEqual(null);
+    expect(statusCode).toBe(200);
   });
   test('GET 200: can get a valid item without baseUrl', async () => {
     const _httpReq = new HttpReq();
@@ -36,7 +92,7 @@ describe('Test Suite: @lindeneg/http-req', () => {
     expect(fromCache).toEqual(false);
     expect(statusCode).toEqual(200);
   });
-  test('GET 200: can get valid item from cache', async () => {
+  test('GET 200: can get valid item from M cache', async () => {
     await httpReq.getJson('/post/md1');
     const { data, error, fromCache, statusCode } = await httpReq.getJson<Post>(
       '/post/md1'
@@ -62,8 +118,7 @@ describe('Test Suite: @lindeneg/http-req', () => {
   test('POST 201: can post valid item', async () => {
     const { data, error, fromCache, statusCode } = await httpReq.sendJson<Post>(
       '/post',
-      { title: post.title, description: post.description },
-      ReqMethod.POST
+      { title: post.title, description: post.description }
     );
     expect(data).toEqual(post);
     expect(error).toBeUndefined();
