@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import Cache from '@lindeneg/cache';
 import LS from '@lindeneg/ls-cache';
 import type { Config } from '@lindeneg/ls-cache';
