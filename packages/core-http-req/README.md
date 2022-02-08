@@ -42,11 +42,11 @@ An optional object of type:
 ```ts
 type Config = {
   /* url to be used by all requests. If a url is 
-     given to specific requests, is simply appended. */
+     given to specific requests, it's simply appended. */
   baseUrl?: string;
-  /* shared request config to be used for all requests. 
-     if the request itself is called with a request config, 
-     the two configs are merged with the shared config yielding to overwrites. */
+  /* shared request config to be used by all requests. 
+     if the request itself is called with a config, 
+     the two are merged with the shared config yielding to overwrites. */
   sharedOptions?: RequestConfig;
   /* cache config to be used for caching get requests */
   cacheConfig?: Partial<SafeOmit<CacheConfig<EmptyObj>, 'data'>> & {
