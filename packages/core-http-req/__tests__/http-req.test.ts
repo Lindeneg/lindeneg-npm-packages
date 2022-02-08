@@ -253,18 +253,4 @@ describe('Test Suite: @lindeneg/http-req', () => {
     expect(fromCache).toBeUndefined();
     expect(statusCode).toBeUndefined();
   });
-  test('returns error on no window', async () => {
-    //@ts-expect-error asd
-    window = null;
-    const { data, error, fromCache, statusCode } = await httpReq.deleteJson<
-      Post,
-      ErrorResponse
-    >('/post/md2');
-    expect(data).toBeUndefined();
-    expect(error?.message).toEqual(
-      "'window' is not available in current environment"
-    );
-    expect(fromCache).toBeUndefined();
-    expect(statusCode).toBeUndefined();
-  });
 });
