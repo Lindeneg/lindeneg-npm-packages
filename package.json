@@ -17,7 +17,7 @@
     "ghcov:prepare": "yarn run prepare:all && yarn run test:js",
     "ghcov:deploy": "gh-pages deploy -d coverage/lcov-report",
     "pub:prepare": "yarn run prepare:all && yarn run test",
-    "pub:deploy": "lerna publish",
+    "pub:deploy": "lerna publish && yarn run ghcov:deploy",
     "prepare:all": "yarn run clean && yarn run lint && yarn run build",
     "mock:server": "ts-node --project ./mock-server/tsconfig.json ./mock-server/src/server.ts",
     "test": "yarn run test:js && yarn run test:ts",

@@ -247,7 +247,9 @@ describe('Test Suite: @lindeneg/http-req', () => {
       ErrorResponse
     >('/post/md2');
     expect(data).toBeUndefined();
-    expect(error?.message).toEqual('window.fetch is not a function');
+    expect(error?.message).toEqual(
+      "'fetch' is not available in current environment"
+    );
     expect(fromCache).toBeUndefined();
     expect(statusCode).toBeUndefined();
   });

@@ -1,6 +1,6 @@
 ### @lindeneg/core-http-req
 
-![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/core-http-req) ![license](https://badgen.net/npm/license/@lindeneg/core-http-req)
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/core-http-req@1.1.1) ![license](https://badgen.net/npm/license/@lindeneg/core-http-req)
 
 ---
 
