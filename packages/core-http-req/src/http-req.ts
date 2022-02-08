@@ -174,7 +174,9 @@ export default class HttpReq {
   };
 
   private fetchOrThrow = (): void => {
-    if (typeof window.fetch === 'undefined') {
+    if (!window || typeof window !== 'object') {
+      throw new Error("'window' is not available in current environment");
+    } else if (!window.fetch || typeof window.fetch !== 'function') {
       throw new Error("'fetch' is not available in current environment");
     }
   };
