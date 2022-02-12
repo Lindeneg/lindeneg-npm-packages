@@ -2,13 +2,21 @@
 
 CMD='yarn rollup -c ../../rollup.config.js && yarn tsc --project ./tsconfig-prod.json --declaration --emitDeclarationOnly --declarationDir ./dist && yarn custom'
 
-SCOPE='@lindeneg/'
+PREFIX='@lindeneg/'
 
-if [[ -n $1 ]]
+SCOPES=()
+
+if [[ ! -n $1 ]]
   then
-    SCOPE+=$1
+    SCOPES+=( "$PREFIX*" )
 else
-  SCOPE+=*
+  for arg in "$@" 
+    do
+      SCOPES+=( "$PREFIX$arg" )
+  done
 fi
 
-lerna exec --scope $SCOPE -- $CMD
+for scope in ${SCOPES[@]}; do
+  echo "BUILDING: $scope"
+  lerna exec --scope "$scope" -- "$CMD" > /dev/null
+done
