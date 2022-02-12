@@ -1,5 +1,7 @@
-- 2.1.3
+2.1.3
 
-* `cache.destruct` has been renamed to the more correct name `cache.clearTrimListener`
-* asynchronous methods no longer rejects instead in such a situation, the promise resolves to null
-* documentation in readme has been updated to be of greater detail
+- `cache.destruct` has been renamed to the more correct name `cache.clearTrimListener`
+
+- asynchronous methods no longer rejects instead in such a situation, the promise resolves to null
+
+- documentation in readme has been updated to be of greater detail
