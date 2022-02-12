@@ -49,8 +49,10 @@ type Config = {
      the two are merged with the shared config yielding to overwrites. */
   sharedOptions?: RequestConfig;
   /* cache config to be used for caching get requests */
-  cacheConfig?: Partial<SafeOmit<CacheConfig<EmptyObj>, 'data'>> & {
+  cacheConfig?: {
     strategy: CacheStrategy;
+    trim?: number;
+    ttl?: number;
   };
   /* if true, will set listeners to abort active requests on unload event */
   shouldSetListeners?: boolean;
