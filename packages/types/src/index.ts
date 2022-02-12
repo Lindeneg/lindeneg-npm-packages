@@ -1,6 +1,10 @@
 /* istanbul ignore file */
 export type EmptyObj = Record<string | number | symbol, unknown>;
 
+export type IMapped<T> = { [K in keyof T]: T[K] };
+
+export type ObjConstraint<T> = IMapped<T> extends unknown ? EmptyObj : IMapped<T>;
+
 export type AllowedPrimitivesValues<T> = T extends
   | boolean
   | string
