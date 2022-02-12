@@ -9,6 +9,14 @@ type TestObj = {
   };
 };
 
+type ITestObj = {
+  id: number;
+  options: string[];
+  favorites: {
+    albums: string[];
+  };
+};
+
 function getMock(tll?: number): CacheData<TestObj> {
   return {
     id: Cache.createEntry(42, tll),
@@ -28,7 +36,7 @@ function mockSize() {
 
 describe('Test Suite: @lindeneg/cache', () => {
   test('can initialize without initial data', () => {
-    const cache = new Cache();
+    const cache = new Cache<TestObj>();
     expect(cache.size()).toBe(0);
   });
   test('can initialize with initial data', () => {
@@ -43,7 +51,7 @@ describe('Test Suite: @lindeneg/cache', () => {
     );
   });
   test('can synchronously set entry', () => {
-    const cache = new Cache();
+    const cache = new Cache<ITestObj>();
 
     expect(cache.set('id', 5).value).toBe(5);
     expect(cache.size()).toBe(1);
