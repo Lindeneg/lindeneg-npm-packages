@@ -6,39 +6,49 @@ LERNA_SCOPE=''
 
 PREFIX='@lindeneg/'
 
-SCOPES=()
-
 BUILD_MSG="BUILDING "
 
-if [[ ! -n $1 ]]
-  then
-    s="$PREFIX*"
-    SCOPES+=( $s )
-    LERNA_SCOPE=$s
-    BUILD_MSG+="ALL PACKAGES: "
-elif [ "$#" -eq 1 ]
-  then
-    s="$PREFIX$1"
-    SCOPES+=( $s )
-    LERNA_SCOPE=$s
-    BUILD_MSG+="1 PACKAGE: "
-else
+function build_scopes () {
+  local SCOPES=()
   for arg in "$@" 
     do
       SCOPES+=( "$PREFIX$arg" )
   done
-  BUILD_MSG+="$# PACKAGES: "
-  LERNA_SCOPE="{$(echo ${SCOPES[*]}} | sed 's/\s/,/')"
-fi
+  local SCOPES_STR+="${SCOPES[*]}"
+  LERNA_SCOPE="{$(echo $SCOPES_STR} | sed 's/\s/,/')"
+  BUILD_MSG+="$# PACKAGES: $SCOPES_STR"
+}
 
-BUILD_MSG+="${SCOPES[*]}"
+function build_scope () {
+  local S="$PREFIX$1"
+  LERNA_SCOPE=$S
+  BUILD_MSG+="$2: $S"
+}
 
-echo $BUILD_MSG
+function main () {
+  if [[ ! -n $1 ]]
+    then
+      build_scope '*' 'ALL PACKAGES'
+  elif [ "$#" -eq 1 ]
+    then
+      build_scope "$1" '1 PACKAGE'
+  else
+    build_scopes $@
+  fi
+}
 
-result="lerna exec --scope '$LERNA_SCOPE' -- $CMD"
+function build () {
+  echo $BUILD_MSG
 
-$result
+  result="lerna exec --scope '$LERNA_SCOPE' -- $CMD"
 
-CODE=$?
+  $result
 
-exit $CODE
+  CODE=$?
+
+  exit $CODE 
+}
+
+main $@
+
+build
