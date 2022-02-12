@@ -143,8 +143,8 @@ export default class Cache<T extends EmptyObj> {
     });
   };
 
-  public destruct = (): void => {
-    this.runListener('destruct');
+  public clearTrimListener = (): void => {
+    this.runListener('clearTrimListener');
     clearInterval(this.interval);
   };
 

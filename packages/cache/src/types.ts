@@ -18,7 +18,7 @@ export type CacheData<T extends EmptyObj> = Partial<{
 export type ListenerConstraint =
   | 'remove'
   | 'clear'
-  | 'destruct'
+  | 'clearTrimListener'
   | 'trim'
   | 'set';
 

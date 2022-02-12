@@ -149,7 +149,12 @@ const id = await cache.removeAsync('id');
 This method allows you to attach callbacks to be executed on certain events.
 
 ```ts
-type ListenerConstraint = 'remove' | 'clear' | 'destruct' | 'trim' | 'set';
+type ListenerConstraint =
+  | 'remove'
+  | 'clear'
+  | 'clearTrimListener'
+  | 'trim'
+  | 'set';
 
 function on<K extends ListenerConstraint>(
   event: K,
@@ -200,9 +205,9 @@ const hasId = cache.has('id');
 Get the current size of cache.
 
 ```ts
-function has(key: keyof T): boolean;
+function size(): number;
 
-const hasId = cache.has('id');
+const cacheSize = cache.size();
 ```
 
 ##### keys
@@ -210,29 +215,31 @@ const hasId = cache.has('id');
 Get the keys of the cache.
 
 ```ts
-function has(key: keyof T): boolean;
+function keys(): Array<keyof T>;
 
-const hasId = cache.has('id');
+const keys = cache.keys();
 ```
 
-##### clear
+##### clear, clearAsync
 
 Clear the cache.
 
 ```ts
-function has(key: keyof T): boolean;
+function clear(): void;
+function clearAsync(): Promise<void>;
 
-const hasId = cache.has('id');
+cache.clear();
+await cache.clearAsync();
 ```
 
-##### destruct
+##### clearTrimListener
 
-Clear the cache and remove the `trim` event listener.
+Removes the `trim` event listener.
 
 ```ts
-function has(key: keyof T): boolean;
+function clearTrimListener(): void;
 
-const hasId = cache.has('id');
+cache.clearTrimListener();
 ```
 
 ### Type Safety
