@@ -42,4 +42,4 @@ BUILD_MSG+="${SCOPES[*]}"
 
 echo $BUILD_MSG
 
-lerna exec --scope "'$LERNA_SCOPE'" -- "$CMD" > /dev/null
+lerna exec --scope "'$LERNA_SCOPE'" -- "$CMD"
