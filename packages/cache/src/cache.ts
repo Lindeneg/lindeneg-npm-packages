@@ -1,6 +1,6 @@
 import { nowInSeconds } from './util';
 import { DEFAULT_TRIM, DEFAULT_TTL } from './constants';
-import type { EmptyObj } from '@lindeneg/types';
+import type { ObjConstraint, SafeOmit } from '@lindeneg/types';
 import type {
   ListenerCallback,
   ListenerConstraint,
@@ -10,9 +10,9 @@ import type {
   CacheEntry,
 } from './types';
 
-export default class Cache<T extends EmptyObj> {
+export default class Cache<T extends ObjConstraint<T>> {
   private interval: NodeJS.Timer;
-  private config: Omit<CacheConfig<T>, 'data'>;
+  private config: SafeOmit<CacheConfig<T>, 'data'>;
   private listeners: Listeners<T>;
   protected data: CacheData<T>;
 
