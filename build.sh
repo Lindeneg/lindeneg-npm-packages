@@ -14,7 +14,7 @@ function build_scopes () {
     do
       SCOPES+=( "$PREFIX$arg" )
   done
-  local SCOPES_STR+="${SCOPES[*]}"
+  local SCOPES_STR="${SCOPES[*]}"
   LERNA_SCOPE="{$(echo $SCOPES_STR} | sed 's/\s/,/')"
   BUILD_MSG+="$# PACKAGES: $SCOPES_STR"
 }
