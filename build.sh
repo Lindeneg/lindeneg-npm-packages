@@ -16,7 +16,8 @@ else
   done
 fi
 
-for scope in ${SCOPES[@]}; do
-  echo "BUILDING: $scope"
-  lerna exec --scope "$scope" -- "$CMD" > /dev/null
-done
+CLEANED_SCOPES="{$(echo ${SCOPES[*]}} | sed 's/\s/,/')"
+
+echo "BUILDING: $CLEANED_SCOPES"
+
+lerna exec --scope "'$CLEANED_SCOPES'" -- "$CMD" > /dev/null
