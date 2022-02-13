@@ -1,6 +1,6 @@
 ### @lindeneg/cache
 
-![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/cache@2.1.3) ![license](https://badgen.net/npm/license/@lindeneg/cache)
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/cache@2.1.4) ![license](https://badgen.net/npm/license/@lindeneg/cache)
 
 ---
 

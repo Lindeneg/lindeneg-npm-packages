@@ -1,6 +1,6 @@
 ### @lindeneg/memory-cache
 
-![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/memory-cache@1.1.6) ![license](https://badgen.net/npm/license/@lindeneg/memory-cache)
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/memory-cache@1.1.7) ![license](https://badgen.net/npm/license/@lindeneg/memory-cache)
 
 [Sandbox](https://codesandbox.io/s/lindeneg-memory-cache-5ygvx)
 
