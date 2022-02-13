@@ -31,7 +31,7 @@ await cache.initialize();
 ```ts
 type Config = {
   /* prefix localStorage keys to avoid collisions
-     default: 600 */
+     default: '__cl_ls_cache__' */
   prefix?: string;
 
   /* delay localStorage initialization
