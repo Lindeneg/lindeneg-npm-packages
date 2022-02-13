@@ -15,8 +15,7 @@
     "localStorage"
   ],
   "dependencies": {
-    "@lindeneg/cache": "^2.1.2",
-    "@lindeneg/logger": "^1.2.0"
+    "@lindeneg/cache": "^2.1.2"
   },
   "scripts": {
     "custom": "echo no custom script"

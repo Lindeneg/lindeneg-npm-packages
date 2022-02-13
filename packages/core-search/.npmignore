@@ -1,4 +1,5 @@
 __tests__
 node_modules
 src
+CHANGELOG
 tsconfig*

@@ -5,3 +5,5 @@
 - asynchronous methods no longer rejects instead in such a situation, the promise resolves to null
 
 - documentation in readme has been updated to be of greater detail
+
+- type constraint now maps an interface to make it compatible with Record<string | number | symbol, unknown>
