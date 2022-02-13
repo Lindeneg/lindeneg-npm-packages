@@ -4,7 +4,7 @@
   "homepage": "https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/search",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "types": "dist/index.d.ts",
@@ -22,8 +22,8 @@
     "custom": "echo no custom script"
   },
   "dependencies": {
-    "@lindeneg/core-search": "^1.1.5",
-    "@lindeneg/memory-cache": "^1.1.6"
+    "@lindeneg/core-search": "^1.1.6",
+    "@lindeneg/memory-cache": "^1.1.7"
   },
   "publishConfig": {
     "access": "public"
