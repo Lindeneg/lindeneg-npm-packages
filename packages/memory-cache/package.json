@@ -18,7 +18,8 @@
     "use-cache"
   ],
   "dependencies": {
-    "@lindeneg/cache": "^2.1.3"
+    "@lindeneg/cache": "^2.1.3",
+    "@lindeneg/types": "^1.1.3"
   },
   "scripts": {
     "custom": "echo no custom script"
@@ -29,8 +30,5 @@
   "gitHead": "4c3b992a653be2cdffeb05a50fe1c727853d39ce",
   "peerDependencies": {
     "react": "^17.0.2"
-  },
-  "devDependencies": {
-    "@lindeneg/types": "^1.1.3"
   }
 }
