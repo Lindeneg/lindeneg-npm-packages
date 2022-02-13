@@ -1,6 +1,6 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import type { CacheData } from '@lindeneg/cache';
 import LS from '@lindeneg/ls-cache';
+import type { CacheData } from '@lindeneg/ls-cache';
 import useBrowserCache from '../src';
 
 const PREFIX = '__clch__';
