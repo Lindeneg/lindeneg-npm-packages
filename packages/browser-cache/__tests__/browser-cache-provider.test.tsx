@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import LS from '@lindeneg/ls-cache';
-import type { CacheData } from '@lindeneg/cache';
+import type { CacheData } from '@lindeneg/ls-cache';
 import { BrowserCacheContextProvider } from '../src';
 import { Component } from './__mock__/Component';
 import type { TestObj } from './__mock__/Component';

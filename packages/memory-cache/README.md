@@ -2,6 +2,8 @@
 
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/memory-cache@1.1.6) ![license](https://badgen.net/npm/license/@lindeneg/memory-cache)
 
+[Sandbox](https://codesandbox.io/s/lindeneg-memory-cache-5ygvx)
+
 ---
 
 React hook for caching data in-memory. If you'd like to make the cache persistent, take a look at [@lindeneg/browser-cache](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/browser-cache).

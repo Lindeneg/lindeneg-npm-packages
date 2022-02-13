@@ -1,7 +1,7 @@
 import Cache from '@lindeneg/cache';
 import type { CacheEntry } from '@lindeneg/cache';
 import type { ObjConstraint } from '@lindeneg/types';
-import { DEFAULT_PREFIX, isDev } from './constants';
+import { DEFAULT_PREFIX } from './constants';
 import type { Config, MappedKeys } from './types';
 
 export default class LS<T extends ObjConstraint<T>> extends Cache<T> {
@@ -80,14 +80,8 @@ export default class LS<T extends ObjConstraint<T>> extends Cache<T> {
         `${this.prefix}${key}`,
         JSON.stringify(value)
       );
-    } catch (err) {
-      /* istanbul ignore next */
-      isDev &&
-        console.log(
-          { msg: 'failed to access localStorage', originalErr: err },
-          'onSetListener'
-        );
-    }
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
   };
 
   private onRemoveListener = async <T extends ObjConstraint<T>>(
@@ -95,14 +89,8 @@ export default class LS<T extends ObjConstraint<T>> extends Cache<T> {
   ): Promise<void> => {
     try {
       window.localStorage.removeItem(`${this.prefix}${key}`);
-    } catch (err) {
-      /* istanbul ignore next */
-      isDev &&
-        console.log(
-          { msg: 'failed to access localStorage', originalErr: err },
-          'onRemoveListener'
-        );
-    }
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
   };
 
   private onClearListener = async (): Promise<void> => {
@@ -126,14 +114,8 @@ export default class LS<T extends ObjConstraint<T>> extends Cache<T> {
         const parsed = JSON.parse(item);
         return parsed;
       }
-    } catch (err) {
-      /* istanbul ignore next */
-      isDev &&
-        console.log(
-          { msg: `could not get and parse key '${key}'`, originalErr: err },
-          'item'
-        );
-    }
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
     return null;
   };
 
@@ -155,14 +137,8 @@ export default class LS<T extends ObjConstraint<T>> extends Cache<T> {
           result.push({ lKey: <keyof T>key, pKey: <keyof T>match[1] });
         }
       }
-    } catch (err) {
-      /* istanbul ignore next */
-      isDev &&
-        console.log(
-          { msg: 'failed to access localStorage', originalErr: err },
-          'getLSKeys'
-        );
-    }
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
     return result;
   };
 
