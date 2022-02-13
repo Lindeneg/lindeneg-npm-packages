@@ -6,7 +6,7 @@
 
 ---
 
-Filter and optionally sort objects by nested values against a query in a type-safe way.
+React hook for filtering and optionally sorting objects by nested values against a query in a type-safe way.
 
 ### Installation
 
@@ -49,7 +49,7 @@ function SomeComponent() {
   const { filtered, query, onQueryChange, onPredicateChange } = useSearch(
     data,
     predicate,
-    optionalSortFunction
+    useSearchOptions
   );
 
   console.log(filtered);

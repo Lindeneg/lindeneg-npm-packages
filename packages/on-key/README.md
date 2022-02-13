@@ -6,7 +6,7 @@
 
 ---
 
-Hook to listen for key-strokes and then do something
+React hook to listen for key-strokes and then do something
 
 ### Installation
 
