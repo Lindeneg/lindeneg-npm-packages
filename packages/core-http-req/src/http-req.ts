@@ -185,12 +185,15 @@ export default class HttpReq {
   };
 
   private handleListener = (type: ListenerAction): void => {
-    if (this.shouldSetListeners && typeof window !== 'undefined') {
-      if (type === ListenerAction.ADD) {
-        window.addEventListener('unload', this.destroy);
-      } else if (type === ListenerAction.REMOVE) {
-        window.removeEventListener('unload', this.destroy);
+    try {
+      if (this.shouldSetListeners) {
+        if (type === ListenerAction.ADD) {
+          window.addEventListener('unload', this.destroy);
+        } else if (type === ListenerAction.REMOVE) {
+          window.removeEventListener('unload', this.destroy);
+        }
       }
-    }
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
   };
 }
