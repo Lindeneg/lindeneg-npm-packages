@@ -4,12 +4,18 @@ import HttpReq from '../src/http-req';
 
 const post = { id: 'md1', title: 'awesome', description: 'miles davis' };
 
-type Post = typeof post;
+type Post = Partial<typeof post>;
 
-type ErrorResponse = {
+interface IPost {
+  id: string;
+  title: string;
+  description: string;
+}
+
+interface ErrorResponse {
   message: string;
   dev?: unknown;
-};
+}
 
 describe('Test Suite: @lindeneg/http-req', () => {
   let httpReq: HttpReq;
@@ -61,9 +67,8 @@ describe('Test Suite: @lindeneg/http-req', () => {
       cacheConfig: { strategy: CacheStrategy.None },
     });
     await _httpReq.getJson('/post/md1');
-    const { data, error, fromCache, statusCode } = await _httpReq.getJson<Post>(
-      '/post/md1'
-    );
+    const { data, error, fromCache, statusCode } =
+      await _httpReq.getJson<IPost>('/post/md1');
     expect(data).toEqual(post);
     expect(error).toBeUndefined();
     expect(fromCache).toEqual(false);
@@ -76,16 +81,15 @@ describe('Test Suite: @lindeneg/http-req', () => {
   });
   test('GET 200: can get a valid item without baseUrl', async () => {
     const _httpReq = new HttpReq();
-    const { data, error, fromCache, statusCode } = await _httpReq.getJson<Post>(
-      'http://localhost:8000/api/post/md1'
-    );
+    const { data, error, fromCache, statusCode } =
+      await _httpReq.getJson<IPost>('http://localhost:8000/api/post/md1');
     expect(data).toEqual(post);
     expect(error).toBeUndefined();
     expect(fromCache).toEqual(false);
     expect(statusCode).toEqual(200);
   });
   test('GET 200: can get a valid item', async () => {
-    const { data, error, fromCache, statusCode } = await httpReq.getJson<Post>(
+    const { data, error, fromCache, statusCode } = await httpReq.getJson<IPost>(
       '/post/md1'
     );
     expect(data).toEqual(post);

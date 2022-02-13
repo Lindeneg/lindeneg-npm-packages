@@ -9,13 +9,13 @@ type TestObj = {
   };
 };
 
-type ITestObj = {
+interface ITestObj {
   id: number;
   options: string[];
   favorites: {
     albums: string[];
   };
-};
+}
 
 function getMock(tll?: number): CacheData<TestObj> {
   return {
@@ -113,7 +113,10 @@ describe('Test Suite: @lindeneg/cache', () => {
     expect(cache.valueAsync('id')).resolves.toBe(null);
   });
   test('can remove expired key on get call', (done) => {
-    const cache = new Cache({ ttl: 0.1 });
+    const cache = new Cache({
+      data: { hello: { expires: 1, value: '' }, id: { expires: 1, value: 1 } },
+      ttl: 0.1,
+    });
     cache.set('id', 5);
     setTimeout(() => {
       expect(cache.get('id')).toBe(null);
