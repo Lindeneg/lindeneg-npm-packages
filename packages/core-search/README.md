@@ -12,4 +12,4 @@ Filter and optionally sort objects by nested values against a query
 
 ### Usage
 
-'The documentation [here](https://github.com/Lindeneg/lindeneg-npm-packages/tree/master/packages/search) can be used.
+The documentation [here](https://github.com/Lindeneg/lindeneg-npm-packages/tree/master/packages/search) can be used.
