@@ -1,12 +1,10 @@
 ### @lindeneg/memory-cache
 
-![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/memory-cache) ![license](https://badgen.net/npm/license/@lindeneg/memory-cache)
-
-[Sandbox](https://codesandbox.io/s/lindeneg-memory-cache-5ygvx)
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/memory-cache@1.1.6) ![license](https://badgen.net/npm/license/@lindeneg/memory-cache)
 
 ---
 
-Hook for caching data in-memory. If you'd like to make the cache persistent, take a look at [@lindeneg/browser-cache](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/browser-cache).
+React hook for caching data in-memory. If you'd like to make the cache persistent, take a look at [@lindeneg/browser-cache](https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/browser-cache).
 
 ### Installation
 
@@ -35,26 +33,4 @@ function SomeComponent() {
 }
 ```
 
-#### Config
-
-| Name | Required | Ref | Type                                                                     | Default | Description                             |
-| ---- | -------- | --- | ------------------------------------------------------------------------ | ------- | --------------------------------------- |
-| data | N        | T   | `Record<string \| number \| symbol, { expires: number; value: unknown}>` | `{}`    | optional object with initial cache data |
-| trim | N        | -   | `number`                                                                 | `600`   | optional trimming interval in seconds.  |
-| ttl  | N        | -   | `number`                                                                 | `3600`  | optional time-to-live in seconds.       |
-
-#### Methods
-
-| Name        | Types                                                                                                             | Description                                                       |
-| ----------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| get         | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | gets entry, use `getAsync` for promise                            |
-| value       | `(key: K) => T[K] \| null`                                                                                        | gets entry value, use `valueAsync` for promise                    |
-| set         | `(key: K, value: T[K]) => { expires: number; value: T[K] }`                                                       | sets entry, use `setAsync` for promise                            |
-| remove      | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | removes entry, use `removeAsync` for promise                      |
-| has         | `(key: K) => boolean`                                                                                             | check if entry exists                                             |
-| size        | `() => number`                                                                                                    | get size of cache                                                 |
-| keys        | `() => Array`                                                                                                     | get array of defined keys                                         |
-| clear       | `() => void`                                                                                                      | clear cache, use `clearAsync` for promise                         |
-| destruct    | `() => void`                                                                                                      | destroy cache, removes trim listener                              |
-| createEntry | `(value: unknown) => { expires: number; value: unknown }`                                                         | create a cache entry                                              |
-| on          | `(event: "set" \| "remove" \| "clear" \| "destruct" \| "trim", callback: ((...args: unknown[]) => void)) => void` | set event callback, supports multiple listeners on the same event |
+The documentation [here](https://github.com/Lindeneg/lindeneg-npm-packages/tree/master/packages/cache) can be used.

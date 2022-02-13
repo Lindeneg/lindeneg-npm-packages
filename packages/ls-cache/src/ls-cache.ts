@@ -1,11 +1,10 @@
 import Cache from '@lindeneg/cache';
 import type { CacheEntry } from '@lindeneg/cache';
-import type { EmptyObj } from '@lindeneg/types';
-import { error } from './logger';
-import { DEFAULT_PREFIX } from './constants';
+import type { ObjConstraint } from '@lindeneg/types';
+import { DEFAULT_PREFIX, isDev } from './constants';
 import type { Config, MappedKeys } from './types';
 
-export default class LS<T extends EmptyObj> extends Cache<T> {
+export default class LS<T extends ObjConstraint<T>> extends Cache<T> {
   private readonly prefix: string;
   private readonly regex: RegExp;
 
@@ -83,24 +82,26 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
       );
     } catch (err) {
       /* istanbul ignore next */
-      error(
-        { msg: 'failed to access localStorage', originalErr: err },
-        'onSetListener'
-      );
+      isDev &&
+        console.log(
+          { msg: 'failed to access localStorage', originalErr: err },
+          'onSetListener'
+        );
     }
   };
 
-  private onRemoveListener = async <T extends EmptyObj>(
+  private onRemoveListener = async <T extends ObjConstraint<T>>(
     key: keyof T
   ): Promise<void> => {
     try {
       window.localStorage.removeItem(`${this.prefix}${key}`);
     } catch (err) {
       /* istanbul ignore next */
-      error(
-        { msg: 'failed to access localStorage', originalErr: err },
-        'onRemoveListener'
-      );
+      isDev &&
+        console.log(
+          { msg: 'failed to access localStorage', originalErr: err },
+          'onRemoveListener'
+        );
     }
   };
 
@@ -112,7 +113,6 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
     });
   };
 
-  /* istanbul ignore next : is tested: ls-cache.test.ts:'can trim items' */
   private onTrimListener = async (keys: Array<keyof T>): Promise<void> => {
     keys.map((key) => {
       this.onRemoveListener(key);
@@ -128,10 +128,11 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
       }
     } catch (err) {
       /* istanbul ignore next */
-      error(
-        { msg: `could not get and parse key '${key}'`, originalErr: err },
-        'item'
-      );
+      isDev &&
+        console.log(
+          { msg: `could not get and parse key '${key}'`, originalErr: err },
+          'item'
+        );
     }
     return null;
   };
@@ -151,15 +152,16 @@ export default class LS<T extends EmptyObj> extends Cache<T> {
       for (const key in window.localStorage) {
         const match = this.regex.exec(key);
         if (match && match.length > 1) {
-          result.push({ lKey: key, pKey: match[1] });
+          result.push({ lKey: <keyof T>key, pKey: <keyof T>match[1] });
         }
       }
     } catch (err) {
       /* istanbul ignore next */
-      error(
-        { msg: 'failed to access localStorage', originalErr: err },
-        'getLSKeys'
-      );
+      isDev &&
+        console.log(
+          { msg: 'failed to access localStorage', originalErr: err },
+          'getLSKeys'
+        );
     }
     return result;
   };

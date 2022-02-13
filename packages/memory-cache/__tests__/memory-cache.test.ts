@@ -11,6 +11,14 @@ type TestObj = {
   };
 };
 
+interface ITestObj {
+  id: number;
+  options: string[];
+  favorites: {
+    albums: string[];
+  };
+}
+
 function getMock(tll?: number): CacheData<TestObj> {
   return {
     id: Cache.createEntry(42, tll),
@@ -37,8 +45,7 @@ describe('Test Suite: @lindeneg/memory-cache', () => {
   });
   test('can initialize cache with initial data', () => {
     const data = getMock();
-    const { cache } = renderHook(() => useMemoryCache<TestObj>({ data })).result
-      .current;
+    const { cache } = renderHook(() => useMemoryCache({ data })).result.current;
 
     expect(cache.size()).toBe(mockSize());
     expect(cache.value('id')).toBe(data.id?.value);
@@ -86,8 +93,8 @@ describe('Test Suite: @lindeneg/memory-cache', () => {
   });
   test('can clear cache items', () => {
     const data = getMock();
-    const { cache } = renderHook(() => useMemoryCache<TestObj>({ data })).result
-      .current;
+    const { cache } = renderHook(() => useMemoryCache<ITestObj>({ data }))
+      .result.current;
 
     expect(cache.size()).toBe(mockSize());
 
@@ -181,15 +188,15 @@ describe('Test Suite: @lindeneg/memory-cache', () => {
       cache.on('trim', fn);
     });
   });
-  test('can listen to destruct event', () => {
+  test('can listen to clearTrimListener event', () => {
     const { cache } = renderHook(() => useMemoryCache<TestObj>()).result
       .current;
 
     const fn = jest.fn();
 
     act(() => {
-      cache.on('destruct', fn);
-      cache.destruct();
+      cache.on('clearTrimListener', fn);
+      cache.clearTrimListener();
     });
 
     expect(fn).toHaveBeenCalledTimes(1);

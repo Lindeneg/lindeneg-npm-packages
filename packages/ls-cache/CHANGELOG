@@ -1,0 +1,5 @@
+2.0.3
+
+- type constraint now maps an interface to make it compatible with Record<string | number | symbol, unknown>
+
+- remove @lindeneg-logger as dependency

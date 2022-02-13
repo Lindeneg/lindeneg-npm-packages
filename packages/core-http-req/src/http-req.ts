@@ -1,7 +1,6 @@
-import Cache from '@lindeneg/cache';
-import LS from '@lindeneg/ls-cache';
+import LS, { Cache } from '@lindeneg/ls-cache';
 import type { Config } from '@lindeneg/ls-cache';
-import type { EmptyObj, SafeOmit } from '@lindeneg/types';
+import type { ObjConstraint, EmptyObj, SafeOmit } from '@lindeneg/types';
 import { CacheStrategy, ListenerAction, ReqMethod } from './constants';
 import type {
   RequestConfig,
@@ -62,7 +61,7 @@ export default class HttpReq {
   };
 
   public getJson = async <
-    T extends EmptyObj,
+    T extends ObjConstraint<T>,
     E extends CustomError = CustomError
   >(
     url: string,
@@ -83,11 +82,11 @@ export default class HttpReq {
   };
 
   public sendJson = async <
-    T extends EmptyObj,
+    T extends ObjConstraint<T>,
     E extends CustomError = CustomError
   >(
     url: string,
-    body: EmptyObj,
+    body: ObjConstraint<T>,
     method: ReqMethod.POST | ReqMethod.PUT | ReqMethod.PATCH = ReqMethod.POST,
     options?: PartialRequestConfig
   ): PromiseRequestResult<T, E> => {
@@ -100,11 +99,11 @@ export default class HttpReq {
   };
 
   public deleteJson = async <
-    T extends EmptyObj,
+    T extends ObjConstraint<T>,
     E extends CustomError = CustomError
   >(
     url: string,
-    body?: EmptyObj,
+    body?: ObjConstraint<T>,
     options?: PartialRequestConfig
   ): PromiseRequestResult<T, E> => {
     const req = await this.request<E>(url, {
@@ -120,11 +119,11 @@ export default class HttpReq {
       controller.abort();
     });
     this.handleListener(ListenerAction.REMOVE);
-    this.cache && this.cache.destruct();
+    this.cache && this.cache.clearTrimListener();
   };
 
   private handleJsonResponse = async <
-    T extends EmptyObj,
+    T extends ObjConstraint<T>,
     E extends CustomError
   >(
     req: RequestResult<Response, E>
@@ -186,12 +185,15 @@ export default class HttpReq {
   };
 
   private handleListener = (type: ListenerAction): void => {
-    if (this.shouldSetListeners && typeof window !== 'undefined') {
-      if (type === ListenerAction.ADD) {
-        window.addEventListener('unload', this.destroy);
-      } else if (type === ListenerAction.REMOVE) {
-        window.removeEventListener('unload', this.destroy);
+    try {
+      if (this.shouldSetListeners) {
+        if (type === ListenerAction.ADD) {
+          window.addEventListener('unload', this.destroy);
+        } else if (type === ListenerAction.REMOVE) {
+          window.removeEventListener('unload', this.destroy);
+        }
       }
-    }
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
   };
 }

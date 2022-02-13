@@ -1,6 +1,6 @@
 ### @lindeneg/browser-cache
 
-![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/browser-cache) ![license](https://badgen.net/npm/license/@lindeneg/browser-cache)
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/browser-cache@1.2.2) ![license](https://badgen.net/npm/license/@lindeneg/browser-cache)
 
 [Sandbox](https://codesandbox.io/s/lindeneg-browser-cache-q502j)
 
@@ -67,26 +67,4 @@ function ConsumerComponent() {
 }
 ```
 
-#### Config
-
-| Name   | Required | Type     | Default           | Description                                  |
-| ------ | -------- | -------- | ----------------- | -------------------------------------------- |
-| prefix | N        | `string` | `__cl_ls_cache__` | prefix localStorage keys to avoid collisions |
-| trim   | N        | `number` | `600`             | trimming interval in seconds.                |
-| ttl    | N        | `number` | `3600`            | time-to-live in seconds.                     |
-
-#### Methods
-
-| Name        | Types                                                                                                             | Description                                                       |
-| ----------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| get         | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | gets entry, use `getAsync` for promise                            |
-| value       | `(key: K) => T[K] \| null`                                                                                        | gets entry value, use `valueAsync` for promise                    |
-| set         | `(key: K, value: T[K]) => { expires: number; value: T[K] }`                                                       | sets entry, use `setAsync` for promise                            |
-| remove      | `(key: K) => { expires: number; value: T[K] } \| null`                                                            | removes entry, use `removeAsync` for promise                      |
-| has         | `(key: K) => boolean`                                                                                             | check if entry exists                                             |
-| size        | `() => number`                                                                                                    | get size of cache                                                 |
-| keys        | `() => Array`                                                                                                     | get array of defined keys                                         |
-| clear       | `() => void`                                                                                                      | clear cache, use `clearAsync` for promise                         |
-| destruct    | `() => void`                                                                                                      | destroy cache, removes trim listener                              |
-| createEntry | `(value: unknown) => { expires: number; value: unknown }`                                                         | create a cache entry                                              |
-| on          | `(event: "set" \| "remove" \| "clear" \| "destruct" \| "trim", callback: ((...args: unknown[]) => void)) => void` | set event callback, supports multiple listeners on the same event |
+The documentation [here](https://github.com/Lindeneg/lindeneg-npm-packages/tree/master/packages/ls-cache) can be used.

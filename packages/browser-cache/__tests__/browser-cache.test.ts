@@ -11,7 +11,15 @@ type TestObj = {
   favorites: {
     albums: string[];
   };
-};
+}
+
+interface ITestObj {
+  id: number;
+  options: string[];
+  favorites: {
+    albums: string[];
+  };
+}
 
 function getMock(tll?: number): CacheData<TestObj> {
   return {
@@ -104,7 +112,7 @@ describe('Test Suite: @lindeneg/browser-cache/cache', () => {
     const data = getMock();
     setLS(data);
 
-    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
+    const { cache } = renderHook(() => useBrowserCache<ITestObj>(c())).result
       .current;
 
     expect(cache.size()).toBe(mockSize());
@@ -124,7 +132,7 @@ describe('Test Suite: @lindeneg/browser-cache/cache', () => {
     const data = getMock();
     setLS(data);
 
-    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
+    const { cache } = renderHook(() => useBrowserCache<ITestObj>(c())).result
       .current;
 
     expect(cache.size()).toBe(mockSize());
@@ -147,7 +155,7 @@ describe('Test Suite: @lindeneg/browser-cache/cache', () => {
     setLS(data);
 
     const { cache } = renderHook(() =>
-      useBrowserCache<TestObj>(c({ trim: 0.2 }))
+      useBrowserCache<ITestObj>(c({ trim: 0.2 }))
     ).result.current;
 
     expect(cache.size()).toBe(mockSize());
@@ -181,7 +189,7 @@ describe('Test Suite: @lindeneg/browser-cache/cache', () => {
   test('can listen to remove events', () => {
     const data = getMock();
     setLS(data);
-    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
+    const { cache } = renderHook(() => useBrowserCache<ITestObj>(c())).result
       .current;
 
     const fn = jest.fn((key) => {
@@ -230,14 +238,14 @@ describe('Test Suite: @lindeneg/browser-cache/cache', () => {
       done();
     }, 300);
   });
-  test('can listen to destruct event', () => {
-    const { cache } = renderHook(() => useBrowserCache<TestObj>(c())).result
+  test('can listen to clearTrimListener event', () => {
+    const { cache } = renderHook(() => useBrowserCache<ITestObj>(c())).result
       .current;
 
     const fn = jest.fn();
 
-    cache.on('destruct', fn);
-    cache.destruct();
+    cache.on('clearTrimListener', fn);
+    cache.clearTrimListener();
 
     expect(fn).toHaveBeenCalledTimes(1);
   });

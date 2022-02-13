@@ -1,6 +1,6 @@
 import { nowInSeconds } from './util';
 import { DEFAULT_TRIM, DEFAULT_TTL } from './constants';
-import type { EmptyObj } from '@lindeneg/types';
+import type { EmptyObj, ObjConstraint, SafeOmit } from '@lindeneg/types';
 import type {
   ListenerCallback,
   ListenerConstraint,
@@ -10,9 +10,9 @@ import type {
   CacheEntry,
 } from './types';
 
-export default class Cache<T extends EmptyObj> {
+export default class Cache<T extends ObjConstraint<T> = EmptyObj> {
   private interval: NodeJS.Timer;
-  private config: Omit<CacheConfig<T>, 'data'>;
+  private config: SafeOmit<CacheConfig<T>, 'data'>;
   private listeners: Listeners<T>;
   protected data: CacheData<T>;
 
@@ -57,13 +57,15 @@ export default class Cache<T extends EmptyObj> {
     return null;
   };
 
-  public getAsync = <K extends keyof T>(key: K): Promise<CacheEntry<T[K]>> => {
-    return new Promise((resolve, reject) => {
+  public getAsync = <K extends keyof T>(
+    key: K
+  ): Promise<CacheEntry<T[K]> | null> => {
+    return new Promise((resolve) => {
       const item = this.get(key);
       if (item) {
         resolve(item);
       } else {
-        reject(`key '${key}' could not be found`);
+        resolve(null);
       }
     });
   };
@@ -73,13 +75,13 @@ export default class Cache<T extends EmptyObj> {
     return entry ? entry.value : null;
   };
 
-  public valueAsync = <K extends keyof T>(key: K): Promise<T[K]> => {
-    return new Promise((resolve, reject) => {
+  public valueAsync = <K extends keyof T>(key: K): Promise<T[K] | null> => {
+    return new Promise((resolve) => {
       const item = this.value(key);
       if (item) {
         resolve(item);
       } else {
-        reject(`key '${key}' could not be found`);
+        resolve(null);
       }
     });
   };
@@ -113,14 +115,14 @@ export default class Cache<T extends EmptyObj> {
 
   public removeAsync = <K extends keyof T>(
     key: K
-  ): Promise<CacheEntry<T[K]>> => {
-    return new Promise((resolve, reject) => {
+  ): Promise<CacheEntry<T[K]> | null> => {
+    return new Promise((resolve) => {
       const entry = this.get(key);
-      if (!entry) {
-        reject(`entry with key '${key}' does not exist in cache`);
-      } else {
+      if (entry) {
         this.remove(key);
         resolve(entry);
+      } else {
+        resolve(null);
       }
     });
   };
@@ -141,8 +143,8 @@ export default class Cache<T extends EmptyObj> {
     });
   };
 
-  public destruct = (): void => {
-    this.runListener('destruct');
+  public clearTrimListener = (): void => {
+    this.runListener('clearTrimListener');
     clearInterval(this.interval);
   };
 

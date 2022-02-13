@@ -9,6 +9,14 @@ type TestObj = {
   };
 };
 
+interface ITestObj {
+  id: number;
+  options: string[];
+  favorites: {
+    albums: string[];
+  };
+}
+
 function getMock(tll?: number): CacheData<TestObj> {
   return {
     id: Cache.createEntry(42, tll),
@@ -28,7 +36,7 @@ function mockSize() {
 
 describe('Test Suite: @lindeneg/cache', () => {
   test('can initialize without initial data', () => {
-    const cache = new Cache();
+    const cache = new Cache<TestObj>();
     expect(cache.size()).toBe(0);
   });
   test('can initialize with initial data', () => {
@@ -43,7 +51,7 @@ describe('Test Suite: @lindeneg/cache', () => {
     );
   });
   test('can synchronously set entry', () => {
-    const cache = new Cache();
+    const cache = new Cache<ITestObj>();
 
     expect(cache.set('id', 5).value).toBe(5);
     expect(cache.size()).toBe(1);
@@ -70,17 +78,17 @@ describe('Test Suite: @lindeneg/cache', () => {
 
     cache.set('id', 5);
 
-    expect((await cache.getAsync('id')).value).toBe(5);
+    expect((await cache.getAsync('id'))?.value).toBe(5);
   });
   test('can synchronously get null with invalid key', () => {
     const cache = new Cache();
 
     expect(cache.get('id')).toBe(null);
   });
-  test('can asynchronously throw on get with invalid key', () => {
+  test('can asynchronously return null on get with invalid key', () => {
     const cache = new Cache();
 
-    expect(cache.getAsync('id')).rejects.toMatch("key 'id' could not be found");
+    expect(cache.getAsync('id')).resolves.toBe(null);
   });
   test('can synchronously get value with valid key', () => {
     const cache = new Cache();
@@ -100,14 +108,15 @@ describe('Test Suite: @lindeneg/cache', () => {
     const cache = new Cache();
     expect(cache.value('id')).toBe(null);
   });
-  test('can asynchronously throw on get value with invalid key', () => {
+  test('can asynchronously return null on get value with invalid key', () => {
     const cache = new Cache();
-    expect(cache.valueAsync('id')).rejects.toMatch(
-      "key 'id' could not be found"
-    );
+    expect(cache.valueAsync('id')).resolves.toBe(null);
   });
   test('can remove expired key on get call', (done) => {
-    const cache = new Cache({ ttl: 0.1 });
+    const cache = new Cache({
+      data: { hello: { expires: 1, value: '' }, id: { expires: 1, value: 1 } },
+      ttl: 0.1,
+    });
     cache.set('id', 5);
     setTimeout(() => {
       expect(cache.get('id')).toBe(null);
@@ -147,12 +156,10 @@ describe('Test Suite: @lindeneg/cache', () => {
 
     expect(removed).toEqual(null);
   });
-  test('can asynchronously throw on remove entry with invalid key', () => {
+  test('can asynchronously return null on remove entry with invalid key', () => {
     const cache = new Cache();
 
-    expect(cache.removeAsync('id')).rejects.toMatch(
-      "entry with key 'id' does not exist in cache"
-    );
+    expect(cache.removeAsync('id')).resolves.toBe(null);
   });
   test('can synchronously clear cache', () => {
     const data = getMock();
@@ -250,13 +257,13 @@ describe('Test Suite: @lindeneg/cache', () => {
       done();
     }, 300);
   });
-  test('can listen to destruct event', () => {
+  test('can listen to clearTrimListener event', () => {
     const cache = new Cache();
 
     const fn = jest.fn();
 
-    cache.on('destruct', fn);
-    cache.destruct();
+    cache.on('clearTrimListener', fn);
+    cache.clearTrimListener();
 
     expect(fn).toHaveBeenCalledTimes(1);
   });

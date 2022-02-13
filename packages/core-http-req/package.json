@@ -21,7 +21,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@lindeneg/cache": "^2.1.2",
     "@lindeneg/ls-cache": "^2.0.2"
   },
   "devDependencies": {

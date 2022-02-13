@@ -1,6 +1,6 @@
-import type { EmptyObj } from '@lindeneg/types';
+import type { ObjConstraint } from '@lindeneg/types';
 
-export type CacheConfig<T extends EmptyObj> = {
+export type CacheConfig<T extends ObjConstraint<T>> = {
   trim: number;
   ttl: number;
   data: CacheData<T>;
@@ -11,19 +11,19 @@ export type CacheEntry<T> = {
   value: T;
 };
 
-export type CacheData<T extends EmptyObj> = Partial<{
+export type CacheData<T extends ObjConstraint<T>> = Partial<{
   [K in keyof T]: CacheEntry<T[K]>;
 }>;
 
 export type ListenerConstraint =
   | 'remove'
   | 'clear'
-  | 'destruct'
+  | 'clearTrimListener'
   | 'trim'
   | 'set';
 
 export type ListenerCallback<
-  T extends EmptyObj,
+  T extends ObjConstraint<T>,
   K extends ListenerConstraint
 > = K extends 'trim'
   ? (removed: Array<keyof T>) => void
@@ -33,6 +33,6 @@ export type ListenerCallback<
   ? (key: keyof T) => void
   : () => void;
 
-export type Listeners<T extends EmptyObj> = Partial<{
+export type Listeners<T extends ObjConstraint<T>> = Partial<{
   [K in ListenerConstraint]: Array<ListenerCallback<T, K>>;
 }>;

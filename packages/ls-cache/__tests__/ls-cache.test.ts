@@ -4,13 +4,13 @@ import LS, { Config } from '../src';
 const PREFIX = '__cl_ls_cache__';
 const PREFIX2 = '__sometestprefix__';
 
-type TestObj = {
+interface TestObj {
   id: number;
   options: string[];
   favorites: {
     albums: string[];
   };
-};
+}
 
 function getMock(tll?: number): CacheData<TestObj> {
   return {
@@ -119,9 +119,9 @@ describe('Test Suite: @lindeneg/ls-cache', () => {
     ls.set('id', 1);
     expect(ls.get('id')?.value).toEqual(1);
   });
-  test('asynchronously rejects promise on invalid get', async () => {
+  test('asynchronously returns null promise on invalid get', async () => {
     const ls = await newLS({ delayInit: true }).initialize();
-    expect(ls.getAsync('id')).rejects.toMatch("key 'id' could not be found");
+    expect(ls.getAsync('id')).resolves.toBe(null);
   });
   test('synchronously gets value', () => {
     const ls = newLS();
@@ -147,7 +147,7 @@ describe('Test Suite: @lindeneg/ls-cache', () => {
     expect(await ls.valueAsync('id')).toEqual(1);
     expect(getLS('id').value).toBe(1);
     await ls.removeAsync('id');
-    expect(ls.valueAsync('id')).rejects.toMatch("key 'id' could not be found");
+    expect(ls.valueAsync('id')).resolves.toBe(null);
     expect(getLS('id')).toBe(null);
   });
   test('can clear items', () => {
@@ -229,13 +229,13 @@ describe('Test Suite: @lindeneg/ls-cache', () => {
       done();
     }, 300);
   });
-  test('can listen to destruct event', () => {
+  test('can listen to clearTrimListener event', () => {
     const cache = newLS();
 
     const fn = jest.fn();
 
-    cache.on('destruct', fn);
-    cache.destruct();
+    cache.on('clearTrimListener', fn);
+    cache.clearTrimListener();
 
     expect(fn).toHaveBeenCalledTimes(1);
   });

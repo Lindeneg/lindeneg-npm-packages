@@ -1,9 +1,9 @@
 import { useRef, useEffect } from 'react';
 import LS from '@lindeneg/ls-cache';
 import type { Config } from '@lindeneg/ls-cache';
-import type { EmptyObj, SafeOmit } from '@lindeneg/types';
+import type { ObjConstraint, SafeOmit } from '@lindeneg/types';
 
-export default function useBrowserCache<T extends EmptyObj>(
+export default function useBrowserCache<T extends ObjConstraint<T>>(
   config?: SafeOmit<Config<T>, 'delayInit'>
 ) {
   const cacheRef = useRef<LS<T>>(new LS(config));
@@ -11,8 +11,7 @@ export default function useBrowserCache<T extends EmptyObj>(
   useEffect(() => {
     return () => {
       const { current } = cacheRef;
-      // removes trim interval
-      current.destruct();
+      current.clearTrimListener();
     };
   }, []);
 

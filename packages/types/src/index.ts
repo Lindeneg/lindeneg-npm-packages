@@ -1,11 +1,15 @@
 /* istanbul ignore file */
+export type PrimitiveTypes = boolean | string | number | Date;
+
 export type EmptyObj = Record<string | number | symbol, unknown>;
 
-export type AllowedPrimitivesValues<T> = T extends
-  | boolean
-  | string
-  | number
-  | Date
+export type IMapped<T> = { [K in keyof T]: T[K] };
+
+export type ObjConstraint<T> = IMapped<T> extends PrimitiveTypes
+  ? EmptyObj
+  : IMapped<T>;
+
+export type AllowedPrimitivesValues<T> = T extends PrimitiveTypes
   ? T
   : T extends EmptyObj
   ? RecursivePartialObj<T>

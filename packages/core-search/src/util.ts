@@ -1,12 +1,5 @@
-import Logger from '@lindeneg/logger';
 import type { EmptyObj } from '@lindeneg/types';
 import type { SanitizeMode, EntryConstraint, KeyConstraint } from './types';
-
-const { error } = new Logger(
-  '@lindeneg/core-search',
-  /* istanbul ignore next */
-  () => process.env.NODE_ENV === 'development'
-);
 
 export const sanitize = function (str: string, mode: SanitizeMode) {
   const isStrict = mode === 'strict';
@@ -74,10 +67,8 @@ export function $filter<T extends unknown[]>(
           ''
         );
         return new RegExp(sanitized, 'gi').test(targets);
-      } catch (err) {
-        /* istanbul ignore next */
-        error({ msg: 'failed to create regex from query', query }, '$filter');
-      }
+      // eslint-disable-next-line no-empty
+      } catch (err) {}
     }
     return false;
   });

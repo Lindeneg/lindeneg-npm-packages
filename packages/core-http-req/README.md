@@ -1,6 +1,6 @@
 ### @lindeneg/core-http-req
 
-![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/core-http-req@1.1.1) ![license](https://badgen.net/npm/license/@lindeneg/core-http-req)
+![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/core-http-req@1.1.3) ![license](https://badgen.net/npm/license/@lindeneg/core-http-req)
 
 ---
 
@@ -15,13 +15,13 @@ A [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper fo
 ```ts
 import HttpReq from '@lindeneg/core-http-req';
 
-type User = {
+interface User = {
   id: number;
   username: string;
   email: string;
 };
 
-type ExpectedError = {
+interface ExpectedError = {
   code: number;
   message: string;
 };
@@ -49,8 +49,10 @@ type Config = {
      the two are merged with the shared config yielding to overwrites. */
   sharedOptions?: RequestConfig;
   /* cache config to be used for caching get requests */
-  cacheConfig?: Partial<SafeOmit<CacheConfig<EmptyObj>, 'data'>> & {
+  cacheConfig?: {
     strategy: CacheStrategy;
+    trim?: number;
+    ttl?: number;
   };
   /* if true, will set listeners to abort active requests on unload event */
   shouldSetListeners?: boolean;
@@ -82,8 +84,7 @@ This is the base for all requests and is called by all below methods. It contain
 function request<E extends CustomError>(
   url: string,
   options?: RequestInit
-) => Promise<RequestResult<Response, E>>
-
+): Promise<RequestResult<Response, E>>;
 ```
 
 ##### getJson
@@ -94,7 +95,7 @@ function request<E extends CustomError>(
 function getJson<T extends EmptyObj, E extends CustomError>(
   url: string,
   options?: RequestInit // properties 'body' and 'method' omitted
-) => Promise<RequestResult<T, E>>
+): Promise<RequestResult<T, E>>;
 ```
 
 ##### sendJson
@@ -107,7 +108,7 @@ function sendJson<T extends EmptyObj, E extends CustomError>(
   body: EmptyObj,
   method: ReqMethod.POST | ReqMethod.PUT | ReqMethod.PATCH = ReqMethod.POST,
   options?: PartialRequestConfig // contains json Content-Type in headers by default
-) => Promise<RequestResult<T, E>>
+): Promise<RequestResult<T, E>>;
 ```
 
 ##### deleteJson
@@ -119,7 +120,7 @@ function deleteJson<T extends EmptyObj, E extends CustomError>(
   url: string,
   body?: EmptyObj,
   options?: RequestInit // property 'method' omitted
-) => Promise<RequestResult<T, E>>
+): Promise<RequestResult<T, E>>;
 ```
 
 ##### Destroy

@@ -22,9 +22,7 @@
   "scripts": {
     "custom": "echo no custom script"
   },
-  "dependencies": {
-    "@lindeneg/logger": "^1.2.0"
-  },
+  "dependencies": {},
   "publishConfig": {
     "access": "public"
   },
