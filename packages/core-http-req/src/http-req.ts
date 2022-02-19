@@ -9,13 +9,16 @@ import type {
   PartialRequestConfig,
   RequestResult,
   CustomError,
+  AbortSignal,
+  AbortControllerMap,
 } from './types';
+import { CacheStrategy, ListenerAction, ReqMethod } from './constants';
 
 export default class HttpReq {
   private readonly cache: Cache<EmptyObj> | null;
   private readonly baseUrl: string;
   private readonly sharedOptions: RequestConfig | null;
-  private readonly activeRequests: AbortController[];
+  private readonly abortControllers: AbortControllerMap;
   private readonly shouldSetListeners: boolean;
 
   constructor(config?: HttpReqConstructor) {
@@ -29,7 +32,7 @@ export default class HttpReq {
     this.baseUrl = baseUrl;
     this.cache = this.getCacheFromStrategy(strategy, _config);
     this.sharedOptions = sharedOptions || null;
-    this.activeRequests = [];
+    this.abortControllers = new Map();
     this.shouldSetListeners = shouldSetListeners;
     this.handleListener(ListenerAction.ADD);
   }
@@ -39,15 +42,12 @@ export default class HttpReq {
     options?: RequestConfig
   ): Promise<RequestResult<Response, E>> => {
     const result: Partial<RequestResult<Response, E>> = {};
-    const abortController = window.AbortController
-      ? new window.AbortController()
-      : null;
-    abortController && this.activeRequests.push(abortController);
+    const signal = this.addAbortController();
     try {
       this.fetchOrThrow();
       const response = await window.fetch(this.fullUrl(url), {
         ...this.getOptions(options),
-        signal: abortController?.signal,
+        signal: signal,
       });
       result.statusCode = response.status;
       if (!response.ok) {
@@ -115,8 +115,8 @@ export default class HttpReq {
   };
 
   public destroy = (): void => {
-    this.activeRequests.forEach((controller) => {
-      controller.abort();
+    this.abortControllers.forEach((abort) => {
+      abort();
     });
     this.handleListener(ListenerAction.REMOVE);
     this.cache && this.cache.clearTrimListener();
@@ -139,6 +139,22 @@ export default class HttpReq {
       result.error = <E>err;
     }
     return result;
+  };
+
+  private addAbortController = (): AbortSignal | null => {
+    try {
+      const controller = new window.AbortController();
+      this.abortControllers.set(controller.signal, controller.abort);
+      return controller.signal;
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
+    return null;
+  };
+
+  private removeAbortController = (signal: AbortSignal | null) => {
+    if (signal) {
+      this.abortControllers.delete(signal);
+    }
   };
 
   private getCacheFromStrategy = (
