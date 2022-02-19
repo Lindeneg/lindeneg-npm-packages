@@ -46,7 +46,7 @@ function clearLS(prefix: string) {
   });
 }
 
-function newLS(config?: Partial<Config<TestObj>>): LS<TestObj> {
+function newLS(config?: Partial<Config<TestObj>>) {
   return new LS(config);
 }
 
