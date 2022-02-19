@@ -1,3 +1,10 @@
+1.1.5
+
+- use map instead of array for active request abort controllers
+- cleanup abort controller when the tied request has concluded
+- better type constraints
+
+
 1.1.3
 
 - type constraint now maps an interface to make it compatible with Record<string | number | symbol, unknown>
