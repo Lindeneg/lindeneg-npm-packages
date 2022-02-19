@@ -1,7 +1,10 @@
 import LS, { Cache } from '@lindeneg/ls-cache';
 import type { Config } from '@lindeneg/ls-cache';
-import type { ObjConstraint, EmptyObj, SafeOmit } from '@lindeneg/types';
-import { CacheStrategy, ListenerAction, ReqMethod } from './constants';
+import type {
+  RefConstraint,
+  EmptyObj,
+  SafeOmit,
+} from '@lindeneg/types';
 import type {
   RequestConfig,
   HttpReqConstructor,
@@ -62,7 +65,7 @@ export default class HttpReq {
   };
 
   public getJson = async <
-    T extends ObjConstraint<T>,
+    T extends RefConstraint<T> = EmptyObj,
     E extends CustomError = CustomError
   >(
     url: string,
@@ -83,11 +86,11 @@ export default class HttpReq {
   };
 
   public sendJson = async <
-    T extends ObjConstraint<T>,
+    T extends RefConstraint<T> = EmptyObj,
     E extends CustomError = CustomError
   >(
     url: string,
-    body: ObjConstraint<T>,
+    body: T,
     method: ReqMethod.POST | ReqMethod.PUT | ReqMethod.PATCH = ReqMethod.POST,
     options?: PartialRequestConfig
   ): PromiseRequestResult<T, E> => {
@@ -100,11 +103,11 @@ export default class HttpReq {
   };
 
   public deleteJson = async <
-    T extends ObjConstraint<T>,
+    T extends RefConstraint<T> = EmptyObj,
     E extends CustomError = CustomError
   >(
     url: string,
-    body?: ObjConstraint<T>,
+    body?: T,
     options?: PartialRequestConfig
   ): PromiseRequestResult<T, E> => {
     const req = await this.request<E>(url, {
@@ -124,8 +127,8 @@ export default class HttpReq {
   };
 
   private handleJsonResponse = async <
-    T extends ObjConstraint<T>,
-    E extends CustomError
+    T extends RefConstraint<T> = EmptyObj,
+    E extends CustomError = CustomError
   >(
     req: RequestResult<Response, E>
   ): Promise<RequestResult<T, E>> => {
