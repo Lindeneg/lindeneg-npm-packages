@@ -13,10 +13,7 @@ run_tests() {
   echo 'running ts-tests'
   cmd="tsc __tests__/types.ts-test.ts"
   $cmd
-  if [[ $? -gt 0 ]]
-    then
-      code=1
-  fi
+  code=$?
 }
 
 run_tests
