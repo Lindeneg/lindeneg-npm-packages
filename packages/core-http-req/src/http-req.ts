@@ -57,6 +57,7 @@ export default class HttpReq {
     } catch (err) {
       result.error = <E>err;
     }
+    this.removeAbortController(signal);
     return <RequestResult<Response, E>>result;
   };
 
