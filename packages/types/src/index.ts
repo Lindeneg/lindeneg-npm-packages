@@ -1,21 +1,19 @@
 /* istanbul ignore file */
-export type PrimitiveTypes =
-  | boolean
-  | string
-  | number
-  | Date
-  | null
-  | undefined
-  | symbol;
+export type PrimitiveTypes = boolean | string | number | Date;
 
 export type EmptyObj = Record<string | number | symbol, unknown>;
 
 export type IMapped<T> = { [K in keyof T]: T[K] };
 
-type IConstraint<T, K> = IMapped<T> extends K ? EmptyObj : IMapped<T>;
+export type ObjConstraint<T> = IMapped<T> extends
+  | PrimitiveTypes
+  | Array<unknown>
+  ? EmptyObj
+  : IMapped<T>;
 
-export type ObjConstraint<T> = IConstraint<T, PrimitiveTypes | Array<unknown>>;
-export type RefConstraint<T> = IConstraint<T, PrimitiveTypes>;
+export type RefConstraint<T> = IMapped<T> extends PrimitiveTypes
+  ? EmptyObj
+  : IMapped<T>;
 
 export type AllowedPrimitivesValues<T> = T extends PrimitiveTypes
   ? T

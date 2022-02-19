@@ -1,10 +1,6 @@
 import LS, { Cache } from '@lindeneg/ls-cache';
 import type { Config } from '@lindeneg/ls-cache';
-import type {
-  RefConstraint,
-  EmptyObj,
-  SafeOmit,
-} from '@lindeneg/types';
+import type { RefConstraint, EmptyObj, SafeOmit } from '@lindeneg/types';
 import type {
   RequestConfig,
   HttpReqConstructor,
