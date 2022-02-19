@@ -35,3 +35,7 @@ export type HttpReqConstructor = {
   };
   shouldSetListeners?: boolean;
 };
+
+export type AbortSignal = AbortController['signal'];
+export type AbortCallback = AbortController['abort'];
+export type AbortControllerMap = Map<AbortSignal, AbortCallback>;

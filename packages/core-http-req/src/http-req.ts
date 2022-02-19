@@ -1,7 +1,10 @@
 import LS, { Cache } from '@lindeneg/ls-cache';
 import type { Config } from '@lindeneg/ls-cache';
-import type { ObjConstraint, EmptyObj, SafeOmit } from '@lindeneg/types';
-import { CacheStrategy, ListenerAction, ReqMethod } from './constants';
+import type {
+  RefConstraint,
+  EmptyObj,
+  SafeOmit,
+} from '@lindeneg/types';
 import type {
   RequestConfig,
   HttpReqConstructor,
@@ -9,13 +12,16 @@ import type {
   PartialRequestConfig,
   RequestResult,
   CustomError,
+  AbortSignal,
+  AbortControllerMap,
 } from './types';
+import { CacheStrategy, ListenerAction, ReqMethod } from './constants';
 
 export default class HttpReq {
   private readonly cache: Cache<EmptyObj> | null;
   private readonly baseUrl: string;
   private readonly sharedOptions: RequestConfig | null;
-  private readonly activeRequests: AbortController[];
+  private readonly abortControllers: AbortControllerMap;
   private readonly shouldSetListeners: boolean;
 
   constructor(config?: HttpReqConstructor) {
@@ -29,7 +35,7 @@ export default class HttpReq {
     this.baseUrl = baseUrl;
     this.cache = this.getCacheFromStrategy(strategy, _config);
     this.sharedOptions = sharedOptions || null;
-    this.activeRequests = [];
+    this.abortControllers = new Map();
     this.shouldSetListeners = shouldSetListeners;
     this.handleListener(ListenerAction.ADD);
   }
@@ -39,15 +45,12 @@ export default class HttpReq {
     options?: RequestConfig
   ): Promise<RequestResult<Response, E>> => {
     const result: Partial<RequestResult<Response, E>> = {};
-    const abortController = window.AbortController
-      ? new window.AbortController()
-      : null;
-    abortController && this.activeRequests.push(abortController);
+    const signal = this.addAbortController();
     try {
       this.fetchOrThrow();
       const response = await window.fetch(this.fullUrl(url), {
         ...this.getOptions(options),
-        signal: abortController?.signal,
+        signal: signal,
       });
       result.statusCode = response.status;
       if (!response.ok) {
@@ -57,11 +60,12 @@ export default class HttpReq {
     } catch (err) {
       result.error = <E>err;
     }
+    this.removeAbortController(signal);
     return <RequestResult<Response, E>>result;
   };
 
   public getJson = async <
-    T extends ObjConstraint<T>,
+    T extends RefConstraint<T> = EmptyObj,
     E extends CustomError = CustomError
   >(
     url: string,
@@ -82,11 +86,11 @@ export default class HttpReq {
   };
 
   public sendJson = async <
-    T extends ObjConstraint<T>,
+    T extends RefConstraint<T> = EmptyObj,
     E extends CustomError = CustomError
   >(
     url: string,
-    body: ObjConstraint<T>,
+    body: T,
     method: ReqMethod.POST | ReqMethod.PUT | ReqMethod.PATCH = ReqMethod.POST,
     options?: PartialRequestConfig
   ): PromiseRequestResult<T, E> => {
@@ -99,11 +103,11 @@ export default class HttpReq {
   };
 
   public deleteJson = async <
-    T extends ObjConstraint<T>,
+    T extends RefConstraint<T> = EmptyObj,
     E extends CustomError = CustomError
   >(
     url: string,
-    body?: ObjConstraint<T>,
+    body?: T,
     options?: PartialRequestConfig
   ): PromiseRequestResult<T, E> => {
     const req = await this.request<E>(url, {
@@ -115,16 +119,16 @@ export default class HttpReq {
   };
 
   public destroy = (): void => {
-    this.activeRequests.forEach((controller) => {
-      controller.abort();
+    this.abortControllers.forEach((abort) => {
+      abort();
     });
     this.handleListener(ListenerAction.REMOVE);
     this.cache && this.cache.clearTrimListener();
   };
 
   private handleJsonResponse = async <
-    T extends ObjConstraint<T>,
-    E extends CustomError
+    T extends RefConstraint<T> = EmptyObj,
+    E extends CustomError = CustomError
   >(
     req: RequestResult<Response, E>
   ): Promise<RequestResult<T, E>> => {
@@ -139,6 +143,22 @@ export default class HttpReq {
       result.error = <E>err;
     }
     return result;
+  };
+
+  private addAbortController = (): AbortSignal | null => {
+    try {
+      const controller = new window.AbortController();
+      this.abortControllers.set(controller.signal, controller.abort);
+      return controller.signal;
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
+    return null;
+  };
+
+  private removeAbortController = (signal: AbortSignal | null) => {
+    if (signal) {
+      this.abortControllers.delete(signal);
+    }
   };
 
   private getCacheFromStrategy = (

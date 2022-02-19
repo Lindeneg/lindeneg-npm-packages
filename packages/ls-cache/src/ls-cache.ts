@@ -1,10 +1,12 @@
 import Cache from '@lindeneg/cache';
 import type { CacheEntry } from '@lindeneg/cache';
-import type { ObjConstraint } from '@lindeneg/types';
+import type { ObjConstraint, EmptyObj } from '@lindeneg/types';
 import { DEFAULT_PREFIX } from './constants';
 import type { Config, MappedKeys } from './types';
 
-export default class LS<T extends ObjConstraint<T>> extends Cache<T> {
+export default class LS<
+  T extends ObjConstraint<T> = EmptyObj
+> extends Cache<T> {
   private readonly prefix: string;
   private readonly regex: RegExp;
 
@@ -84,9 +86,7 @@ export default class LS<T extends ObjConstraint<T>> extends Cache<T> {
     } catch (err) {}
   };
 
-  private onRemoveListener = async <T extends ObjConstraint<T>>(
-    key: keyof T
-  ): Promise<void> => {
+  private onRemoveListener = async (key: keyof T): Promise<void> => {
     try {
       window.localStorage.removeItem(`${this.prefix}${key}`);
       // eslint-disable-next-line no-empty

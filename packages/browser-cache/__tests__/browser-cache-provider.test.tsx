@@ -58,8 +58,7 @@ function clearLS() {
 }
 
 function getValue(item: HTMLElement) {
-  //@ts-expect-error testing
-  return JSON.parse(item.getAttribute('data-value'));
+  return JSON.parse(item.getAttribute('data-value') || '');
 }
 
 describe('Test Suite: @lindeneg/browser-cache/provider', () => {

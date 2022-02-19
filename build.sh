@@ -2,6 +2,8 @@
 
 CMD='yarn rollup -c ../../rollup.config.js && yarn tsc --project ./tsconfig-prod.json --declaration --emitDeclarationOnly --declarationDir ./dist && yarn custom'
 
+LARGS=$#
+
 LERNA_SCOPE=''
 
 PREFIX='@lindeneg/'
@@ -16,7 +18,7 @@ function build_scopes () {
   done
   local SCOPES_STR="${SCOPES[*]}"
   LERNA_SCOPE="{$(echo $SCOPES_STR} | sed 's/\s/,/g')"
-  BUILD_MSG+="$# PACKAGES: $SCOPES_STR"
+  BUILD_MSG+="$LARGS PACKAGES: $SCOPES_STR"
 }
 
 function build_scope () {
@@ -26,10 +28,10 @@ function build_scope () {
 }
 
 function main () {
-  if [[ ! -n $1 ]]
+  if [[ $LARGS -eq 0 ]]
     then
       build_scope '*' 'ALL PACKAGES'
-  elif [ "$#" -eq 1 ]
+  elif [[ $LARGS -eq 1 ]]
     then
       build_scope "$1" '1 PACKAGE'
   else

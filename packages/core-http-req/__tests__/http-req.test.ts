@@ -32,7 +32,7 @@ describe('Test Suite: @lindeneg/http-req', () => {
         strategy: CacheStrategy.LocalStorage,
       },
     });
-    const { data, error, fromCache, statusCode } = await _httpReq.getJson<Post>(
+    const { data, error, fromCache, statusCode } = await _httpReq.getJson(
       '/post/md1'
     );
     expect(data).toEqual(post);

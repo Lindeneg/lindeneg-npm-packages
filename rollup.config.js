@@ -14,7 +14,7 @@ const NAME = (() => {
 })();
 
 const isReactLib =
-  /^(browser-cache|memory-cache|on-key|query-params|search)$/.test(NAME);
+  /^(browser-cache|memory-cache|on-key|query-params|search|http-req)$/.test(NAME);
 
 console.log({
   msg: '@lindeneg/' + NAME,
