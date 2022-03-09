@@ -1,4 +1,3 @@
-import 'whatwg-fetch';
 import { CacheStrategy, ReqMethod } from '../src';
 import HttpReq from '../src/http-req';
 
