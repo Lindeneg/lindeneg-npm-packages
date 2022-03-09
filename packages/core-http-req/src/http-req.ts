@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 import LS, { Cache } from '@lindeneg/ls-cache';
 import type { Config } from '@lindeneg/ls-cache';
-import type { RefConstraint, EmptyObj, SafeOmit } from '@lindeneg/types';
+import type { RefConstraint, EmptyObj } from '@lindeneg/types';
 import type {
   RequestConfig,
   HttpReqConstructor,
@@ -160,7 +160,7 @@ export default class HttpReq {
 
   private getCacheFromStrategy = (
     strategy: CacheStrategy,
-    config: SafeOmit<Config<EmptyObj>, 'delayInit' | 'prefix'>
+    config: Pick<Config<EmptyObj>, 'trim' | 'ttl'>
   ): Cache<EmptyObj> | null => {
     if (strategy === CacheStrategy.Memory) {
       return new Cache<EmptyObj>(config);
@@ -172,8 +172,8 @@ export default class HttpReq {
 
   private getOptions = (options?: RequestConfig): RequestConfig => {
     return {
-      ...this.sharedOptions,
-      ...options,
+      ...(this.sharedOptions || {}),
+      ...(options || {}),
     };
   };
 

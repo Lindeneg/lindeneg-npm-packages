@@ -17,7 +17,7 @@ export type RefConstraint<T> = IMapped<T> extends PrimitiveTypes
 
 export type AllowedPrimitivesValues<T> = T extends PrimitiveTypes
   ? T
-  : T extends EmptyObj
+  : T extends ObjConstraint<T>
   ? RecursivePartialObj<T>
   : never;
 
