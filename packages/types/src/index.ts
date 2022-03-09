@@ -21,14 +21,14 @@ export type AllowedPrimitivesValues<T> = T extends PrimitiveTypes
   ? RecursivePartialObj<T>
   : never;
 
-export type RecursivePartialObj<T extends EmptyObj> = {
+export type RecursivePartialObj<T extends ObjConstraint<T>> = {
   [P in keyof T]?: T[P] extends Array<infer U>
     ? Array<AllowedPrimitivesValues<U>>
     : AllowedPrimitivesValues<T[P]>;
 };
 
 export type Substitute<
-  T extends EmptyObj,
+  T extends ObjConstraint<T>,
   K extends { [U in keyof Partial<T>]: unknown }
 > = Omit<T, keyof K> & K;
 
