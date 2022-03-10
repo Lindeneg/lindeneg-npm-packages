@@ -2,6 +2,8 @@
 
 ![typescript](https://badgen.net/badge/icon/typescript?icon=typescript&label) ![bundle-size](https://badgen.net/bundlephobia/min/@lindeneg/core-http-req@1.1.4) ![license](https://badgen.net/npm/license/@lindeneg/core-http-req)
 
+[Sandbox](https://codesandbox.io/s/lindeneg-core-http-req-il4e0h)
+
 ---
 
 A [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) wrapper for easy use with `JSON` requests/responses.

@@ -79,7 +79,7 @@ export default class LS<
   ): Promise<void> => {
     try {
       window.localStorage.setItem(
-        `${this.prefix}${key}`,
+        `${this.prefix}${String(key)}`,
         JSON.stringify(value)
       );
       // eslint-disable-next-line no-empty
@@ -88,7 +88,7 @@ export default class LS<
 
   private onRemoveListener = async (key: keyof T): Promise<void> => {
     try {
-      window.localStorage.removeItem(`${this.prefix}${key}`);
+      window.localStorage.removeItem(`${this.prefix}${String(key)}`);
       // eslint-disable-next-line no-empty
     } catch (err) {}
   };

@@ -15,15 +15,10 @@ export type PromiseRequestResult<T, E extends CustomError> = Promise<
   RequestResult<T, E>
 >;
 
-export type RequestConfig = Substitute<
-  SafeOmit<
-    {
-      [K in keyof RequestInit]: RequestInit[K];
-    },
-    'signal'
-  >,
+export type RequestConfig = Partial<Substitute<
+  SafeOmit<RequestInit, 'signal'>,
   { method?: ReqMethod }
->;
+>>;
 
 export type PartialRequestConfig = SafeOmit<RequestConfig, 'method' | 'body'>;
 

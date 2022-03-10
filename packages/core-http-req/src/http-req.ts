@@ -1,6 +1,7 @@
+import 'whatwg-fetch';
 import LS, { Cache } from '@lindeneg/ls-cache';
 import type { Config } from '@lindeneg/ls-cache';
-import type { RefConstraint, EmptyObj, SafeOmit } from '@lindeneg/types';
+import type { RefConstraint, EmptyObj } from '@lindeneg/types';
 import type {
   RequestConfig,
   HttpReqConstructor,
@@ -44,7 +45,7 @@ export default class HttpReq {
     const signal = this.addAbortController();
     try {
       this.fetchOrThrow();
-      const response = await window.fetch(this.fullUrl(url), {
+      const response = await fetch(this.fullUrl(url), {
         ...this.getOptions(options),
         signal: signal,
       });
@@ -143,7 +144,7 @@ export default class HttpReq {
 
   private addAbortController = (): AbortSignal | null => {
     try {
-      const controller = new window.AbortController();
+      const controller = new AbortController();
       this.abortControllers.set(controller.signal, controller.abort);
       return controller.signal;
       // eslint-disable-next-line no-empty
@@ -159,7 +160,7 @@ export default class HttpReq {
 
   private getCacheFromStrategy = (
     strategy: CacheStrategy,
-    config: SafeOmit<Config<EmptyObj>, 'delayInit' | 'prefix'>
+    config: Pick<Config<EmptyObj>, 'trim' | 'ttl'>
   ): Cache<EmptyObj> | null => {
     if (strategy === CacheStrategy.Memory) {
       return new Cache<EmptyObj>(config);
@@ -171,8 +172,8 @@ export default class HttpReq {
 
   private getOptions = (options?: RequestConfig): RequestConfig => {
     return {
-      ...this.sharedOptions,
-      ...options,
+      ...(this.sharedOptions || {}),
+      ...(options || {}),
     };
   };
 
@@ -189,9 +190,7 @@ export default class HttpReq {
   };
 
   private fetchOrThrow = (): void => {
-    if (!window || typeof window !== 'object') {
-      throw new Error("'window' is not available in current environment");
-    } else if (!window.fetch || typeof window.fetch !== 'function') {
+    if (!fetch || typeof fetch !== 'function') {
       throw new Error("'fetch' is not available in current environment");
     }
   };
@@ -204,9 +203,9 @@ export default class HttpReq {
     try {
       if (this.shouldSetListeners) {
         if (type === ListenerAction.ADD) {
-          window.addEventListener('unload', this.destroy);
+          addEventListener('unload', this.destroy);
         } else if (type === ListenerAction.REMOVE) {
-          window.removeEventListener('unload', this.destroy);
+          removeEventListener('unload', this.destroy);
         }
       }
       // eslint-disable-next-line no-empty
