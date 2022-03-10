@@ -39,6 +39,7 @@ export type UniqueArray<T, U extends unknown[] = []> = T extends [
   ? UniqueArray<J, I extends U[number] ? U : [...U, I]>
   : U;
 
-export type SafeOmit<T extends ObjConstraint<T>, K extends keyof T> = {
-  [U in Exclude<keyof T, K>]: T[U];
-};
+export type SafeOmit<T extends ObjConstraint<T>, K extends keyof T> = Pick<
+  T,
+  Exclude<keyof T, K>
+>;
