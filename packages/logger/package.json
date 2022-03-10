@@ -4,7 +4,7 @@
   "homepage": "https://github.com/lindeneg/lindeneg-npm-packages/tree/master/packages/logger",
   "author": "lindeneg <christian@lindeneg.org>",
   "license": "MIT",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "main": "dist/bundle.cjs.js",
   "module": "dist/bundle.esm.js",
   "types": "dist/index.d.ts",
@@ -24,6 +24,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@lindeneg/types": "^1.1.5"
+    "@lindeneg/types": "^1.1.6"
   }
 }
